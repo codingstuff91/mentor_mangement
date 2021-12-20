@@ -28,8 +28,9 @@
                             <label>Client</label>
                             <select name="client" class="rounded-lg w-full">
                                 <option value="">-- Choisir un client --</option>
-                                <option value="superprof">Superprof</option>
-                                <option value="superprof">Orformat</option>
+                                @foreach ($clients as $client)
+                                    <option value="{{ $client->id }}">{{ $client->nom }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="w-full my-4">
