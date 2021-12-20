@@ -48,7 +48,7 @@ class EleveController extends Controller
             'commentaires' => $request->commentaires
         ]);
 
-        return view('eleve.index');
+        return redirect()->route('eleve.index');
     }
 
     /**
@@ -59,7 +59,7 @@ class EleveController extends Controller
      */
     public function show(Eleve $eleve)
     {
-        //
+        return view('eleve.show')->with(['eleve' => $eleve]);
     }
 
     /**
