@@ -59,7 +59,7 @@ class EleveController extends Controller
      */
     public function show(Eleve $eleve)
     {
-        //
+        return view('eleve.show')->with(['eleve' => $eleve]);
     }
 
     /**
