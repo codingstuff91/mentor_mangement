@@ -14,6 +14,11 @@
                         <a href="{{ route('eleve.create') }}">Ajouter un élève</a>
                     </button>
                 </div>
+                <div class="p-6 bg-white border-b border-gray-200">
+                    @foreach ($eleves as $eleve)
+                        <h2>{{ $eleve->nom }}</h2>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

@@ -16,7 +16,9 @@ class EleveController extends Controller
      */
     public function index()
     {
-        return view('eleve.index');
+        $eleves = Eleve::all();
+
+        return view('eleve.index')->with(['eleves' => $eleves]);
     }
 
     /**
