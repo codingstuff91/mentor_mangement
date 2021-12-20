@@ -48,7 +48,7 @@ class EleveController extends Controller
             'commentaires' => $request->commentaires
         ]);
 
-        return view('eleve.index');
+        return redirect()->route('eleve.index');
     }
 
     /**
