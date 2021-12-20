@@ -12,7 +12,7 @@
                     <h1 class="text-xl text-center">Ajout d'un élève</h1>
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <form action="{{ route('eleve.store') }}" method="post" class="w-full">
+                    <form action="{{ route('eleve.store') }}" method="post">
                         @csrf
                         <div class="mb-4 mx-auto w-full columns-3">
                             <label>Nom de l'élève</label>
@@ -21,8 +21,8 @@
                             <label>Matière</label>
                             <select name="matiere" class="rounded-lg w-full">
                                 <option value="">-- Choisir une matère --</option>
-                                <option value="excel">Excel</option>
-                                <option value="laravel">Laravel</option>
+                                <option value="1">Excel</option>
+                                <option value="2">Laravel</option>
                             </select>
                             
                             <label>Client</label>
@@ -42,7 +42,7 @@
                             <textarea class="block rounded-lg w-full" name="commentaires" cols="4" rows="2"></textarea>
                         </div>
 
-                        <button class="bg-green-400 rounded p-2 mt-4 w-full">Confirmer</button>
+                        <input type="submit" class="bg-green-400 rounded p-2 mt-4 w-full" value="Confirmer"/>
                     </form>
                 </div>
             </div>

@@ -19,7 +19,7 @@ class CreateElevesTable extends Migration
             $table->integer('matiere_id');
             $table->integer('client_id');
             $table->text('objectifs');
-            $table->text('commentaires');
+            $table->text('commentaires')->nullable();
             $table->timestamps();
         });
     }

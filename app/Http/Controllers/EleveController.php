@@ -37,8 +37,16 @@ class EleveController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreEleveRequest $request)
-    {
-        //
+    {     
+        Eleve::create([
+            'nom' => $request->nom,
+            'matiere_id' => $request->matiere,
+            'client_id' => $request->client,
+            'objectifs' => $request->objectifs,
+            'commentaires' => $request->commentaires
+        ]);
+
+        return view('eleve.index');
     }
 
     /**

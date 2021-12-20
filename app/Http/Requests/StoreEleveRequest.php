@@ -13,7 +13,7 @@ class StoreEleveRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreEleveRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nom' => 'required',
+            'matiere' => 'required',
+            'objectifs' => 'required'
         ];
     }
 }
