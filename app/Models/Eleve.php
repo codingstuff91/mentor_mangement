@@ -20,7 +20,7 @@ class Eleve extends Model
     // Un eleve est lié a un client
     public function client()
     {
-        return $this->hasOne('App\Models\Client');
+        return $this->belongsTo('App\Models\Client');
     }
 
     // Un eleve est lié a un cours
