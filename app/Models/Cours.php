@@ -10,4 +10,16 @@ class Cours extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    // Un cours est lié a une facture
+    public function facture()
+    {
+        return $this->hasOne('App\Models\Facture');
+    }
+
+    // Un cours est lié a un élève
+    public function eleve()
+    {
+        return $this->hasOne('App\Models\Eleve');
+    }
 }
