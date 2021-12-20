@@ -15,7 +15,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return view('client.index');
+        $clients = Client::all();
+
+        return view('client.index')->with(['clients' => $clients]);
     }
 
     /**
@@ -36,7 +38,12 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        //
+        Client::create([
+            'nom' => $request->nom,
+            'commentaires' => $request->commentaires
+        ]);
+
+        return redirect()->route('client.index');
     }
 
     /**
@@ -58,7 +65,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        //
+        return view('client.edit')->with(['client' => $client]);
     }
 
     /**
@@ -70,7 +77,13 @@ class ClientController extends Controller
      */
     public function update(UpdateClientRequest $request, Client $client)
     {
-        //
+        $client = Client::find($client->id);
+        $client->nom = $request->nom;
+        $client->commentaires = $request->commentaires;
+
+        $client->save();
+
+        return redirect()->route('client.index');
     }
 
     /**
@@ -81,6 +94,9 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client = Client::find($client->id);
+        $client->delete();
+
+        return redirect()->route('client.index');
     }
 }
