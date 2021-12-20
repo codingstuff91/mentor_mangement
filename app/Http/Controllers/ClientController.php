@@ -43,7 +43,7 @@ class ClientController extends Controller
             'commentaires' => $request->commentaires
         ]);
 
-        return view('client.index');
+        return redirect()->route('client.index');
     }
 
     /**
