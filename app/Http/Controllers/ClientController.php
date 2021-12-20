@@ -15,7 +15,9 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return view('client.index');
+        $clients = Client::all();
+
+        return view('client.index')->with(['clients' => $clients]);
     }
 
     /**
@@ -36,7 +38,12 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        //
+        Client::create([
+            'nom' => $request->nom,
+            'commentaires' => $request->commentaires
+        ]);
+
+        return view('client.index');
     }
 
     /**
