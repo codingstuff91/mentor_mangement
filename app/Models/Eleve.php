@@ -22,4 +22,10 @@ class Eleve extends Model
     {
         return $this->hasOne('App\Models\Client');
     }
+
+    // Un eleve est lié a un cours
+    public function cours()
+    {
+        return $this->belongsTo('App\Models\Cours');
+    }
 }
