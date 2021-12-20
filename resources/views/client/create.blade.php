@@ -14,11 +14,15 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form action="{{ route('client.store') }}" method="post" class="w-full">
                         @csrf
+                        
                         <div class="mb-4 mx-auto w-full columns-3">
                             <label>Nom du client</label>
                             <input type="text" name="nom" class="rounded-lg w-full"/>
-
                         </div>
+
+                        @error('nom')
+                            <div class="text-red-400">{{ $message }}</div>
+                        @enderror
                         
                         <div class="w-full my-4">
                             <label class="block">Commentaires</label>
