@@ -21,8 +21,9 @@
                             <label>Matière</label>
                             <select name="matiere" class="rounded-lg w-full">
                                 <option value="">-- Choisir une matère --</option>
-                                <option value="1">Excel</option>
-                                <option value="2">Laravel</option>
+                                @foreach ($matieres as $matiere)
+                                    <option value="{{$matiere->id }}">{{ $matiere->nom }}</option>
+                                @endforeach
                             </select>
                             
                             <label>Client</label>
