@@ -27,7 +27,7 @@ class MatiereController extends Controller
      */
     public function create()
     {
-        //
+        return view('matiere.create');
     }
 
     /**
@@ -38,7 +38,11 @@ class MatiereController extends Controller
      */
     public function store(StoreMatiereRequest $request)
     {
-        //
+        Matiere::create([
+            'nom' => $request->nom
+        ]);
+
+        return redirect()->route('matiere.index');
     }
 
     /**
