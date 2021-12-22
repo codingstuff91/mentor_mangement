@@ -20,6 +20,6 @@ class Cours extends Model
     // Un cours est lié a un élève
     public function eleve()
     {
-        return $this->hasOne('App\Models\Eleve');
+        return $this->belongsTo('App\Models\Eleve');
     }
 }
