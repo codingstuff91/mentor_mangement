@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Eleve;
 use App\Models\Client;
+use App\Models\Matiere;
 use App\Http\Requests\StoreEleveRequest;
 use App\Http\Requests\UpdateEleveRequest;
 
@@ -29,6 +30,7 @@ class EleveController extends Controller
     public function create()
     {
         $clients = Client::all();
+        $matieres = Matiere::all();
         return view('eleve.create')->with(['clients' => $clients]);
     }
 
@@ -59,6 +61,7 @@ class EleveController extends Controller
      */
     public function show(Eleve $eleve)
     {
+        $eleve = Eleve::find($eleve->id)->with('cours');
         return view('eleve.show')->with(['eleve' => $eleve]);
     }
 
