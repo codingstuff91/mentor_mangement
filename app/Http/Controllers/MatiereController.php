@@ -17,7 +17,7 @@ class MatiereController extends Controller
     {
         $matieres = Matiere::all();
 
-        return view('matiere.index');
+        return view('matiere.index')->with(['matieres' => $matieres]);
     }
 
     /**
