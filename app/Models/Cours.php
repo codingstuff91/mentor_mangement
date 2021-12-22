@@ -29,4 +29,16 @@ class Cours extends Model
         $date = new Carbon($this->date_fin);
         return $date->format('H:i');
     }
+  
+    // Un cours est lié a une facture
+    public function facture()
+    {
+        return $this->hasOne('App\Models\Facture');
+    }
+
+    // Un cours est lié a un élève
+    public function eleve()
+    {
+        return $this->belongsTo('App\Models\Eleve');
+    }
 }
