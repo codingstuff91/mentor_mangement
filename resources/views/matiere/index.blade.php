@@ -23,7 +23,7 @@
                             <form action="{{ route('matiere.destroy', $matiere->id) }}" method="post">
                                 @csrf
                                 @method('delete')
-                                <button class="ml-2 text-xs bg-red-400 p-2 rounded-lg" type="submit">Supprimer</button>
+                                <button class="ml-2 text-xs bg-red-400 p-2 rounded-lg" type="submit" onclick="confirm('etes vous sur de vouloir supprimer ?')">Supprimer</button>
                             </form>
                         </div>
                     </div>

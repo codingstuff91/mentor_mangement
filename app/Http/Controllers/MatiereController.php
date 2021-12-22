@@ -87,6 +87,8 @@ class MatiereController extends Controller
      */
     public function destroy(Matiere $matiere)
     {
-        //
+        $matiere->delete();
+        
+        return redirect()->route('matiere.index');
     }
 }
