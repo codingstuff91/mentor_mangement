@@ -75,9 +75,11 @@ class CoursController extends Controller
      * @param  \App\Models\Cours  $cours
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cours $cours)
+    public function edit(Cours $cours, Request $request)
     {
-        //
+        $cours = Cours::find($request->cour);
+
+        return view('cours.edit')->with(['cours' => $cours]);
     }
 
     /**
@@ -87,9 +89,20 @@ class CoursController extends Controller
      * @param  \App\Models\Cours  $cours
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCoursRequest $request, Cours $cours)
+    public function update(UpdateCoursRequest $request, Cours $cours, CoursService $cours_service)
     {
-        //
+        $cours = Cours::find($request->cour);
+
+        $count_hours = $cours_service->count_lesson_hours($request->heure_fin,$request->heure_debut);
+
+        $cours->paye = $request->paye;
+        $cours->nombre_heures = $count_hours;
+        $cours->date_debut = $request->date_debut ." ". $request->heure_debut;
+        $cours->date_fin = $request->date_debut ." ". $request->heure_fin;
+
+        $cours->save();
+
+        return redirect()->route('cours.index');
     }
 
     /**
