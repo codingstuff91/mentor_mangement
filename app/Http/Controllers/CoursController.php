@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cours;
+use App\Models\Eleve;
+use App\Services\CoursService;
 use App\Http\Requests\StoreCoursRequest;
 use App\Http\Requests\UpdateCoursRequest;
 
@@ -27,7 +29,9 @@ class CoursController extends Controller
      */
     public function create()
     {
-        return view('cours.create');
+        $eleves = Eleve::all();
+        
+        return view('cours.create')->with(['eleves' => $eleves]);
     }
 
     /**
@@ -36,9 +40,21 @@ class CoursController extends Controller
      * @param  \App\Http\Requests\StoreCoursRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCoursRequest $request)
+    public function store(StoreCoursRequest $request, CoursService $cours_service)
     {
-        //
+        $count_hours = $cours_service->count_lesson_hours($request->heure_fin,$request->heure_debut);
+        
+        Cours::create([
+            'eleve_id' => $request->eleve_id,
+            'date_debut' => $request->date_debut ." ". $request->heure_debut,
+            'date_fin' => $request->date_debut ." ". $request->heure_fin,
+            'nombre_heures' => $count_hours,
+            'notions_apprises' => $request->notions,
+            'paye' => false,
+            'facture_id' => 1
+        ]);
+
+        return redirect()->route('cours.index');
     }
 
     /**
