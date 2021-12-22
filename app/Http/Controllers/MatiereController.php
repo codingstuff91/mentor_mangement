@@ -64,7 +64,7 @@ class MatiereController extends Controller
      */
     public function edit(Matiere $matiere)
     {
-        //
+        return view('matiere.edit')->with(['matiere' => $matiere]);
     }
 
     /**
@@ -76,7 +76,11 @@ class MatiereController extends Controller
      */
     public function update(UpdateMatiereRequest $request, Matiere $matiere)
     {
-        //
+        $matiere->nom = $request->nom;
+
+        $matiere->save();
+
+        return redirect()->route('matiere.index');
     }
 
     /**
