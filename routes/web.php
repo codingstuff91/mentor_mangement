@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CoursController;
 use App\Http\Controllers\EleveController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\MatiereController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,5 +28,9 @@ Route::get('/dashboard', function () {
 Route::resource('eleve', EleveController::class);
 
 Route::resource('client', ClientController::class);
+
+Route::resource('matiere', MatiereController::class);
+
+Route::resource('cours', CoursController::class);
 
 require __DIR__.'/auth.php';
