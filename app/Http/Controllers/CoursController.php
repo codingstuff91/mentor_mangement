@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cours;
 use App\Models\Eleve;
+use Illuminate\Http\Request;
 use App\Services\CoursService;
 use App\Http\Requests\StoreCoursRequest;
 use App\Http\Requests\UpdateCoursRequest;
@@ -97,8 +98,12 @@ class CoursController extends Controller
      * @param  \App\Models\Cours  $cours
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cours $cours)
+    public function destroy(Cours $cours, Request $request)
     {
-        //
+        $cours = Cours::find($request->cour);
+
+        $cours->delete();
+
+        return redirect()->route('cours.index');
     }
 }

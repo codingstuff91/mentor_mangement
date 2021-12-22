@@ -24,7 +24,11 @@
                     </div>
                     <div class="flex flex-row h-1/2">
                         <button class="text-xs p-2 rounded-lg bg-blue-300"><a href="{{ route('cours.edit', $lecon->id) }}">Editer</a></button>
-                        <button class="text-xs p-2 rounded-lg bg-red-300 ml-2">Supprimer</button>
+                        <form action="{{ route('cours.destroy', $lecon->id) }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button class="ml-2 text-xs bg-red-400 p-2 rounded-lg" type="submit">Supprimer</button>
+                        </form>
                     </div>
                 </div>
             </div>
