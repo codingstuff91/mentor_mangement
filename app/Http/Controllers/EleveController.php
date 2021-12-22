@@ -31,7 +31,8 @@ class EleveController extends Controller
     {
         $clients = Client::all();
         $matieres = Matiere::all();
-        return view('eleve.create')->with(['clients' => $clients]);
+        
+        return view('eleve.create')->with(['clients' => $clients, 'matieres' => $matieres]);
     }
 
     /**
