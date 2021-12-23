@@ -14,6 +14,6 @@ class Facture extends Model
     // Une facture est lié a un client
     public function client()
     {
-        return $this->hasOne('App\Models\Client');
+        return $this->belongsTo('App\Models\Client');
     }
 }
