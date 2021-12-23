@@ -24,7 +24,14 @@ class StoreFactureRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'client_id' => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'client_id.required' => 'Veuillez saisir un nom de client'
         ];
     }
 }
