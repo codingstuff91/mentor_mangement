@@ -19,6 +19,7 @@
                     <div class="my-4 flex flex-row justify-between w-2/3 mx-auto">
                         <h2 class="text-3xl flex items-center">{{ $facture->id }}</h2>
                         <h3 class="text-xl flex items-center">{{ $facture->created_at }}</h3>
+                        <h3 class="text-xl flex items-center">{{ $facture->payee ? "OUI":"NON" }}</h3>
                     </div>
                 @endforeach
             </div>
