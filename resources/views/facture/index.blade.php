@@ -20,6 +20,9 @@
                         <h2 class="text-3xl flex items-center">{{ $facture->id }}</h2>
                         <h3 class="text-xl flex items-center">{{ $facture->created_at }}</h3>
                         <h3 class="text-xl flex items-center">{{ $facture->payee ? "OUI":"NON" }}</h3>
+                        <button>
+                            <a href="{{ route('facture.edit', $facture->id) }}" class="p-2 rounded-lg bg-blue-300">Editer</a>
+                        </button>
                     </div>
                 @endforeach
             </div>

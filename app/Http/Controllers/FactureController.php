@@ -68,7 +68,7 @@ class FactureController extends Controller
      */
     public function edit(Facture $facture)
     {
-        //
+        return view('facture.edit')->with(['facture' => $facture]);
     }
 
     /**
@@ -80,7 +80,12 @@ class FactureController extends Controller
      */
     public function update(UpdateFactureRequest $request, Facture $facture)
     {
-        //
+        $facture = Facture::find($facture->id);
+
+        $facture->payee = $request->payee;
+        $facture->save();
+
+        return redirect()->route('facture.index');
     }
 
     /**
