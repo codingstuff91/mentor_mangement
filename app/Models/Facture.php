@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Facture extends Model
 {
@@ -15,5 +16,10 @@ class Facture extends Model
     public function client()
     {
         return $this->belongsTo('App\Models\Client');
+    }
+
+    public function getMonthYearCreationAttribute()
+    {
+        return $this->created_at->format('M-Y');
     }
 }
