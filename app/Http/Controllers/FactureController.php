@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Facture;
 use App\Http\Requests\StoreFactureRequest;
 use App\Http\Requests\UpdateFactureRequest;
@@ -15,7 +16,9 @@ class FactureController extends Controller
      */
     public function index()
     {
-        //
+        $factures = Facture::all();
+
+        return view('facture.index')->with(['factures' => $factures]);
     }
 
     /**
@@ -25,7 +28,9 @@ class FactureController extends Controller
      */
     public function create()
     {
-        //
+        $clients = Client::all();
+
+        return view('facture.create')->with(['clients' => $clients]);
     }
 
     /**
@@ -36,7 +41,12 @@ class FactureController extends Controller
      */
     public function store(StoreFactureRequest $request)
     {
-        //
+        Facture::create([
+            'client_id' => $request->client_id,
+            'payee' => 0
+        ]);
+
+        return redirect()->route('facture.index');
     }
 
     /**
@@ -58,7 +68,7 @@ class FactureController extends Controller
      */
     public function edit(Facture $facture)
     {
-        //
+        return view('facture.edit')->with(['facture' => $facture]);
     }
 
     /**
@@ -70,7 +80,12 @@ class FactureController extends Controller
      */
     public function update(UpdateFactureRequest $request, Facture $facture)
     {
-        //
+        $facture = Facture::find($facture->id);
+
+        $facture->payee = $request->payee;
+        $facture->save();
+
+        return redirect()->route('facture.index');
     }
 
     /**
