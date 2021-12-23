@@ -10,4 +10,9 @@ class Matiere extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function eleve()
+    {
+        return $this->hasOne('App\Models\Eleve');
+    }
 }

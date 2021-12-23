@@ -14,7 +14,7 @@ class Eleve extends Model
     // Un eleve est lié a une matiere
     public function matiere()
     {
-        return $this->hasOne('App\Models\Matiere');
+        return $this->belongsTo('App\Models\Matiere');
     }
 
     // Un eleve est lié a un client
