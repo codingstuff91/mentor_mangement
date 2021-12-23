@@ -36,7 +36,7 @@
                             <label class="my-2">Facture concernée</label>
                             <select name="facture_id">
                                 @foreach ($factures as $facture)
-                                    <option value="{{ $facture->id }}">{{ $facture->id }} -- {{ $facture->client->nom }}</option>
+                                    <option value="{{ $facture->id }}">{{ $facture->month_year_creation }} -- {{ $facture->client->nom }}</option>
                                 @endforeach
                             </select>
 
