@@ -59,15 +59,18 @@ class FactureController extends Controller
     {
         $cours = $facture->cours()->get();
         $total_heures = 0;
+        $total_facture = 0;
 
         foreach ($cours as $lecon) {
             $total_heures += $lecon->nombre_heures;
+            $total_facture += $lecon->total_prix;
         }
 
         return view('facture.show')->with([
             'facture' => $facture,
             'cours' => $cours,
-            'total_heures' => $total_heures
+            'total_heures' => $total_heures,
+            'total_facture' => $total_facture
         ]);
     }
 
