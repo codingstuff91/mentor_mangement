@@ -15,7 +15,9 @@ class FactureController extends Controller
      */
     public function index()
     {
-        //
+        $factures = Facture::all();
+
+        return view('facture.index')->with(['factures' => $factures]);
     }
 
     /**
