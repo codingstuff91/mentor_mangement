@@ -3,6 +3,9 @@
         <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
             {{ $eleve->nom }}
         </h2>
+        <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
+            {{ $eleve->matiere->nom }}
+        </h2>
     </x-slot>
 
     <div class="py-4">
