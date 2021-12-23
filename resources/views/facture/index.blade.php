@@ -17,10 +17,12 @@
             <div class="mt-4 w-2/3 mx-auto p-2 bg-white border-b border-gray-200">
                 @foreach ($factures as $facture)
                     <div class="my-4 flex flex-row justify-between w-3/4 mx-auto">
-                        <h2 class="text-3xl flex items-center">{{ $facture->id }}</h2>
                         <h2 class="p-2 bg-lime-300 rounded-lg text-sm flex items-center">{{ $facture->client->nom }}</h2>
                         <h3 class="text-xl flex items-center">{{ $facture->month_year_creation }}</h3>
                         <h3 class="text-xl flex items-center">{{ $facture->payee ? "OUI":"NON" }}</h3>
+                        <button>
+                            <a href="{{ route('facture.show', $facture->id) }}" class="p-2 rounded-lg bg-blue-300">Détails</a>
+                        </button>
                         <button>
                             <a href="{{ route('facture.edit', $facture->id) }}" class="p-2 rounded-lg bg-blue-300">Editer</a>
                         </button>
