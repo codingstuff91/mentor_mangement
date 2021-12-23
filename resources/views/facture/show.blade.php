@@ -14,11 +14,11 @@
                 <h2 class="p-2 text-3xl text-center">Cours concernés</h2>
                 <div class="ml-2 p-2 bg-white shadow-sm sm:rounded-lg border-2 border-gray-300 flex justify-between">
                     @foreach ($cours as $lecon)
-                        <p>{{ $lecon->eleve->nom }}</p>
-                        <p>le {{ $lecon->date_formated }}</p>
-                        <p>{{ $lecon->heure_debut }} --> {{ $lecon->heure_fin }}</p>
+                        <p><i class="fas fa-user mr-2"></i>{{ $lecon->eleve->nom }}</p>
+                        <p><i class="fas fa-calendar-day mr-2"></i>le {{ $lecon->date_formated }}</p>
+                        <p><i class="fas fa-clock mr-2"></i>{{ $lecon->heure_debut }} --> {{ $lecon->heure_fin }}</p>
                         <p>{{ $lecon->nombre_heures }} heure{{ $lecon->nombre_heures > 1 ? "s" : "" }}</p>
-                        <p>{{ $lecon->total_prix }}€</p>
+                        <p><i class="fas fa-euro-sign mr-2"></i>{{ $lecon->total_prix }}€</p>
                     @endforeach
                 </div>
             </div>
