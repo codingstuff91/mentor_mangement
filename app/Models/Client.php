@@ -13,7 +13,7 @@ class Client extends Model
 
     public function facture()
     {
-        return $this->belongsTo('App\Models\Facture');
+        return $this->hasMany('App\Models\Facture');
     }
     public function eleve()
     {

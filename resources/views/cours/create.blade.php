@@ -30,6 +30,16 @@
                             <label class="my-2">Notions apprises</label>
                             <textarea name="notions" class="rounded-lg" cols="30" rows="2"></textarea>
 
+                            <label class="my-2">Taux horaire</label>
+                            <input type="number" name="taux_horaire" class="rounded-lg">
+
+                            <label class="my-2">Facture concernée</label>
+                            <select name="facture_id">
+                                @foreach ($factures as $facture)
+                                    <option value="{{ $facture->id }}">{{ $facture->month_year_creation }} -- {{ $facture->client->nom }}</option>
+                                @endforeach
+                            </select>
+
                             <input type="submit" value="Confirmer" class="mt-4 rounded-lg p-2 bg-green-400">
                     </form>
                 </div>
