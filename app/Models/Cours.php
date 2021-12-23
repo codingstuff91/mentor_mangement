@@ -29,6 +29,12 @@ class Cours extends Model
         $date = new Carbon($this->date_fin);
         return $date->format('H:i');
     }
+
+    // Calculer le cout total rapporté d'un cours
+    public function getTotalPrixAttribute()
+    {
+        return $this->taux_horaire * $this->nombre_heures; 
+    }
   
     // Un cours est lié a une facture
     public function facture()

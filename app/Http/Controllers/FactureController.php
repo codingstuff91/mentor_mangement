@@ -57,7 +57,12 @@ class FactureController extends Controller
      */
     public function show(Facture $facture)
     {
-        //
+        $cours = $facture->cours()->get();
+
+        return view('facture.show')->with([
+            'facture' => $facture,
+            'cours' => $cours
+        ]);
     }
 
     /**
