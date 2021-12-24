@@ -10,11 +10,11 @@
 
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-row">
-            <div class="p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg border-2 border-gray-300 w-1/3">
+            <div class="p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg border-2 border-gray-300 w-1/3 bg-blue-100 drop-shadow-xl">
                 <h2 class="text-3xl text-center">Objectifs</h2>
                 <p class="my-2 text-center">{!! $eleve->objectifs !!}</p>
             </div>
-            <div class="ml-4 p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg border-2 border-gray-300 w-2/3">
+            <div class="ml-4 p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg border-2 border-gray-300 w-2/3 bg-blue-100 drop-shadow-xl">
                 <h2 class="p-2 text-3xl text-center">Cours réalisés</h2>
                 <div class="ml-2 p-2 bg-white shadow-sm sm:rounded-lg border-2 border-gray-300">
                     @foreach ($eleve->cours as $cours)
