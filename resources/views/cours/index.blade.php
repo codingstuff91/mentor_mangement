@@ -16,10 +16,10 @@
             </div>
 
             @foreach ($cours as $lecon)
-            <div class="mt-2 w-1/2">
+            <div class="mt-2 w-1/2 mx-auto">
                 <div class="p-2 bg-white border-b border-gray-200 overflow-hidden shadow-sm sm:rounded-lg flex justify-between">
                     <div class="flex flex-col">
-                        <h1 class="text-lg font-extrabold">{{ $lecon->date_formated }} | {{ $lecon->heure_debut }} --> {{ $lecon->heure_fin }} | {{ $lecon->nombre_heures }} heure{{ $lecon->nombre_heures > 1 ? "s" : "" }}</h1>
+                        <h1 class="text-lg font-extrabold"><i class="fas fa-calendar-day mr-2"></i>{{ $lecon->date_formated }} <i class="fas fa-clock ml-2"></i> {{ $lecon->heure_debut }} --> {{ $lecon->heure_fin }} ({{ $lecon->nombre_heures }} heure{{ $lecon->nombre_heures > 1 ? "s" : "" }})</h1>
                         <p class="mt-2">{!! $lecon->notions_apprises !!}</p>
                     </div>
                     <div class="flex flex-row h-1/2">
