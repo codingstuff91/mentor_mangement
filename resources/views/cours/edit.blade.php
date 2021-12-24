@@ -6,8 +6,8 @@
     </x-slot>
 
     <div class="py-4">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="w-1/3 mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg drop-shadow-xl">
                 <div class="p-6 bg-white border-b border-gray-200 flex flex-row justify-between">
                     <form action="{{ route('cours.update', $cours->id) }}" method="post" class="flex flex-col">
                         @csrf
