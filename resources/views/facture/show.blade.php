@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
-            {{ $facture->client->nom }} | {{ $facture->month_year_creation }}
+        <h2 class="p-2 rounded-lg bg-lime-200 font-semibold text-3xl text-gray-800 leading-tight">
+            <i class="fas fa-user mr-2"></i>{{ $facture->client->nom }} <i class="fas fa-calendar-day mx-2"></i> {{ $facture->month_year_creation }}
         </h2>
-        <h2 class="text-3xl text-center">{{ $total_facture }} €</h2>
+        <h2 class="p-2 rounded-lg bg-cyan-200 text-3xl text-center">{{ $total_facture }} €</h2>
     </x-slot>
 
     <div class="py-4">
