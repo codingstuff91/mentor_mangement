@@ -19,7 +19,7 @@ class CoursController extends Controller
      */
     public function index()
     {
-        $cours = Cours::all();
+        $cours = Cours::latest()->get();
 
         return view('cours.index')->with(['cours' => $cours]);
     }
