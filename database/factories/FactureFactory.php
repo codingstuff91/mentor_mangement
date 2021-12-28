@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FactureFactory extends Factory
@@ -14,7 +15,8 @@ class FactureFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'client_id' => Client::all()->random()->id,
+            'payee' => $this->faker->boolean,
         ];
     }
 }
