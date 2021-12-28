@@ -14,7 +14,8 @@ class ClientFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nom' => $this->faker->name(),
+            'commentaires' => $this->faker->sentence(5),
         ];
     }
 }
