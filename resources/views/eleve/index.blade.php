@@ -14,7 +14,7 @@
                     </button>
                 </div>
             </div>
-            <div class="mt-4 w-1/2 mx-auto p-2 bg-white border-b border-gray-200">
+            <div class="mt-4 w-2/3 mx-auto p-2 bg-white border-b border-gray-200">
                 @foreach ($eleves as $eleve)
                     <div class="my-4 flex flex-row justify-between w-3/4 mx-auto">
                         <h2 class="text-3xl flex items-center">{{ $eleve->nom }}
