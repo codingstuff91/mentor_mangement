@@ -48,7 +48,7 @@
                                 @endforeach
                             </select>
 
-                            <input type="submit" value="Confirmer" class="mt-4 rounded-lg p-2 bg-green-400">
+                            <input type="submit" value="Confirmer" class="mt-4 rounded-lg p-2 bg-green-300">
                     </form>
                 </div>
             </div>
