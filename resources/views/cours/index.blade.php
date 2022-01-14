@@ -23,6 +23,7 @@
                         <p class="mt-2">{!! $lecon->notions_apprises !!}</p>
                     </div>
                     <div class="flex flex-row h-1/2">
+                        <div class="text-xs mr-2 p-2 bg-green-400 rounded-lg"><i class="fas fa-user mr-2"></i>{{ $lecon->eleve->nom }}</div>
                         <button class="text-xs p-2 rounded-lg bg-blue-300"><i class="fas fa-edit mr-2"></i><a href="{{ route('cours.edit', $lecon->id) }}">Editer</a></button>
                         <form action="{{ route('cours.destroy', $lecon->id) }}" method="post">
                             @csrf
