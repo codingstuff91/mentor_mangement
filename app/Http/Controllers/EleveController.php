@@ -17,7 +17,7 @@ class EleveController extends Controller
      */
     public function index()
     {
-        $eleves = Eleve::with('client')->get();
+        $eleves = Eleve::with('client')->orderBy('active', 'desc')->get();
 
         return view('eleve.index')->with(['eleves' => $eleves]);
     }
