@@ -18,7 +18,7 @@
                                 @endforeach
                             </select>
                             
-                            <div class="my-2 flex flex-row justify-between">
+                            <div class="my-2 flex flex-row justify-between items-center">
                                 <div class="flex flex-col align-items-center">
                                     <label class="my-2">Date du cours</label>
                                     <input type="date" name="date_debut" class="rounded-lg">
@@ -32,6 +32,11 @@
                                 <div class="flex flex-col align-items-center">
                                     <label class="my-2">Heure fin</label>
                                     <input type="time" name="heure_fin" class="rounded-lg">                             
+                                </div>
+
+                                <div class="flex flex-col justify-center">
+                                    <label>Pack d'heures</label>
+                                    <input type="checkbox" class="rounded-lg" name="pack_heures">
                                 </div>
                             </div>
 
