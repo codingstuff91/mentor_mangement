@@ -62,7 +62,11 @@ class FactureController extends Controller
         $total_facture = 0;
 
         foreach ($cours as $lecon) {
-            $total_heures += $lecon->nombre_heures;
+            // Ne pas prendre en compte les heures de type PACK pour le décompte des heures
+            if(!$lecon->pack_heures)
+            {
+                $total_heures += $lecon->nombre_heures;
+            }
             $total_facture += $lecon->total_prix;
         }
 
