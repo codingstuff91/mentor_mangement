@@ -47,11 +47,14 @@ class CoursController extends Controller
     {
         $count_hours = $cours_service->count_lesson_hours($request->heure_fin,$request->heure_debut);
         
+        $pack_heures = isset($request->pack_heures) ? 1 : 0;
+        
         Cours::create([
             'eleve_id' => $request->eleve_id,
             'date_debut' => $request->date_debut ." ". $request->heure_debut,
             'date_fin' => $request->date_debut ." ". $request->heure_fin,
             'nombre_heures' => $count_hours,
+            'pack_heures' =>$pack_heures,
             'notions_apprises' => $request->notions,
             'paye' => false,
             'facture_id' => $request->facture_id,
