@@ -17,8 +17,6 @@ class EleveFactory extends Factory
     {
         return [
             'nom' => $this->faker->name(),
-            'matiere_id' => Matiere::first()->id,
-            'client_id' => Client::first()->id,
             'objectifs' => $this->faker->sentence(3),
             'commentaires' => $this->faker->sentence(3),
         ];
