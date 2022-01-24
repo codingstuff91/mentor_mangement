@@ -14,7 +14,7 @@
                         @method('patch')
 
                         <label>Date du cours</label>
-                        <input type="date" name="date_debut" value="{{ $cours->date_debut }}" class="rounded-lg mt-2">
+                        <input type="date" name="date_debut" value="{{ $cours->date_debut_edited }}" class="rounded-lg mt-2">
 
                         <label class="mt-2">Heure début</label>
                         <input type="time" class="rounded-lg" name="heure_debut" value="{{ $cours->heure_debut }}">

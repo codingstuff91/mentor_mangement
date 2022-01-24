@@ -19,7 +19,20 @@
             <div class="mt-2 w-3/4 mx-auto">
                 <div class="p-2 bg-white border-b border-gray-200 overflow-hidden shadow-sm sm:rounded-lg flex justify-between">
                     <div class="flex flex-col">
-                        <h1 class="text-lg font-extrabold"><i class="fas fa-calendar-day mr-2"></i>{{ $lecon->date_formated }} <i class="fas fa-clock ml-2"></i> {{ $lecon->heure_debut }} --> {{ $lecon->heure_fin }} ({{ $lecon->nombre_heures }} heure{{ $lecon->nombre_heures > 1 ? "s" : "" }})</h1>
+                        <h1 class="text-lg font-extrabold">
+                            <i class="fas fa-calendar-day mr-2"></i>{{ $lecon->date_formated }}<i class="fas fa-clock ml-2"></i> {{ $lecon->heure_debut }} --> {{ $lecon->heure_fin }} ({{ $lecon->nombre_heures }} heure{{ $lecon->nombre_heures > 1 ? "s" : "" }}) 
+                            @if ($lecon->paye)
+                                <span class="p-2 text-xs rounded-lg bg-green-200">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    OUI
+                                </span>
+                            @else
+                                <span class="p-2 text-xs rounded-lg bg-red-200">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    NON
+                                </span>                                
+                            @endif
+                        </h1>
                         <p class="mt-2">{!! $lecon->notions_apprises !!}</p>
                     </div>
                     <div class="flex flex-row h-1/2">
