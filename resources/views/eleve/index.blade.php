@@ -28,8 +28,8 @@
                             <span class="ml-2 p-2 text-xs rounded-lg bg-amber-300"><i class="fas fa-book mr-2"></i>{{ $eleve->matiere->nom }}</span>
                         </h2>
                         <div class="buttons">
-                            <button class="p-2 rounded-lg bg-blue-300"><a href="{{ route('eleve.show', $eleve->id) }}"><i class="fas fa-search mr-2"></i>Détails</a></button>
-                            <button class="p-2 rounded-lg bg-cyan-300"><a href="{{ route('eleve.edit', $eleve->id) }}"><i class="fas fa-edit mr-2"></i>Editer</a></button>
+                            <button class="p-2 rounded-lg bg-blue-300 text-xs"><a href="{{ route('eleve.show', $eleve->id) }}"><i class="fas fa-search mr-2"></i>Détails</a></button>
+                            <button class="p-2 rounded-lg bg-cyan-300 text-xs"><a href="{{ route('eleve.edit', $eleve->id) }}"><i class="fas fa-edit mr-2"></i>Editer</a></button>
                         </div>
                     </div>
                 @endforeach
