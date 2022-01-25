@@ -13,7 +13,7 @@ class UpdateEleveRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdateEleveRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nom' => 'required',
+            'active' => 'required',
+            'client_id' => 'required',
+            'matiere_id' => 'required'
         ];
     }
 }
