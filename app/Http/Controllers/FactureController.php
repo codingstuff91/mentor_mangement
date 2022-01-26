@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Facture;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreFactureRequest;
 use App\Http\Requests\UpdateFactureRequest;
 
@@ -16,7 +17,9 @@ class FactureController extends Controller
      */
     public function index()
     {
-        $factures = Facture::with('client')->get();
+        $factures = Facture::with('client')->withCount(['cours as total' => function($query){
+            $query->select(DB::raw('SUM(nombre_heures * taux_horaire)'));
+        }])->get();
 
         return view('facture.index')->with(['factures' => $factures]);
     }
