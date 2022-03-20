@@ -6,6 +6,7 @@ use App\Http\Controllers\EleveController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\MatiereController;
+use App\Http\Controllers\DashboardController;
 
 require __DIR__.'/auth.php';
 
@@ -14,9 +15,7 @@ Route::middleware(['auth'])->group(function(){
         return view('welcome');
     });
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('eleve', EleveController::class);
     
