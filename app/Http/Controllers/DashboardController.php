@@ -11,7 +11,9 @@ class DashboardController extends Controller
     public function index()
     {
         // Total d'heures de cours
-        $nb_heures_cours = Cours::select(DB::raw("SUM(nombre_heures) as total"))->get();
+        $nb_heures_cours = Cours::where('cours.pack_heures', false)
+                            ->select(DB::raw("SUM(nombre_heures) as total"))
+                            ->get();
 
         // Total argent gagné
         $total_gains = Cours::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->get();
@@ -20,6 +22,7 @@ class DashboardController extends Controller
         $heure_cours_par_matiere = DB::table('eleves')
                                     ->join('cours', 'cours.eleve_id', '=', 'eleves.id')
                                     ->join('matieres', 'matieres.id', '=', 'eleves.matiere_id')
+                                    ->where('cours.pack_heures', false)
                                     ->select(DB::raw('matieres.nom, SUM(nombre_heures) as total'))
                                     ->groupBy('matieres.nom')
                                     ->orderBy('total', 'desc')
