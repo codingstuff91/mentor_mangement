@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/jeuf5892/student-manager.jeuf5892/
+    - php artisan test
