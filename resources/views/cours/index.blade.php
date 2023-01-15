@@ -19,8 +19,11 @@
             <div class="mt-2 w-3/4 mx-auto">
                 <div class="p-2 bg-white border-b border-gray-200 overflow-hidden shadow-sm sm:rounded-lg flex justify-between">
                     <div class="flex flex-col">
+                        <div class="text-xs mb-2 p-2 bg-green-200 rounded-lg">
+                            <i class="fas fa-user mr-2"></i>{{ $lecon->eleve->nom }}
+                        </div>
                         <h1 class="text-lg font-extrabold">
-                            <i class="fas fa-calendar-day mr-2"></i>{{ $lecon->date_formated }}<i class="fas fa-clock ml-2"></i> {{ $lecon->heure_debut }} --> {{ $lecon->heure_fin }} ({{ $lecon->nombre_heures }} heure{{ $lecon->nombre_heures > 1 ? "s" : "" }}) 
+                            <i class="fas fa-calendar-day mr-2"></i>{{ $lecon->date_formated }}
                             @if ($lecon->paye)
                                 <span class="p-2 text-xs rounded-lg bg-green-200">
                                     <i class="fas fa-dollar-sign"></i>
@@ -33,11 +36,16 @@
                                 </span>                                
                             @endif
                         </h1>
+                        <p class="font-extrabold">
+                            <i class="fas fa-clock my-2"></i> {{ $lecon->heure_debut }} -> {{ $lecon->heure_fin }} ({{ $lecon->nombre_heures }} heure{{ $lecon->nombre_heures > 1 ? "s" : "" }}) 
+                        </p>
                         <p class="mt-2">{!! $lecon->notions_apprises !!}</p>
                     </div>
                     <div class="flex flex-row h-1/2">
-                        <div class="text-xs mr-2 p-2 bg-green-400 rounded-lg"><i class="fas fa-user mr-2"></i>{{ $lecon->eleve->nom }}</div>
-                        <button class="text-xs p-2 rounded-lg bg-blue-300"><i class="fas fa-edit mr-2"></i><a href="{{ route('cours.edit', $lecon->id) }}">Editer</a></button>
+                        <button class="text-xs p-2 rounded-lg bg-blue-300">
+                            <i class="fas fa-edit mr-2"></i>
+                            <a href="{{ route('cours.edit', $lecon->id) }}">Editer</a>
+                        </button>
                         <form action="{{ route('cours.destroy', $lecon->id) }}" method="post">
                             @csrf
                             @method('delete')
