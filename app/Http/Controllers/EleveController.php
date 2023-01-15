@@ -17,7 +17,7 @@ class EleveController extends Controller
      */
     public function index()
     {
-        $eleves = Eleve::with('client')->get();
+        $eleves = Eleve::with('client')->orderBy('active', 'desc')->get();
 
         return view('eleve.index')->with(['eleves' => $eleves]);
     }
@@ -74,7 +74,15 @@ class EleveController extends Controller
      */
     public function edit(Eleve $eleve)
     {
-        //
+        $eleve = Eleve::find($eleve->id);
+        $matieres = Matiere::all();
+        $clients = Client::all();
+
+        return view('eleve.edit')->with([
+            'eleve' => $eleve, 
+            'matieres' => $matieres,
+            'clients' => $clients
+        ]);
     }
 
     /**
@@ -86,7 +94,9 @@ class EleveController extends Controller
      */
     public function update(UpdateEleveRequest $request, Eleve $eleve)
     {
-        //
+        $eleve->update($request->all());
+        
+        return redirect()->route('eleve.index');
     }
 
     /**

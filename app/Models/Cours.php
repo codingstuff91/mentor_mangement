@@ -18,6 +18,12 @@ class Cours extends Model
         return $date->format('d/m/Y');
     }
 
+    public function getDateDebutEditedAttribute()
+    {
+        $date = new Carbon($this->date_debut);
+        return $date->format('Y-m-d');        
+    }
+
     public function getHeureDebutAttribute()
     {
         $date = new Carbon($this->date_debut);
