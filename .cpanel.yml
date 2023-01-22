@@ -1,6 +1,5 @@
----
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/jeuf5892/student-manager.jeuf5892.odns.fr/
+    - export DEPLOYPATH=/student-manager.jeuf5892.odns.fr
     - php artisan test
     - /bin/cp test_file.html $DEPLOYPATH
