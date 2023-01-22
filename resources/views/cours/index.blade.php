@@ -7,10 +7,11 @@
 
     <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200">
-                    <button class="p-2 bg-green-300 rounded-lg">
-                        <a href="{{ route('cours.create') }}">Ajouter un cours</a>
+            <div class="overflow-hidden sm:rounded-lg flex justify-center">
+                <div class="p-2">
+                    <button class="p-2 bg-blue-300 rounded-lg">
+                        <i class="fas fa-plus"></i>
+                        <a href="{{ route('cours.create') }}">Nouveau cours</a>
                     </button>
                 </div>
             </div>
