@@ -43,14 +43,14 @@
                         <p class="mt-2">{!! $lecon->notions_apprises !!}</p>
                     </div>
                     <div class="flex flex-row h-1/2">
-                        <button class="text-xs p-2 rounded-lg bg-blue-300">
-                            <i class="fas fa-edit mr-2"></i>
+                        <button class="text-xs text-white p-2 rounded-lg bg-blue-400 mr-2">
+                            <i class="fas fa-edit"></i>
                             <a href="{{ route('cours.edit', $lecon->id) }}">Editer</a>
                         </button>
                         <form action="{{ route('cours.destroy', $lecon->id) }}" method="post">
                             @csrf
                             @method('delete')
-                            <button class="ml-2 text-xs bg-red-400 text-white p-2 rounded-lg" type="submit"><i class="fas fa-trash mr-2"></i>Supprimer</button>
+                            <button class="text-xs bg-red-400 text-white p-2 rounded-lg" type="submit"><i class="fas fa-trash mr-2"></i>Supprimer</button>
                         </form>
                     </div>
                 </div>
