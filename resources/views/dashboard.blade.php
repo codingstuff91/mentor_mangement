@@ -6,12 +6,12 @@
     </x-slot>
 
     <div class="my-6 pt-4">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-row">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-row justify-center columns-4 gap-4 sm:columns-2 gap-2">
             <div class="bg-white shadow-lg rounded-xl">
                 <div class="p-4 bg-white rounded-lg">
                     <div class="flex space-between">
                         <div class="h-auto w-32">
-                            <img src="{{ asset('img/teaching.png') }}">
+                            <img src="{{ asset('img/time.png') }}">
                         </div>
                         <div class="p-2 flex flex-col content-center">
                             <h2 class="text-xl">Total Heures</h2>
@@ -20,7 +20,20 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white shadow-lg rounded-xl ml-4">
+            <div class="bg-white shadow-lg rounded-xl">
+                <div class="p-4 bg-white rounded-lg">
+                    <div class="flex space-between">
+                        <div class="h-auto w-32">
+                            <img src="{{ asset('img/lesson.png') }}">
+                        </div>
+                        <div class="p-2 flex flex-col content-center">
+                            <h2 class="text-xl">Total Cours</h2>
+                            <h3 class="mt-2 text-2xl font-bold">{{ $total_heures[0]->total }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white shadow-lg rounded-xl">
                 <div class="p-4 bg-white rounded-lg">
                     <div class="flex space-between">
                         <div class="h-auto w-32">
@@ -29,6 +42,19 @@
                         <div class="p-2 flex flex-col content-center">
                             <h2 class="text-xl">Total revenus</h2>
                             <h3 class="mt-2 text-2xl font-bold">{{ $total_gains[0]->total }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white shadow-lg rounded-xl">
+                <div class="p-4 bg-white rounded-lg">
+                    <div class="flex space-between">
+                        <div class="h-auto w-32">
+                            <img src="{{ asset('img/student.png') }}">
+                        </div>
+                        <div class="p-2 flex flex-col content-center">
+                            <h2 class="text-xl">Total Eleves</h2>
+                            <h3 class="mt-2 text-2xl font-bold">{{ $total_eleves }}</h3>
                         </div>
                     </div>
                 </div>
