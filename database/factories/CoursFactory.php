@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use App\Models\Eleve;
 use App\Models\Facture;
+use App\Services\CoursService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CoursFactory extends Factory
@@ -15,13 +17,23 @@ class CoursFactory extends Factory
      */
     public function definition()
     {
+        $startHour = Carbon::now();
+        $startHour->hour = 18;
+        $startHour->minute = 00;
+
+        $endHour = Carbon::now();
+        $endHour->hour = 19;
+        $endHour->minute = 00;
+        
+        $coursService = new CoursService();
+
         return [
             'eleve_id' => Eleve::all()->random()->id,
             'facture_id' => Facture::all()->random()->id,
-            'date_debut' => $this->faker->dateTimeThisYear(),
-            'date_fin' => $this->faker->dateTimeThisYear(),
-            'nombre_heures' => $this->faker->randomNumber(1,3),
-            'taux_horaire' => $this->faker->numberBetween(30,40),
+            'date_debut' => $startHour,
+            'date_fin' => $endHour,
+            'nombre_heures' => $coursService->count_lesson_hours($endHour->hour,$startHour->hour),
+            'taux_horaire' => 50,
             'notions_apprises' => $this->faker->sentence(3),
             'paye' => $this->faker->boolean,            
         ];

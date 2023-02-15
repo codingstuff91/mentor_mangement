@@ -21,26 +21,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $clients = Client::factory(3)->create();
-
-        $factures = Facture::factory(3)->create([
-            'client_id' => $clients->random()->id
-        ]);
+        $clients = Client::factory(3)->create()->each(function($client){
+            Facture::factory()->create([
+                'client_id' => $client->id,
+            ]);
+        });
 
         Matiere::factory(5)->create()->each(function($matiere) use ($clients){
-            Eleve::factory()->count(2)->create([
+            Eleve::factory()->create([
                 'client_id' => $clients->random()->id,
                 'matiere_id' => $matiere->id
             ])->each(function($eleve){
-                Cours::factory(2)->create([
+                Cours::factory(3)->create([
                     'eleve_id' => $eleve->id,
-                    'facture_id' => Facture::all()->random()->id
+                    'facture_id' => Facture::first()->id
                 ]);
             });
         });
 
-        $this->call([
-            UserSeeder::class,
-        ]);
+        $this->call(UserSeeder::class);
     }
 }
