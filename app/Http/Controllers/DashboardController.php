@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cours;
+use App\Models\Eleve;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,6 +19,12 @@ class DashboardController extends Controller
         // Total argent gagné
         $total_gains = Cours::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->get();
 
+        // Total d'élèves
+        $total_eleves = Eleve::all()->count();
+
+        // Total de cours
+        $total_cours = Cours::all()->count();
+
         // Affichage des heures de cours par matières
         $heure_cours_par_matiere = DB::table('eleves')
                                     ->join('cours', 'cours.eleve_id', '=', 'eleves.id')
@@ -31,6 +38,8 @@ class DashboardController extends Controller
         return view('dashboard')->with([
             'total_heures' => $nb_heures_cours,
             'total_gains' => $total_gains,
+            'total_eleves' => $total_eleves,
+            'total_cours' => $total_cours,
             'nombre_heures_par_eleve' => $heure_cours_par_matiere
         ]);
     }
