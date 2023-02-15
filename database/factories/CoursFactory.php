@@ -21,8 +21,10 @@ class CoursFactory extends Factory
         $startHour->hour = 18;
         $startHour->minute = 00;
 
-        $endHour = $startHour->addHour();
+        $endHour = Carbon::now();
+        $endHour->hour = 19;
         $endHour->minute = 00;
+        
         $coursService = new CoursService();
 
         return [
@@ -30,7 +32,7 @@ class CoursFactory extends Factory
             'facture_id' => Facture::all()->random()->id,
             'date_debut' => $startHour,
             'date_fin' => $endHour,
-            'nombre_heures' => $coursService->count_lesson_hours($startHour->hour, $endHour->hour),
+            'nombre_heures' => $coursService->count_lesson_hours($endHour->hour,$startHour->hour),
             'taux_horaire' => 50,
             'notions_apprises' => $this->faker->sentence(3),
             'paye' => $this->faker->boolean,            
