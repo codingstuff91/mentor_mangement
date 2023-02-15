@@ -21,11 +21,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $clients = Client::factory(3)->create();
-
-        $factures = Facture::factory(3)->create([
-            'client_id' => $clients->random()->id
-        ]);
+        $clients = Client::factory(3)->create()->each(function($client){
+            Facture::factory()->create([
+                'client_id' => $client->id,
+            ]);
+        });
 
         Matiere::factory(5)->create()->each(function($matiere) use ($clients){
             Eleve::factory()->count(2)->create([
@@ -39,8 +39,6 @@ class DatabaseSeeder extends Seeder
             });
         });
 
-        $this->call([
-            UserSeeder::class,
-        ]);
+        $this->call(UserSeeder::class);
     }
 }

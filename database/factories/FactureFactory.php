@@ -15,7 +15,6 @@ class FactureFactory extends Factory
     public function definition()
     {
         return [
-            'client_id' => Client::all()->random()->id,
             'payee' => $this->faker->boolean,
         ];
     }
