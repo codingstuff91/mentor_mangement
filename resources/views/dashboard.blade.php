@@ -9,52 +9,52 @@
         <div class="px-2 mx-auto columns-2 gap-4 lg:columns-4 lg:gap-4 lg:max-w-7xl lg:px-8">
             <div class="bg-white shadow-lg rounded-xl mb-4">
                 <div class="p-4 bg-white rounded-lg">
-                    <div class="flex space-between h-24">
-                        <div class="h-full">
-                            <img src="{{ asset('img/time.png') }}">
+                    <div class="flex space-between h-20">
+                        <div>
+                            <img class="h-full" src="{{ asset('img/time.png') }}">
                         </div>
                         <div class="p-2 flex flex-col content-center items-center">
-                            <h2 class="text-xl sm:text-sm">Total Heures</h2>
-                            <h3 class="mt-2 text-2xl font-bold">{{ $total_heures[0]->total }}</h3>
+                            <h2 class="text-sm sm:text-xl">Total Heures</h2>
+                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $total_heures[0]->total }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="bg-white shadow-lg rounded-xl mb-4">
                 <div class="p-4 bg-white rounded-lg">
-                    <div class="flex space-between h-24">
-                        <div class="h-full">
-                            <img src="{{ asset('img/lesson.png') }}">
+                    <div class="flex space-between h-20">
+                        <div>
+                            <img class="h-full" src="{{ asset('img/lesson.png') }}">
                         </div>
                         <div class="p-2 flex flex-col content-center items-center">
-                            <h2 class="text-xl">Total Cours</h2>
-                            <h3 class="mt-2 text-2xl font-bold">{{ $total_heures[0]->total }}</h3>
+                            <h2 class="text-sm sm:text-xl">Total Cours</h2>
+                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $total_heures[0]->total }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="bg-white shadow-lg rounded-xl mb-4">
                 <div class="p-4 bg-white rounded-lg">
-                    <div class="flex space-between h-24">
-                        <div class="h-full">
-                            <img src="{{ asset('img/money.png') }}">
+                    <div class="flex space-between h-20">
+                        <div>
+                            <img class="h-full" src="{{ asset('img/money.png') }}">
                         </div>
                         <div class="p-2 flex flex-col content-center items-center">
-                            <h2 class="text-xl">Total revenus</h2>
-                            <h3 class="mt-2 text-2xl font-bold">{{ $total_gains[0]->total }}</h3>
+                            <h2 class="text-sm sm:text-xl">Total revenus</h2>
+                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $total_gains[0]->total }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="bg-white shadow-lg rounded-xl mb-4">
                 <div class="p-4 bg-white rounded-lg">
-                    <div class="flex space-between h-24">
-                        <div class="h-full">
-                            <img src="{{ asset('img/student.png') }}">
+                    <div class="flex space-between h-20">
+                        <div>
+                            <img class="h-full" src="{{ asset('img/student.png') }}">
                         </div>
                         <div class="p-2 flex flex-col content-center items-center">
-                            <h2 class="text-xl">Total Eleves</h2>
-                            <h3 class="mt-2 text-2xl font-bold">{{ $total_eleves }}</h3>
+                            <h2 class="text-sm sm:text-xl">Total Eleves</h2>
+                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $total_eleves }}</h3>
                         </div>
                     </div>
                 </div>
