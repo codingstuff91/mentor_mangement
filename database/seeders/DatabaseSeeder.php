@@ -28,13 +28,13 @@ class DatabaseSeeder extends Seeder
         });
 
         Matiere::factory(5)->create()->each(function($matiere) use ($clients){
-            Eleve::factory()->count(2)->create([
+            Eleve::factory()->create([
                 'client_id' => $clients->random()->id,
                 'matiere_id' => $matiere->id
             ])->each(function($eleve){
-                Cours::factory(2)->create([
+                Cours::factory(3)->create([
                     'eleve_id' => $eleve->id,
-                    'facture_id' => Facture::all()->random()->id
+                    'facture_id' => Facture::first()->id
                 ]);
             });
         });
