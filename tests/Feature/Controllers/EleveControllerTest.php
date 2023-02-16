@@ -27,12 +27,16 @@ class EleveControllerTest extends TestCase
         $this->actingAs($user);
 
         $this->matiere = Matiere::factory()->create();
-        $this->client = Client::factory()->create();
-        $this->facture = Facture::factory()->create();
+
+        $this->client = Client::factory()->create()->each(function($client){
+            Facture::factory()->create([
+                'client_id' => $client->id,
+            ]);
+        });
 
         $this->eleve = Eleve::factory()->create([
             'matiere_id' => $this->matiere->id,
-            'client_id' => $this->client->id,
+            'client_id' => Client::first()->id,
         ]);
     }
 
