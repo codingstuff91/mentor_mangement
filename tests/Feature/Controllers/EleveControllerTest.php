@@ -4,8 +4,10 @@ namespace Tests\Feature\Models;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Cours;
 use App\Models\Eleve;
 use App\Models\Client;
+use App\Models\Facture;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -26,6 +28,7 @@ class EleveControllerTest extends TestCase
 
         $this->matiere = Matiere::factory()->create();
         $this->client = Client::factory()->create();
+        $this->facture = Facture::factory()->create();
 
         $this->eleve = Eleve::factory()->create([
             'matiere_id' => $this->matiere->id,
@@ -67,5 +70,22 @@ class EleveControllerTest extends TestCase
         ]));
         
         $this->assertDatabaseCount('eleves', 1);
+    }
+
+    public function test_it_can_render_the_show_eleve_page()
+    {
+        $eleve = Eleve::factory()->create([
+            'matiere_id' => Matiere::first()->id,
+            'client_id' => Client::first()->id,
+        ]);
+
+        $response = $this->get(route('eleve.show', $eleve->id));
+        $response->assertOk();
+
+        $view = $this->view('eleve.show', ['eleve' => $eleve]);
+
+        $view->assertSee($eleve->name);
+        $view->assertSee($eleve->objectifs);
+        $view->assertSee($eleve->matiere->name);
     }
 }
