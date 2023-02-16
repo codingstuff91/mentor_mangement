@@ -89,13 +89,10 @@ class ClientControllerTest extends TestCase
 
         $client = Client::factory()->create();
 
-        $response = $this->patch('/client/' . $client->id, [
+        $response = $this->patch(route('client.update', $client->id), [
             'nom' => 'test edition'
         ]);
 
-        // dd($response);
-
-        // $response->assertSessionHasErrors(['nom']);
-        $this->assertEquals('test edition', $client->nom); 
+        $this->assertEquals('test edition', Client::find($client->id)->nom); 
     }
 }
