@@ -73,15 +73,12 @@ class MatiereControllerTest extends TestCase
 
     public function test_a_matiere_can_be_updated()
     {
-        $this->withoutExceptionHandling();
-
         $matiere = Matiere::factory()->create();
 
-        $response = $this->patch('/matiere/' . $matiere->id, [
-            'nom' => 'test edition'
+        $response = $this->put(route('matiere.update', $matiere->id),[
+            'nom' => 'matiere updated'
         ]);
 
-        $response->assertSessionHasErrors(['nom']);
-        // $this->assertEquals('test edition', $matiere->nom); 
+        $this->assertEquals('matiere updated', Matiere::find($matiere->id)->nom); 
     }
 }
