@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Cours;
 use App\Models\Eleve;
 use App\Models\Client;
 use App\Models\Facture;
@@ -35,7 +36,12 @@ class FactureControllerTest extends TestCase
 
         $this->eleve = Eleve::factory()->create([
             'matiere_id' => $this->matiere->id,
-            'client_id' => Facture::first()->id,
+            'client_id' => Client::first()->id,
+        ]);
+
+        $coursesHours = Cours::factory(2)->create([
+            'eleve_id'   => Eleve::first()->id,
+            'facture_id' => Facture::first()->id,
         ]);
     }
 
@@ -51,5 +57,37 @@ class FactureControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Nom du client');
+    }
+
+    public function test_it_can_show_the_details_of_a_facture()
+    {
+        $facture = Facture::first();
+
+        $response = $this->get(route('facture.show', $facture->id));
+        $response->assertOk();
+    }
+
+    public function test_it_can_show_the_total_number_of_hours_of_a_facture()
+    {
+        $facture = Facture::first();
+        $totalCoursesHours = Cours::all()->count();
+
+        $response = $this->get(route('facture.show', $facture->id));
+
+        $response->assertOk();
+        $response->assertSee("Nombre heures : " . $totalCoursesHours);
+    }
+
+    public function test_the_total_price_of_a_facture_is_correctly_calculated()
+    {
+        $facture = Facture::first();
+        $totalPriceOfCourses = Cours::select('nombre_heures', 'taux_horaire')->get();
+
+        $totalPrice = $totalPriceOfCourses->sum('taux_horaire');
+
+        $response = $this->get(route('facture.show', $facture->id));
+
+        $response->assertOk();
+        $response->assertSee($totalPrice ." €");        
     }
 }
