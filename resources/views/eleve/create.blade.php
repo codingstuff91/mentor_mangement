@@ -12,7 +12,7 @@
                     <form action="{{ route('eleve.store') }}" method="post">
                         @csrf
                         <div class="mb-4 mx-auto w-full columns-3">
-                            <label>Nom de l'élève</label>
+                            <label>Nom</label>
                             <input type="text" name="nom" class="rounded-lg w-full"/>
 
                             <label>Matière</label>
