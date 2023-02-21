@@ -16,6 +16,9 @@
         {{-- Font awesome --}}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+        {{-- CKeditor --}}
+        <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
@@ -35,5 +38,16 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <script>
+            ClassicEditor
+                .create(document.querySelector('textarea'))
+                .then( editor => {
+                        console.log( editor );
+                } )
+                .catch( error => {
+                        console.error( error );
+                } );
+        </script>
     </body>
 </html>
