@@ -7,29 +7,26 @@
 
     <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200 flex flex-row justify-between">
-                    <button class="p-2 bg-green-300 rounded-lg">
+            <div class="overflow-hidden sm:rounded-lg">
+                <div class="p-2 flex flex-row justify-center">
+                    <button class="p-2 text-lg bg-green-300 rounded-lg">
                         <a href="{{ route('eleve.create') }}">Ajouter un élève</a>
                     </button>
                 </div>
             </div>
             <div class="mt-4 w-full mx-auto p-2 bg-white border-b border-gray-200">
                 @foreach ($eleves as $eleve)
-                    <div class="my-4 flex flex-row justify-between w-3/4 mx-auto">
-                        <h2 class="text-3xl flex items-center">{{ $eleve->nom }}
-                            @if ($eleve->active)
-                                <span class="ml-2 p-2 text-xs rounded-lg bg-green-200"><i class="fas fa-check mr-2"></i>Actif</span>
-                            @else
-                                <span class="ml-2 p-2 text-xs rounded-lg bg-red-100"><i class="fas fa-ban mr-2"></i>Inactif</span>
-                            @endif
-                            
-                            <span class="ml-2 p-2 text-xs rounded-lg bg-blue-100"><i class="fas fa-user mr-2"></i>{{ $eleve->client->nom }}</span>
-                            <span class="ml-2 p-2 text-xs rounded-lg bg-amber-300"><i class="fas fa-book mr-2"></i>{{ $eleve->matiere->nom }}</span>
-                        </h2>
+                    <div class="my-4 flex flex-row justify-between items-center w-full mx-auto">
+                        <div class="flex flex-col">
+                            <h2 class="text-3xl flex items-center">{{ $eleve->nom }}</h2>
+                            <div class="flex">
+                                <p class="ml-2 p-2 text-xs rounded-lg bg-blue-100"><i class="fas fa-user mr-2"></i>{{ $eleve->client->nom }}</^p>
+                                <p class="ml-2 p-2 text-xs rounded-lg bg-amber-300"><i class="fas fa-book mr-2"></i>{{ $eleve->matiere->nom }}</p>
+                            </div>
+                        </div>
                         <div class="buttons">
-                            <button class="p-2 rounded-lg bg-blue-300 text-xs"><a href="{{ route('eleve.show', $eleve->id) }}"><i class="fas fa-search mr-2"></i>Détails</a></button>
-                            <button class="p-2 rounded-lg bg-cyan-300 text-xs"><a href="{{ route('eleve.edit', $eleve->id) }}"><i class="fas fa-edit mr-2"></i>Editer</a></button>
+                            <button class="p-2 rounded-lg bg-blue-300 text-xs"><a href="{{ route('eleve.show', $eleve->id) }}"><i class="fas fa-search mr-2"></i></a></button>
+                            <button class="p-2 rounded-lg bg-cyan-300 text-xs"><a href="{{ route('eleve.edit', $eleve->id) }}"><i class="fas fa-edit mr-2"></i></a></button>
                         </div>
                     </div>
                 @endforeach
