@@ -62,7 +62,12 @@ class EleveController extends Controller
      */
     public function show(Eleve $eleve)
     {
-        $eleve = Eleve::where('id',$eleve->id)->with(['cours', 'matiere'])->get()->first();
+        $eleve = Eleve::where('id',$eleve->id)
+        ->with(['cours', 'matiere'])
+        ->withCount('cours')
+        ->get()
+        ->first();
+
         return view('eleve.show')->with(['eleve' => $eleve]);
     }
 
