@@ -7,23 +7,26 @@
 
     <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200 flex flex-row justify-between">
-                    <button class="p-2 bg-green-300 rounded-lg">
+            <div class="overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-2 flex flex-row justify-center">
+                    <button class="p-2 bg-blue-600 text-white text-lg rounded-lg">
+                        <i class="fas fa-plus mr-2"></i>
                         <a href="{{ route('matiere.create') }}">Ajouter une matière</a>
                     </button>
                 </div>
             </div>
             <div>
                 @foreach ($matieres as $matiere)
-                    <div class=" w-1/2 mx-auto mt-2 p-4 bg-white flex justify-between">
-                        <p>{{ $matiere->nom }}</p>
+                    <div class=" w-full mx-auto mt-2 p-4 bg-white flex justify-between items-center sm:w-2/3 lg:w-1/2">
+                        <p class="font-bold text-lg">{{ $matiere->nom }}</p>
                         <div class="flex flex-row">
-                            <button class="p-2 text-xs rounded-lg bg-blue-300"><a href="{{ route('matiere.edit',$matiere->id) }}">Editer</a></button>
+                            <button class="p-2 rounded-lg bg-blue-300"><a href="{{ route('matiere.edit',$matiere->id) }}"><i class="fas fa-edit"></i></a></button>
                             <form action="{{ route('matiere.destroy', $matiere->id) }}" method="post">
                                 @csrf
                                 @method('delete')
-                                <button class="ml-2 text-xs bg-red-400 p-2 rounded-lg" type="submit" onclick="confirm('etes vous sur de vouloir supprimer ?')">Supprimer</button>
+                                <button class="ml-2 bg-red-400 p-2 rounded-lg" type="submit" onclick="confirm('etes vous sur de vouloir supprimer ?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </form>
                         </div>
                     </div>
