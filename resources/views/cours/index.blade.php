@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden sm:rounded-lg flex justify-center">
                 <div class="p-2">
-                    <button class="p-2 bg-blue-300 rounded-lg">
+                    <button class="p-2 bg-blue-600 text-white text-lg rounded-lg">
                         <i class="fas fa-plus"></i>
                         <a href="{{ route('cours.create') }}">Nouveau cours</a>
                     </button>
@@ -17,7 +17,7 @@
             </div>
 
             @foreach ($cours as $lecon)
-            <div class="mt-2 w-3/4 mx-auto">
+            <div class="mt-2 w-full mx-auto">
                 <div class="p-2 bg-white border-b border-gray-200 overflow-hidden shadow-sm sm:rounded-lg flex justify-between">
                     <div class="flex flex-col">
                         <div class="text-base font-bold mb-2 p-2 bg-gray-200 rounded-lg">
@@ -43,14 +43,14 @@
                         <p class="mt-2">{!! $lecon->notions_apprises !!}</p>
                     </div>
                     <div class="flex flex-row h-1/2">
-                        <button class="text-xs text-white p-2 rounded-lg bg-blue-400 mr-2">
+                        <button class="p-2 rounded-lg bg-blue-400 mr-2">
                             <i class="fas fa-edit"></i>
-                            <a href="{{ route('cours.edit', $lecon->id) }}">Editer</a>
+                            <a href="{{ route('cours.edit', $lecon->id) }}"></a>
                         </button>
                         <form action="{{ route('cours.destroy', $lecon->id) }}" method="post">
                             @csrf
                             @method('delete')
-                            <button class="text-xs bg-red-400 text-white p-2 rounded-lg" type="submit"><i class="fas fa-trash mr-2"></i>Supprimer</button>
+                            <button class="bg-red-400 p-2 rounded-lg" type="submit"><i class="fas fa-trash"></i></button>
                         </form>
                     </div>
                 </div>
