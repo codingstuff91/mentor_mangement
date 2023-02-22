@@ -11,7 +11,7 @@
                 <div class="p-2 flex flex-row justify-center">
                     <button class="p-2 bg-blue-600 rounded-lg text-white text-xl">
                         <i class="fas fa-plus mr-2"></i>
-                        <a href="{{ route('facture.create') }}">Créer une facture</a>
+                        <a href="{{ route('facture.create') }}">Ajouter une facture</a>
                     </button>
                 </div>
             </div>

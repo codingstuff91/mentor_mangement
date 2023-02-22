@@ -11,7 +11,7 @@
                 <div class="p-2">
                     <button class="p-2 bg-blue-600 text-white text-lg rounded-lg">
                         <i class="fas fa-plus"></i>
-                        <a href="{{ route('cours.create') }}">Nouveau cours</a>
+                        <a href="{{ route('cours.create') }}">Ajouter un cours</a>
                     </button>
                 </div>
             </div>

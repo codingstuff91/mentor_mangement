@@ -8,7 +8,7 @@
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 border-gray-200 flex flex-row justify-center">
+                <div class="p-4 border-gray-200 flex flex-row justify-center">
                     <button class="p-2 bg-blue-600 text-white text-lg rounded-lg">
                         <i class="fas fa-plus mr-2"></i>
                         <a href="{{ route('client.create') }}">Ajouter un client</a>
