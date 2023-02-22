@@ -9,7 +9,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden sm:rounded-lg">
                 <div class="p-2 flex flex-row justify-center">
-                    <button class="p-2 text-lg bg-green-300 rounded-lg">
+                    <button class="p-2 text-lg bg-blue-600 text-white rounded-lg">
+                        <i class="fas fa-plus mr-2"></i>
                         <a href="{{ route('eleve.create') }}">Ajouter un élève</a>
                     </button>
                 </div>

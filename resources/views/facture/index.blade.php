@@ -7,32 +7,48 @@
 
     <div class="py-2">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200 flex flex-row justify-between">
-                    <button class="p-2 bg-green-300 rounded-lg">
-                        <a href="{{ route('facture.create') }}">Créer une facture</a>
+            <div class="overflow-hidden sm:rounded-lg">
+                <div class="p-2 flex flex-row justify-center">
+                    <button class="p-2 bg-blue-600 rounded-lg text-white text-xl">
+                        <i class="fas fa-plus mr-2"></i>
+                        <a href="{{ route('facture.create') }}">Ajouter une facture</a>
                     </button>
                 </div>
             </div>
-            <div class="mt-4 w-2/3 mx-auto p-2 bg-white border-b border-gray-200">
+            <div class="mt-4 w-full">
                 @foreach ($factures as $facture)
-                    <div class="my-4 flex flex-row justify-between w-3/4 mx-auto">
-                        <h2 class="p-2 bg-lime-300 rounded-lg text-sm flex items-center"><i class="fas fa-user mr-2"></i>{{ $facture->client->nom }}</h2>
-                        <h3 class="text-xl flex items-center"><i class="fas fa-calendar-day mr-2"></i>{{ $facture->month_year_creation }}</h3>
-                        <h3 class="text-xl flex items-center">
-                            {{ $facture->total }}€ 
-                            @if ($facture->payee)
-                                <span class="mx-2 text-xs rounded-lg p-2 bg-green-200">OUI</span>
-                            @else
-                                <span class="mx-2 text-xs rounded-lg p-2 bg-red-200">NON</span>
-                            @endif
-                        </h3>
+                    <div class="my-4 p-4 bg-white">
                         <div>
-                            <button>
-                                <a href="{{ route('facture.show', $facture->id) }}" class="p-2 rounded-lg bg-blue-300 text-xs"><i class="fas fa-search mr-2"></i>Détails</a>
+                            <h2 class="p-2 bg-gray-300 rounded-lg text-center font-bold text-lg">
+                                <i class="fas fa-user mr-2"></i>
+                                {{ $facture->client->nom }}
+                                ---
+                                <i class="fas fa-calendar-day mx-2"></i>
+                                {{ $facture->month_year_creation }}
+                            </h2>
+                        </div>
+                        <div class="mt-4 flex justify-center items-center columns-2 gap-4">
+                            <p class="text-lg bg-green-600 text-white p-2 rounded-lg font-bold">{{ $facture->total }} €</p> 
+                                
+                            @if ($facture->payee)
+                                <p class="text-lg bg-green-200 p-2 rounded-lg font-bold">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    Payée
+                                </p>
+                            @else
+                                <p class="text-sm bg-red-300 p-2 rounded-lg font-bold">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    Non payée
+                                </p>
+                            @endif
+                        </div>
+
+                        <div class="mt-4 flex justify-center">
+                            <button class="mx-2 p-2 rounded-lg bg-blue-600 text-white">
+                                <a href="{{ route('facture.show', $facture->id) }}"><i class="fas fa-search mr-2"></i>Détails</a>
                             </button>
-                            <button>
-                                <a href="{{ route('facture.edit', $facture->id) }}" class="p-2 rounded-lg bg-cyan-300 text-xs"><i class="fas fa-edit mr-2"></i>Editer</a>
+                            <button class="mx-2">
+                                <a href="{{ route('facture.edit', $facture->id) }}" class="p-2 rounded-lg bg-cyan-300"><i class="fas fa-edit mr-2"></i>Editer statut</a>
                             </button>
                         </div>
                     </div>
