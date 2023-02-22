@@ -18,21 +18,37 @@
             <div class="mt-4 w-full">
                 @foreach ($factures as $facture)
                     <div class="my-4 p-4 bg-white">
-                        <div class="flex justify-center columns-3 gap-4">
-                            <h2 class="p-2 bg-lime-300 rounded-lg"><i class="fas fa-user mr-2"></i>{{ $facture->client->nom }}</h2>
-                            <h3 class="ml-2 p-2 bg-blue-600 text-white rounded-lg"><i class="fas fa-calendar-day mr-2"></i>{{ $facture->month_year_creation }}</h3>
+                        <div>
+                            <h2 class="p-2 bg-gray-300 rounded-lg text-center font-bold text-lg">
+                                <i class="fas fa-user mr-2"></i>
+                                {{ $facture->client->nom }}
+                                ---
+                                <i class="fas fa-calendar-day mx-2"></i>
+                                {{ $facture->month_year_creation }}
+                            </h2>
+                        </div>
+                        <div class="mt-4 flex justify-center items-center columns-2 gap-4">
+                            <p class="text-lg bg-green-600 text-white p-2 rounded-lg font-bold">{{ $facture->total }} €</p> 
+                                
                             @if ($facture->payee)
-                                <p class="text-xl bg-green-600 text-white p-2 rounded-lg font-bold">{{ $facture->total }}€</p>
+                                <p class="text-lg bg-green-200 p-2 rounded-lg font-bold">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    Payée
+                                </p>
                             @else
-                                <p class="text-xl bg-red-600 text-white p-2 rounded-lg font-bold">{{ $facture->total }}€</p>
+                                <p class="text-sm bg-red-300 p-2 rounded-lg font-bold">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    Non payée
+                                </p>
                             @endif
                         </div>
-                        <div class="mt-4 flex justify-around">
-                            <button>
-                                <a href="{{ route('facture.show', $facture->id) }}" class="p-2 rounded-lg bg-blue-300"><i class="fas fa-search mr-2"></i>Détails</a>
+
+                        <div class="mt-4 flex justify-center">
+                            <button class="mx-2 p-2 rounded-lg bg-blue-600 text-white">
+                                <a href="{{ route('facture.show', $facture->id) }}"><i class="fas fa-search mr-2"></i>Détails</a>
                             </button>
-                            <button>
-                                <a href="{{ route('facture.edit', $facture->id) }}" class="p-2 rounded-lg bg-cyan-300"><i class="fas fa-edit mr-2"></i>Mettre à jour</a>
+                            <button class="mx-2">
+                                <a href="{{ route('facture.edit', $facture->id) }}" class="p-2 rounded-lg bg-cyan-300"><i class="fas fa-edit mr-2"></i>Editer statut</a>
                             </button>
                         </div>
                     </div>
