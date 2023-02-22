@@ -105,6 +105,7 @@ class CoursController extends Controller
         $cours->nombre_heures = $count_hours;
         $cours->date_debut = $request->date_debut ." ". $request->heure_debut;
         $cours->date_fin = $request->date_debut ." ". $request->heure_fin;
+        $cours->notions_apprises = $request->notions;
 
         $cours->save();
 
