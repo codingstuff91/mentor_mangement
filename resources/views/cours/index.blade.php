@@ -44,8 +44,7 @@
                     </div>
                     <div class="flex flex-row h-1/2">
                         <button class="p-2 rounded-lg bg-blue-400 mr-2">
-                            <i class="fas fa-edit"></i>
-                            <a href="{{ route('cours.edit', $lecon->id) }}"></a>
+                            <a href="{{ route('cours.edit', $lecon->id) }}"><i class="fas fa-edit"></i></a>
                         </button>
                         <form action="{{ route('cours.destroy', $lecon->id) }}" method="post">
                             @csrf
