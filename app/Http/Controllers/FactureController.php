@@ -11,7 +11,7 @@ use App\Http\Requests\UpdateFactureRequest;
 class FactureController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the list of invoices with the total amount.
      *
      * @return \Illuminate\Http\Response
      */
@@ -19,13 +19,13 @@ class FactureController extends Controller
     {
         $factures = Facture::with('client')->withCount(['cours as total' => function($query){
             $query->select(DB::raw('SUM(nombre_heures * taux_horaire)'));
-        }])->get();
+        }])->orderBy('id', 'desc')->get();
 
         return view('facture.index')->with(['factures' => $factures]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new invoice.
      *
      * @return \Illuminate\Http\Response
      */
@@ -37,7 +37,7 @@ class FactureController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created invoice.
      *
      * @param  \App\Http\Requests\StoreFactureRequest  $request
      * @return \Illuminate\Http\Response
@@ -53,7 +53,7 @@ class FactureController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the details of an invoice.
      *
      * @param  \App\Models\Facture  $facture
      * @return \Illuminate\Http\Response
@@ -70,6 +70,7 @@ class FactureController extends Controller
             {
                 $total_heures += $lecon->nombre_heures;
             }
+
             $total_facture += $lecon->total_prix;
         }
 
@@ -107,16 +108,5 @@ class FactureController extends Controller
         $facture->save();
 
         return redirect()->route('facture.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Facture  $facture
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Facture $facture)
-    {
-        //
     }
 }
