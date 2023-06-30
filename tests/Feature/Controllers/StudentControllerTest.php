@@ -13,7 +13,7 @@ use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class EleveControllerTest extends TestCase
+class StudentControllerTest extends TestCase
 {
     use RefreshDatabase;
 
