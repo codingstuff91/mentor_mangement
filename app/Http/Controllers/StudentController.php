@@ -97,7 +97,6 @@ class StudentController extends Controller
      */
     public function update(UpdateEleveRequest $request, Student $student)
     {
-        dd($request->all());
         $student->update($request->validated());
 
         return redirect()->route('student.index');
