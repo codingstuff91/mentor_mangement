@@ -5,7 +5,7 @@ namespace Tests\Feature\Controllers;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Eleve;
-use App\Models\Client;
+use App\Models\Customer;
 use App\Models\Facture;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
@@ -27,7 +27,7 @@ class MatiereControllerTest extends TestCase
 
         $this->matiere = Matiere::factory()->create();
 
-        $this->client = Client::factory()->create()->each(function($client){
+        $this->client = Customer::factory()->create()->each(function($client){
             Facture::factory()->create([
                 'client_id' => $client->id,
             ]);
@@ -35,7 +35,7 @@ class MatiereControllerTest extends TestCase
 
         $this->eleve = Eleve::factory()->create([
             'matiere_id' => $this->matiere->id,
-            'client_id' => Client::first()->id,
+            'client_id' => Customer::first()->id,
         ]);
     }
 

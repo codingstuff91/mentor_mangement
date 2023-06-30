@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Cours;
 use App\Models\Eleve;
-use App\Models\Client;
+use App\Models\Customer;
 use App\Models\Facture;
 use App\Models\Matiere;
 use Illuminate\Database\Seeder;
@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $clients = Client::factory(3)->create()->each(function($client){
+        $clients = Customer::factory(3)->create()->each(function($client){
             Facture::factory()->create([
                 'client_id' => $client->id,
             ]);

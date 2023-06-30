@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Eleve;
-use App\Models\Client;
+use App\Models\Customer;
 use App\Models\Matiere;
 use App\Http\Requests\StoreEleveRequest;
 use App\Http\Requests\UpdateEleveRequest;
@@ -17,7 +17,7 @@ class EleveController extends Controller
      */
     public function index()
     {
-        $eleves = Eleve::with('client')->orderBy('active', 'desc')->get();
+        $eleves = Eleve::with('customer')->orderBy('active', 'desc')->get();
 
         return view('eleve.index')->with(['eleves' => $eleves]);
     }
@@ -29,7 +29,7 @@ class EleveController extends Controller
      */
     public function create()
     {
-        $clients = Client::all();
+        $clients = Customer::all();
         $matieres = Matiere::all();
         
         return view('eleve.create')->with(['clients' => $clients, 'matieres' => $matieres]);
@@ -81,7 +81,7 @@ class EleveController extends Controller
     {
         $eleve = Eleve::find($eleve->id);
         $matieres = Matiere::all();
-        $clients = Client::all();
+        $clients = Customer::all();
 
         return view('eleve.edit')->with([
             'eleve' => $eleve, 

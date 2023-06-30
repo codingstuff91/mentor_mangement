@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Cours;
 use App\Models\Eleve;
-use App\Models\Client;
+use App\Models\Customer;
 use App\Models\Facture;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
@@ -26,21 +26,25 @@ class FactureControllerTest extends TestCase
 
         $this->actingAs($user);
 
+        $this->createTestData();
+    }
+
+    private function createTestData()
+    {
         $this->matiere = Matiere::factory()->create();
-
-        $this->client = Client::factory()->create()->each(function($client){
-            Facture::factory()->create([
-                'client_id' => $client->id,
-            ]);
-        });
-
+        $this->customer = Customer::factory()->create();
+        
         $this->eleve = Eleve::factory()->create([
             'matiere_id' => $this->matiere->id,
-            'client_id' => Client::first()->id,
+            'client_id' => $this->client->id,
         ]);
-
-        $coursesHours = Cours::factory(2)->create([
-            'eleve_id'   => Eleve::first()->id,
+    
+        Facture::factory()->create([
+            'client_id' => $this->customer->id,
+        ]);
+    
+        Cours::factory(2)->create([
+            'eleve_id' => $this->eleve->id,
             'facture_id' => Facture::first()->id,
         ]);
     }

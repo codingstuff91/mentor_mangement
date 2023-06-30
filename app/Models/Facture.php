@@ -13,9 +13,9 @@ class Facture extends Model
     protected $guarded = [];
 
     // Une facture est lié a un client
-    public function client()
+    public function customer()
     {
-        return $this->belongsTo('App\Models\Client');
+        return $this->belongsTo('App\Models\Customer');
     }
 
     public function getMonthYearCreationAttribute()

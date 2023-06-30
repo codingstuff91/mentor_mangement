@@ -32,7 +32,7 @@ class CoursController extends Controller
     public function create()
     {
         $eleves = Eleve::where('active', true)->get();
-        $factures = Facture::with('client')->where('payee', false)->get();
+        $factures = Facture::with('customer')->where('payee', false)->get();
         
         return view('cours.create')->with(['eleves' => $eleves, 'factures' => $factures]);
     }

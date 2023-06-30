@@ -5,14 +5,15 @@ namespace Tests\Feature\Controllers;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Eleve;
-use App\Models\Client;
+use App\Models\Customer;
+use App\Http\Controllers\CustomerController;
 use App\Models\Facture;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ClientControllerTest extends TestCase
+class CustomerControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -40,8 +41,8 @@ class ClientControllerTest extends TestCase
     }
 
     public function test_it_can_fetch_all_the_clients()
-    {
-        $response = $this->get(route('client.index'));
+    {        
+        $response = $this->get(route('customer.index'));
         $response->assertOk();
     }
 

@@ -11,19 +11,19 @@
                 <div class="p-4 border-gray-200 flex flex-row justify-center">
                     <button class="p-2 bg-blue-600 text-white text-lg rounded-lg">
                         <i class="fas fa-plus mr-2"></i>
-                        <a href="{{ route('client.create') }}">Ajouter un client</a>
+                        <a href="{{ route('customer.create') }}">Ajouter un client</a>
                     </button>
                 </div>
                 <div class="p-4 bg-white border-b border-gray-200">
-                    @foreach ($clients as $client)
+                    @foreach ($customers as $customer)
                         <div class="flex justify-between my-4 w-full mx-auto sm:w-2/3">
                             <div class="px-2">
-                                <h2 class="text-xl font-bold">{{ $client->nom }}</h2>
-                                <p>{{ $client->commentaires }}</p>
+                                <h2 class="text-xl font-bold">{{ $customer->nom }}</h2>
+                                <p>{{ $customer->commentaires }}</p>
                             </div>
                             <div class="flex flex-row items-center">
-                                <button class="p-2 bg-blue-300 rounded-lg mr-2"><a href="{{ route('client.edit', $client->id) }}"><i class="fas fa-edit"></i></a></button>
-                                <form action="{{ route('client.destroy', $client->id) }}" method="post">
+                                <button class="p-2 bg-blue-300 rounded-lg mr-2"><a href="{{ route('customer.edit', $customer->id) }}"><i class="fas fa-edit"></i></a></button>
+                                <form action="{{ route('customer.destroy', $customer->id) }}" method="post">
                                     @csrf
                                     @method('delete')
                                     <button class="bg-red-400 p-2 rounded-lg" type="submit"><i class="fas fa-trash"></i></button>

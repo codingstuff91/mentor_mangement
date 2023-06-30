@@ -11,19 +11,16 @@ class Eleve extends Model
 
     protected $guarded = [];
 
-    // Un eleve est lié a une matiere
     public function matiere()
     {
         return $this->belongsTo('App\Models\Matiere');
     }
 
-    // Un eleve est lié a un client
-    public function client()
+    public function customer()
     {
-        return $this->belongsTo('App\Models\Client');
+        return $this->belongsTo('App\Models\Customer');
     }
 
-    // Un eleve est lié a un cours
     public function cours()
     {
         return $this->hasMany('App\Models\Cours');
