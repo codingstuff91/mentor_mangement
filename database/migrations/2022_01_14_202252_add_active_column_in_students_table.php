@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFacturesTable extends Migration
+class AddActiveColumnInStudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateFacturesTable extends Migration
      */
     public function up()
     {
-        Schema::create('factures', function (Blueprint $table) {
-            $table->id();
-            $table->integer('client_id');
-            $table->boolean('payee');
-            $table->timestamps();
+        Schema::table('students', function (Blueprint $table) {
+            $table->boolean('active')->after('client_id')->default(true);
         });
     }
 
@@ -28,6 +25,8 @@ class CreateFacturesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('factures');
+        Schema::table('eleves', function (Blueprint $table) {
+            //
+        });
     }
 }

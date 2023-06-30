@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cours;
-use App\Models\Eleve;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $total_gains = Cours::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->get();
 
         // Total d'élèves
-        $total_eleves = Eleve::all()->count();
+        $total_eleves = Student::all()->count();
 
         // Total de cours
         $total_cours = Cours::all()->count();

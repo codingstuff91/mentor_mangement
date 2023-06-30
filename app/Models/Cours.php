@@ -21,7 +21,7 @@ class Cours extends Model
     public function getDateDebutEditedAttribute()
     {
         $date = new Carbon($this->date_debut);
-        return $date->format('Y-m-d');        
+        return $date->format('Y-m-d');
     }
 
     public function getHeureDebutAttribute()
@@ -39,9 +39,9 @@ class Cours extends Model
     // Calculer le cout total rapporté d'un cours
     public function getTotalPrixAttribute()
     {
-        return $this->taux_horaire * $this->nombre_heures; 
+        return $this->taux_horaire * $this->nombre_heures;
     }
-  
+
     // Un cours est lié a une facture
     public function facture()
     {
@@ -49,8 +49,8 @@ class Cours extends Model
     }
 
     // Un cours est lié a un élève
-    public function eleve()
+    public function student()
     {
-        return $this->belongsTo('App\Models\Eleve');
+        return $this->belongsTo('App\Models\Student');
     }
 }

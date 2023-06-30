@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cours;
-use App\Models\Eleve;
+use App\Models\Student;
 use App\Models\Facture;
 use Illuminate\Http\Request;
 use App\Services\CoursService;
@@ -31,9 +31,9 @@ class CoursController extends Controller
      */
     public function create()
     {
-        $eleves = Eleve::where('active', true)->get();
-        $factures = Facture::with('customer')->where('payee', false)->get();
-        
+        $eleves = Student::where('active', true)->get();
+        $factures = Facture::with('client')->where('payee', false)->get();
+
         return view('cours.create')->with(['eleves' => $eleves, 'factures' => $factures]);
     }
 
@@ -46,9 +46,9 @@ class CoursController extends Controller
     public function store(StoreCoursRequest $request, CoursService $cours_service)
     {
         $count_hours = $cours_service->count_lesson_hours($request->heure_fin,$request->heure_debut);
-        
+
         $pack_heures = isset($request->pack_heures) ? 1 : 0;
-        
+
         Cours::create([
             'eleve_id' => $request->eleve_id,
             'date_debut' => $request->date_debut ." ". $request->heure_debut,

@@ -21,7 +21,7 @@
                         <div>
                             <h2 class="p-2 bg-gray-300 rounded-lg text-center font-bold text-lg">
                                 <i class="fas fa-user mr-2"></i>
-                                {{ $facture->customer->nom }}
+                                {{ $facture->client->nom }}
                                 ---
                                 <i class="fas fa-calendar-day mx-2"></i>
                                 {{ $facture->month_year_creation }}
