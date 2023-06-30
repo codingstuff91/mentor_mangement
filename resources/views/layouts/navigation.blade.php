@@ -18,7 +18,7 @@
                     <x-nav-link :href="route('student.index')" :active="request()->routeIs('student.index')">
                         {{ __('Eleves') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('client.index')" :active="request()->routeIs('client.index')">
+                    <x-nav-link :href="route('customer.index')" :active="request()->routeIs('customer.index')">
                         {{ __('Clients') }}
                     </x-nav-link>
                     <x-nav-link :href="route('matiere.index')" :active="request()->routeIs('matiere.index')">
@@ -88,7 +88,7 @@
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('client.index')" :active="request()->routeIs('client.index')">
+            <x-responsive-nav-link :href="route('customer.index')" :active="request()->routeIs('customer.index')">
                 {{ __('Clients') }}
             </x-responsive-nav-link>
         </div>
