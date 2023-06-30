@@ -20,15 +20,15 @@ class DashboardController extends Controller
         $total_gains = Cours::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->get();
 
         // Total d'élèves
-        $total_eleves = Student::all()->count();
+        $studentsCount = Student::all()->count();
 
         // Total de cours
         $total_cours = Cours::all()->count();
 
         // Affichage des heures de cours par matières
-        $heure_cours_par_matiere = DB::table('eleves')
-                                    ->join('cours', 'cours.eleve_id', '=', 'eleves.id')
-                                    ->join('matieres', 'matieres.id', '=', 'eleves.matiere_id')
+        $heure_cours_par_matiere = DB::table('students')
+                                    ->join('cours', 'cours.student_id', '=', 'students.id')
+                                    ->join('matieres', 'matieres.id', '=', 'students.matiere_id')
                                     ->where('cours.pack_heures', false)
                                     ->select(DB::raw('matieres.nom, SUM(nombre_heures) as total'))
                                     ->groupBy('matieres.nom')
@@ -38,7 +38,7 @@ class DashboardController extends Controller
         return view('dashboard')->with([
             'total_heures' => $nb_heures_cours,
             'total_gains' => $total_gains,
-            'total_eleves' => $total_eleves,
+            'total_eleves' => $studentsCount,
             'total_cours' => $total_cours,
             'nombre_heures_par_eleve' => $heure_cours_par_matiere
         ]);
