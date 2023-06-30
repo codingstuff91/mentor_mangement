@@ -10,6 +10,7 @@ use App\Models\Student;
 use App\Models\User;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class DashboardControllerTest extends TestCase
@@ -36,6 +37,11 @@ class DashboardControllerTest extends TestCase
         $this->student = Student::factory(10)->create([
             'matiere_id' => $this->matiere->id,
             'client_id' => Facture::first()->id,
+        ]);
+
+        $coursesHours = Cours::factory(2)->create([
+            'student_id'   => Student::first()->id,
+            'facture_id' => Facture::first()->id,
         ]);
     }
 
@@ -69,9 +75,10 @@ class DashboardControllerTest extends TestCase
     public function canShowTheTotalRevenue()
     {
         $response = $this->get('/dashboard');
+        $totalRevenues = Cours::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->first();
 
         $response->assertSeeText("Total revenus");
-        $response->assertSee(Student::count());
+        $response->assertSee($totalRevenues['total']);
     }
 
     /** @test */
