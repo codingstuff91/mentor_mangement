@@ -4,13 +4,11 @@ namespace Tests\Feature\Controllers;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Eleve;
+use App\Models\Student;
 use App\Models\Customer;
-use App\Http\Controllers\CustomerController;
 use App\Models\Facture;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CustomerControllerTest extends TestCase
@@ -28,72 +26,74 @@ class CustomerControllerTest extends TestCase
 
         $this->matiere = Matiere::factory()->create();
 
-        $this->client = Client::factory()->create()->each(function($client){
+        $this->customer = Customer::factory()->create()->each(function($client){
             Facture::factory()->create([
                 'client_id' => $client->id,
             ]);
         });
 
-        $this->eleve = Eleve::factory()->create([
+        $this->student = Student::factory()->create([
             'matiere_id' => $this->matiere->id,
             'client_id' => Facture::first()->id,
         ]);
     }
 
-    public function test_it_can_fetch_all_the_clients()
-    {        
+    /** @test */
+    public function canFetchTheCustomersList()
+    {
         $response = $this->get(route('customer.index'));
         $response->assertOk();
     }
 
-    public function test_it_can_render_the_client_create_view()
+    /** @test */
+    public function canRenderTheCustomerCreateView()
     {
-        $response = $this->get(route('client.create'));
+        $response = $this->get(route('customer.create'));
         $response->assertOk();
 
-        $view = $this->view('client.create');
+        $view = $this->view('customer.create');
 
         $view->assertSee('Nom du client');
         $view->assertSee('Commentaires');
     }
 
-    public function test_it_can_create_a_client()
+    /** @test */
+    public function canStoreANewCustomer()
     {
-        $response = $this->post(route('client.store', [
+        $response = $this->post(route('customer.store', [
             'nom' => 'John Doe',
             'commentaires' => 'Exemple de commentaires',
         ]));
 
-        $this->assertDatabaseCount('clients', 2);
+        $this->assertDatabaseCount('customers', 2);
     }
 
-    public function test_a_client_can_not_be_created_without_a_name()
+    /** @test */
+    public function aCustomerCouldNotBeCreatedWithoutAName()
     {
-        $response = $this->post(route('client.store', [
+        $response = $this->post(route('customer.store', [
             'name' => '',
         ]));
         $response->assertSessionHasErrors(['nom']);
     }
 
-    public function test_it_can_render_the_client_view_with_client_informations()
+    /** @test */
+    public function canRenderTheEditViewWithCustomerInformations()
     {
-        $response = $this->get(route('client.edit', Client::first()->id));
+        $response = $this->get(route('customer.edit', Customer::first()));
 
         $response->assertOk();
-        $response->assertSee(Client::first()->nom);
-        $response->assertSee(Client::first()->commentaires);
+        $response->assertSee(Customer::first()->nom);
+        $response->assertSee(Customer::first()->commentaires);
     }
 
-    public function test_a_client_can_be_updated()
+    /** @test */
+    public function canUpdateCustomerInformations()
     {
-        $this->withoutExceptionHandling();
-
-        $client = Client::factory()->create();
-
-        $response = $this->patch(route('client.update', $client->id), [
+        $response = $this->patch(route('customer.update', $this->customer), [
             'nom' => 'test edition'
         ]);
 
-        $this->assertEquals('test edition', Client::find($client->id)->nom); 
+        $this->assertEquals('test edition', Customer::first()->nom);
     }
 }

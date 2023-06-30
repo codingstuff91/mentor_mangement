@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\MatiereController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CustomerController;
+
 
 require __DIR__.'/auth.php';
 
@@ -19,7 +20,7 @@ Route::middleware(['auth'])->group(function(){
 
     Route::resource('student', StudentController::class);
 
-    Route::resource('client', ClientController::class);
+    Route::resource('customer', CustomerController::class);
 
     Route::resource('matiere', MatiereController::class);
 
