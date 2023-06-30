@@ -4,13 +4,11 @@ namespace Tests\Feature\Models;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Cours;
-use App\Models\Eleve;
+use App\Models\Student;
 use App\Models\Client;
 use App\Models\Facture;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StudentControllerTest extends TestCase
@@ -28,30 +26,32 @@ class StudentControllerTest extends TestCase
 
         $this->matiere = Matiere::factory()->create();
 
-        $this->client = Client::factory()->create()->each(function($client){
+        $this->customer = Client::factory()->create()->each(function($client){
             Facture::factory()->create([
                 'client_id' => $client->id,
             ]);
         });
 
-        $this->eleve = Eleve::factory()->create([
+        $this->student = Student::factory()->create([
             'matiere_id' => $this->matiere->id,
             'client_id' => Client::first()->id,
         ]);
     }
 
-    public function test_it_can_fetch_the_eleve_list()
+    /** @test */
+    public function canFetchTheStudentsList()
     {
-        $response = $this->get(route('eleve.index'));
+        $response = $this->get(route('student.index'));
         $response->assertOk();
     }
-    
-    public function test_it_can_render_the_eleve_create_view()
+
+    /** @test */
+    public function canRenderStudentCreatePage()
     {
-        $response = $this->get(route('eleve.create'));
+        $response = $this->get(route('student.create'));
         $response->assertOk();
 
-        $view = $this->view('eleve.create', [
+        $view = $this->view('student.create', [
             'clients' => Matiere::all(),
             'matieres' => Client::all(),
         ]);
@@ -63,33 +63,51 @@ class StudentControllerTest extends TestCase
         $view->assertSee('Commentaires');
     }
 
-    public function test_it_can_store_a_new_eleve()
+    /** @test */
+    public function canStoreANewStudent()
     {
-        $response = $this->post(route('eleve.store', [
+        $response = $this->post(route('student.store', [
             'nom' => "John Doe",
             'matiere_id' => Matiere::first()->id,
             'client_id' => Client::first()->id,
             'objectifs' => "Some random text to test",
             'commentaires' => "Some random text to test",
         ]));
-        
-        $this->assertDatabaseCount('eleves', 1);
+
+        $this->assertDatabaseCount('students', 1);
     }
 
-    public function test_it_can_render_the_show_eleve_page()
+    /** @test */
+    public function canRenderTheShowStudentPage()
     {
-        $eleve = Eleve::factory()->create([
-            'matiere_id' => Matiere::first()->id,
-            'client_id' => Client::first()->id,
-        ]);
 
-        $response = $this->get(route('eleve.show', $eleve->id));
+        $response = $this->get(route('student.show', $this->student));
         $response->assertOk();
 
-        $view = $this->view('eleve.show', ['eleve' => $eleve]);
+        $view = $this->view('student.show', ['student' => $this->student]);
 
-        $view->assertSee($eleve->name);
-        $view->assertSee($eleve->objectifs);
-        $view->assertSee($eleve->matiere->name);
+        $view->assertSee($this->student->name);
+        $view->assertSee($this->student->objectifs);
+        $view->assertSee($this->student->matiere->name);
+    }
+
+    /** @test */
+    public function canRenderTheEditStudentPage()
+    {
+        $response = $this->get(route('student.edit', $this->student));
+        $response->assertOk();
+    }
+
+    /** @test */
+    public function canUpdateAStudent()
+    {
+        $response = $this->patch(route('student.update', $this->student), [
+            "nom" => "test",
+            "active" => 1,
+            "client_id" => $this->customer,
+            "matiere_id" => $this->matiere->id,
+        ]);
+
+        $this->assertEquals(Student::first()->nom, "test");
     }
 }

@@ -5,8 +5,8 @@ namespace Tests\Feature\Controllers;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Cours;
-use App\Models\Eleve;
-use App\Models\Customer;
+use App\Models\Student;
+use App\Models\Client;
 use App\Models\Facture;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
@@ -26,25 +26,21 @@ class FactureControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->createTestData();
-    }
-
-    private function createTestData()
-    {
         $this->matiere = Matiere::factory()->create();
-        $this->customer = Customer::factory()->create();
-        
-        $this->eleve = Eleve::factory()->create([
+
+        $this->client = Client::factory()->create()->each(function($client){
+            Facture::factory()->create([
+                'client_id' => $client->id,
+            ]);
+        });
+
+        $this->eleve = Student::factory()->create([
             'matiere_id' => $this->matiere->id,
-            'client_id' => $this->client->id,
+            'client_id' => Client::first()->id,
         ]);
-    
-        Facture::factory()->create([
-            'client_id' => $this->customer->id,
-        ]);
-    
-        Cours::factory(2)->create([
-            'eleve_id' => $this->eleve->id,
+
+        $coursesHours = Cours::factory(2)->create([
+            'eleve_id'   => Student::first()->id,
             'facture_id' => Facture::first()->id,
         ]);
     }
@@ -92,6 +88,6 @@ class FactureControllerTest extends TestCase
         $response = $this->get(route('facture.show', $facture->id));
 
         $response->assertOk();
-        $response->assertSee($totalPrice ." €");        
+        $response->assertSee($totalPrice ." €");
     }
 }
