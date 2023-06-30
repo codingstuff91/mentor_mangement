@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class CustomerController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
@@ -21,20 +21,17 @@ class CustomerController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function create()
     {
         return view('customer.create');
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCustomerRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreCustomerRequest $request
+     * @return RedirectResponse
      */
     public function store(StoreCustomerRequest $request)
     {
@@ -46,23 +43,21 @@ class CustomerController extends Controller
         return redirect()->route('customer.index');
     }
 
+
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
+     * @param Customer $customer
+     * @return View
      */
     public function edit(Customer $customer)
     {
         return view('customer.edit')->with(['customer' => $customer]);
     }
 
+
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCustomerRequest  $request
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
+     * @param UpdateCustomerRequest $request
+     * @param Customer $customer
+     * @return RedirectResponse
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
@@ -75,15 +70,13 @@ class CustomerController extends Controller
         return redirect()->route('customer.index');
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
+     * @param Customer $customer
+     * @return RedirectResponse
      */
     public function destroy(Customer $customer)
     {
-        $customer = Customer::find($customer->id);
         $customer->delete();
 
         return redirect()->route('customer.index');

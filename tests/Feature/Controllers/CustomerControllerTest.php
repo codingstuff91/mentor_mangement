@@ -96,4 +96,12 @@ class CustomerControllerTest extends TestCase
 
         $this->assertEquals('test edition', Customer::first()->nom);
     }
+
+    /** @test */
+    public function canDeleteACustomer()
+    {
+        $this->delete(route('customer.destroy', $this->customer));
+
+        $this->assertDatabaseCount('customers', 0);
+    }
 }
