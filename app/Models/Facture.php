@@ -26,6 +26,6 @@ class Facture extends Model
     // Une facture est liée à plusieurs cours
     public function cours()
     {
-        return $this->hasMany('App\Models\Cours');
+        return $this->hasMany('App\Models\Course');
     }
 }

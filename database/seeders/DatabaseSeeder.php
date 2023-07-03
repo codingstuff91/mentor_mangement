@@ -2,15 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Cours;
+use App\Models\Course;
+use App\Models\Customer;
 use App\Models\Student;
-use App\Models\Client;
 use App\Models\Facture;
 use App\Models\Matiere;
 use Illuminate\Database\Seeder;
-use Database\Seeders\UserSeeder;
-use Database\Seeders\ClientSeeder;
-use Database\Seeders\MatiereSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,18 +18,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $clients = Client::factory(3)->create()->each(function($client){
+        $customers = Customer::factory(3)->create()->each(function($customer){
             Facture::factory()->create([
-                'client_id' => $client->id,
+                'customer_id' => $customer->id,
             ]);
         });
 
-        Matiere::factory(5)->create()->each(function($matiere) use ($clients){
+        Matiere::factory(5)->create()->each(function($matiere) use ($customers){
             Student::factory()->create([
-                'client_id' => $clients->random()->id,
+                'customer_id' => $customers->random()->id,
                 'matiere_id' => $matiere->id
             ])->each(function($student){
-                Cours::factory(3)->create([
+                Course::factory(3)->create([
                     'student_id' => $student->id,
                     'facture_id' => Facture::first()->id
                 ]);

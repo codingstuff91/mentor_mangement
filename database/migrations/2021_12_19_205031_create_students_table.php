@@ -17,7 +17,7 @@ class CreateStudentsTable extends Migration
             $table->id();
             $table->string('nom');
             $table->integer('matiere_id');
-            $table->integer('client_id');
+            $table->integer('customer_id');
             $table->text('objectifs');
             $table->text('commentaires')->nullable();
             $table->timestamps();

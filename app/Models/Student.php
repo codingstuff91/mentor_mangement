@@ -23,6 +23,6 @@ class Student extends Model
 
     public function cours()
     {
-        return $this->hasMany('App\Models\Cours');
+        return $this->hasMany('App\Models\Course');
     }
 }

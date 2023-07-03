@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CoursController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\MatiereController;
@@ -24,7 +24,7 @@ Route::middleware(['auth'])->group(function(){
 
     Route::resource('matiere', MatiereController::class);
 
-    Route::resource('cours', CoursController::class);
+    Route::resource('course', CourseController::class);
 
     Route::resource('facture', FactureController::class);
 });

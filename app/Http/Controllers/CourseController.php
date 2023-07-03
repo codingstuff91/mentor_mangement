@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cours;
+use App\Models\Course;
 use App\Models\Student;
 use App\Models\Facture;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ use App\Services\CoursService;
 use App\Http\Requests\StoreCoursRequest;
 use App\Http\Requests\UpdateCoursRequest;
 
-class CoursController extends Controller
+class CourseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,9 +19,9 @@ class CoursController extends Controller
      */
     public function index()
     {
-        $cours = Cours::latest()->get();
+        $courses = Course::latest()->get();
 
-        return view('cours.index')->with(['cours' => $cours]);
+        return view('course.index')->with(['courses' => $courses]);
     }
 
     /**
@@ -31,10 +31,10 @@ class CoursController extends Controller
      */
     public function create()
     {
-        $eleves = Student::where('active', true)->get();
-        $factures = Facture::with('client')->where('payee', false)->get();
+        $students = Student::where('active', true)->get();
+        $factures = Facture::with('customer')->where('payee', false)->get();
 
-        return view('cours.create')->with(['eleves' => $eleves, 'factures' => $factures]);
+        return view('course.create')->with(['students' => $students, 'factures' => $factures]);
     }
 
     /**
@@ -49,7 +49,7 @@ class CoursController extends Controller
 
         $pack_heures = isset($request->pack_heures) ? 1 : 0;
 
-        Cours::create([
+        Course::create([
             'eleve_id' => $request->eleve_id,
             'date_debut' => $request->date_debut ." ". $request->heure_debut,
             'date_fin' => $request->date_debut ." ". $request->heure_fin,
@@ -67,10 +67,10 @@ class CoursController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Cours  $cours
+     * @param  \App\Models\Course  $cours
      * @return \Illuminate\Http\Response
      */
-    public function show(Cours $cours)
+    public function show(Course $cours)
     {
         //
     }
@@ -78,12 +78,12 @@ class CoursController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Cours  $cours
+     * @param  \App\Models\Course  $cours
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cours $cours, Request $request)
+    public function edit(Course $cours, Request $request)
     {
-        $cours = Cours::find($request->cour);
+        $cours = Course::find($request->cour);
 
         return view('cours.edit')->with(['cours' => $cours]);
     }
@@ -92,12 +92,12 @@ class CoursController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCoursRequest  $request
-     * @param  \App\Models\Cours  $cours
+     * @param  \App\Models\Course  $cours
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCoursRequest $request, Cours $cours, CoursService $cours_service)
+    public function update(UpdateCoursRequest $request, Course $cours, CoursService $cours_service)
     {
-        $cours = Cours::find($request->cour);
+        $cours = Course::find($request->cour);
 
         $count_hours = $cours_service->count_lesson_hours($request->heure_fin,$request->heure_debut);
 
@@ -115,12 +115,12 @@ class CoursController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Cours  $cours
+     * @param  \App\Models\Course  $cours
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cours $cours, Request $request)
+    public function destroy(Course $cours, Request $request)
     {
-        $cours = Cours::find($request->cour);
+        $cours = Course::find($request->cour);
 
         $cours->delete();
 

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Controllers;
 
-use App\Models\Cours;
+use App\Models\Course;
 use App\Models\Customer;
 use App\Models\Facture;
 use App\Models\Matiere;
@@ -39,7 +39,7 @@ class DashboardControllerTest extends TestCase
             'client_id' => Facture::first()->id,
         ]);
 
-        $coursesHours = Cours::factory(2)->create([
+        $coursesHours = Course::factory(2)->create([
             'student_id'   => Student::first()->id,
             'facture_id' => Facture::first()->id,
         ]);
@@ -59,7 +59,7 @@ class DashboardControllerTest extends TestCase
         $response = $this->get('/dashboard');
 
         $response->assertSeeText("Total Heures");
-        $response->assertSee(Cours::count());
+        $response->assertSee(Course::count());
     }
 
     /** @test */
@@ -75,7 +75,7 @@ class DashboardControllerTest extends TestCase
     public function canShowTheTotalRevenue()
     {
         $response = $this->get('/dashboard');
-        $totalRevenues = Cours::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->first();
+        $totalRevenues = Course::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->first();
 
         $response->assertSeeText("Total revenus");
         $response->assertSee($totalRevenues['total']);
@@ -87,6 +87,6 @@ class DashboardControllerTest extends TestCase
         $response = $this->get('/dashboard');
 
         $response->assertSeeText("Total Cours");
-        $response->assertSee(Cours::count());
+        $response->assertSee(Course::count());
     }
 }

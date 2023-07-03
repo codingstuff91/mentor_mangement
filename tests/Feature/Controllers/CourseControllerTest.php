@@ -4,16 +4,15 @@ namespace Tests\Feature\Controllers;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Cours;
+use App\Models\Course;
 use App\Models\Student;
-use App\Models\Client;
+use App\Models\Customer;
 use App\Models\Facture;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CoursControllerTest extends TestCase
+class CourseControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -28,38 +27,40 @@ class CoursControllerTest extends TestCase
 
         $this->matiere = Matiere::factory()->create();
 
-        $this->client = Client::factory()->create()->each(function($client){
+        $this->customer = Customer::factory()->create()->each(function($customer){
             Facture::factory()->create([
-                'client_id' => $client->id,
+                'customer_id' => $customer->id,
                 'payee' => false,
             ]);
 
             Facture::factory()->create([
-                'client_id' => $client->id,
+                'customer_id' => $customer->id,
                 'payee' => true,
             ]);
         });
 
         $this->eleve = Student::factory()->create([
             'matiere_id' => $this->matiere->id,
-            'client_id' => Facture::first()->id,
+            'customer_id' => Facture::first()->id,
         ]);
 
-        $this->cours = Cours::factory()->create([
-            'eleve_id' => 1,
+        $this->cours = Course::factory()->create([
+            'student_id' => 1,
             'facture_id' => 1
         ]);
     }
 
-    public function test_it_can_fetch_all_the_courses()
+    /** @test */
+    public function canFetchAllTheCourses()
     {
-        $response = $this->get(route('cours.index'));
+        $response = $this->get(route('course.index'));
         $response->assertOk();
     }
 
-    public function test_it_can_render_the_course_create_view()
+    /** @test */
+    public function canRenderTheCourseCreationView()
     {
-        $response = $this->get(route('cours.create'));
+        $response = $this->get(route('course.create'));
         $response->assertOk();
 
         $response->assertSee('Eleve');
@@ -73,7 +74,7 @@ class CoursControllerTest extends TestCase
 
     public function test_it_can_render_only_the_active_factures_in_select_list()
     {
-        $response = $this->get(route('cours.create'));
+        $response = $this->get(route('course.create'));
         $response->assertOk();
 
         $facturePayee = Facture::where('payee', true)->get()->first();

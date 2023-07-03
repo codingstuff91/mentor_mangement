@@ -8,7 +8,7 @@ use App\Models\Facture;
 use App\Services\CoursService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CoursFactory extends Factory
+class CourseFactory extends Factory
 {
     /**
      * Define the model's default state.

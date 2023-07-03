@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Carbon\Carbon;
-use App\Models\Cours;
+use App\Models\Course;
 use App\Services\CoursService;
 use PHPUnit\Framework\TestCase;
 

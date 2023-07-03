@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Cours extends Model
+class Course extends Model
 {
     use HasFactory;
 
@@ -36,19 +36,16 @@ class Cours extends Model
         return $date->format('H:i');
     }
 
-    // Calculer le cout total rapporté d'un cours
     public function getTotalPrixAttribute()
     {
         return $this->taux_horaire * $this->nombre_heures;
     }
 
-    // Un cours est lié a une facture
     public function facture()
     {
         return $this->hasOne('App\Models\Facture');
     }
 
-    // Un cours est lié a un élève
     public function student()
     {
         return $this->belongsTo('App\Models\Student');

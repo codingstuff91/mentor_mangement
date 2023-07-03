@@ -4,7 +4,7 @@ namespace Tests\Feature\Controllers;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Cours;
+use App\Models\Course;
 use App\Models\Student;
 use App\Models\Client;
 use App\Models\Facture;
@@ -39,7 +39,7 @@ class FactureControllerTest extends TestCase
             'client_id' => Client::first()->id,
         ]);
 
-        $coursesHours = Cours::factory(2)->create([
+        $coursesHours = Course::factory(2)->create([
             'eleve_id'   => Student::first()->id,
             'facture_id' => Facture::first()->id,
         ]);
@@ -70,7 +70,7 @@ class FactureControllerTest extends TestCase
     public function test_it_can_show_the_total_number_of_hours_of_a_facture()
     {
         $facture = Facture::first();
-        $totalCoursesHours = Cours::all()->count();
+        $totalCoursesHours = Course::all()->count();
 
         $response = $this->get(route('facture.show', $facture->id));
 
@@ -81,7 +81,7 @@ class FactureControllerTest extends TestCase
     public function test_the_total_price_of_a_facture_is_correctly_calculated()
     {
         $facture = Facture::first();
-        $totalPriceOfCourses = Cours::select('nombre_heures', 'taux_horaire')->get();
+        $totalPriceOfCourses = Course::select('nombre_heures', 'taux_horaire')->get();
 
         $totalPrice = $totalPriceOfCourses->sum('taux_horaire');
 

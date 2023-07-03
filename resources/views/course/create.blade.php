@@ -7,15 +7,15 @@
 
     <div class="py-4">
         <div class="mt-4 p-4 bg-white mx-auto sm:w-3/4 sm:p-6">
-            <form class="flex flex-col" action="{{ route('cours.store') }}" method="post">
+            <form class="flex flex-col" action="{{ route('course.store') }}" method="post">
                 @csrf
                 <label class="my-2">Eleve</label>
                 <select class="rounded-lg" name="eleve_id">
-                    @foreach ($eleves as $eleve)
-                        <option value="{{ $eleve->id }}">{{ $eleve->nom }}</option>
+                    @foreach ($students as $student)
+                        <option value="{{ $student->id }}">{{ $student->nom }}</option>
                     @endforeach
                 </select>
-                
+
                 <div class="my-2 flex flex-row justify-between items-center">
                     <div class="flex flex-col align-items-center">
                         <label class="my-2">Date du cours</label>
@@ -35,11 +35,11 @@
 
                     <div class="flex flex-col align-items-center">
                         <label class="my-2">Heure fin</label>
-                        <input type="time" name="heure_fin" class="rounded-lg">                             
+                        <input type="time" name="heure_fin" class="rounded-lg">
                     </div>
 
 
-                </div>                
+                </div>
 
                 <label class="my-2">Notions apprises</label>
                 <textarea name="notions" class="rounded-lg" cols="30" rows="2"></textarea>
@@ -50,7 +50,7 @@
                 <label class="my-2">Facture concernée</label>
                 <select class="rounded-lg" name="facture_id">
                     @foreach ($factures as $facture)
-                        <option value="{{ $facture->id }}">{{ $facture->month_year_creation }} -- {{ $facture->client->nom }}</option>
+                        <option value="{{ $facture->id }}">{{ $facture->month_year_creation }} -- {{ $facture->customer->nom }}</option>
                     @endforeach
                 </select>
 

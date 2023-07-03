@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnPackIntoCoursTable extends Migration
+class AddTauxHoraireInCoursesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnPackIntoCoursTable extends Migration
      */
     public function up()
     {
-        Schema::table('cours', function (Blueprint $table) {
-            $table->boolean('pack_heures')->after('nombre_heures')->default(0);
+        Schema::table('courses', function (Blueprint $table) {
+            $table->integer('taux_horaire')->after('nombre_heures');
         });
     }
 
