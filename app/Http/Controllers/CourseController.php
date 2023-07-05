@@ -52,7 +52,7 @@ class CourseController extends Controller
         $pack_heures = isset($request->pack_heures) ? 1 : 0;
 
         Course::create([
-            'eleve_id' => $request->eleve_id,
+            'student_id' => $request->student_id,
             'date_debut' => $request->date_debut ." ". $request->heure_debut,
             'date_fin' => $request->date_debut ." ". $request->heure_fin,
             'nombre_heures' => $count_hours,
@@ -63,7 +63,7 @@ class CourseController extends Controller
             'taux_horaire' => $request->taux_horaire
         ]);
 
-        return redirect()->route('cours.index');
+        return redirect()->route('course.index');
     }
 
     /**

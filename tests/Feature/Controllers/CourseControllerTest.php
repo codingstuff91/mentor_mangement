@@ -39,7 +39,7 @@ class CourseControllerTest extends TestCase
             ]);
         });
 
-        $this->eleve = Student::factory()->create([
+        $this->student = Student::factory()->create([
             'matiere_id' => $this->matiere->id,
             'customer_id' => Facture::first()->id,
         ]);
@@ -48,6 +48,17 @@ class CourseControllerTest extends TestCase
             'student_id' => 1,
             'facture_id' => 1
         ]);
+
+        $this->courseAttributes = [
+            'student_id' => $this->student->id,
+            'facture_id' => Facture::first()->id,
+            "heure_debut" => "18:00",
+            "heure_fin" => "19:00",
+            'date_debut' => "2023-07-01 18:00:00",
+            'date_fin' => "2023-07-01 19:00:00",
+            'notions' => "description des notions",
+            'taux_horaire' => 50,
+        ];
     }
 
     /** @test */
@@ -73,7 +84,92 @@ class CourseControllerTest extends TestCase
     }
 
     /** @test */
-    public function canRenderOnlyTheActiveInvoicesInSelectInvoiceList()
+    public function canStoreANewCourse()
+    {
+        $this->post(route('course.store'), [
+            'student_id' => $this->student->id,
+            'facture_id' => Facture::first()->id,
+            "heure_debut" => "18:00",
+            "heure_fin" => "19:00",
+            'date_debut' => "2023-07-01 18:00:00",
+            'date_fin' => "2023-07-01 19:00:00",
+            'notions' => "description des notions",
+            'taux_horaire' => 50,
+        ])->assertRedirect(route('course.index'));
+
+        $this->assertDatabaseCount('courses', 2);
+    }
+
+    /** @test */
+    public function cannot_store_a_new_course_without_choising_an_student()
+    {
+        $attributes = array_merge($this->courseAttributes, [
+            'student_id' => '',
+        ]);
+
+        $response = $this->post(route('course.store'), $attributes);
+        $response->assertSessionHasErrors('student_id');
+    }
+
+    /** @test */
+    public function cannot_store_a_new_course_without_choising_a_date()
+    {
+        $attributes = array_merge($this->courseAttributes, [
+            'date_debut' => '',
+        ]);
+
+        $response = $this->post(route('course.store'), $attributes);
+        $response->assertSessionHasErrors('date_debut');
+    }
+
+    /** @test */
+    public function cannot_store_a_new_course_without_choising_a_start_hour_and_end_hour()
+    {
+        $attributes = array_merge($this->courseAttributes, [
+            'heure_debut' => '',
+            'heure_fin' => ''
+        ]);
+
+        $response = $this->post(route('course.store'), $attributes);
+        $response->assertSessionHasErrors('heure_debut');
+        $response->assertSessionHasErrors('heure_fin');
+    }
+
+    /** @test */
+    public function cannot_store_a_new_course_without_writing_the_course_covered_concepts()
+    {
+        $attributes = array_merge($this->courseAttributes, [
+            'notions_apprises' => '',
+        ]);
+
+        $response = $this->post(route('course.store'), $attributes);
+        $response->assertSessionHasErrors('notions_apprises');
+    }
+
+    /** @test */
+    public function cannot_store_a_new_course_without_giving_an_hourly_rate_price()
+    {
+        $attributes = array_merge($this->courseAttributes, [
+            'taux_horaire' => '',
+        ]);
+
+        $response = $this->post(route('course.store'), $attributes);
+        $response->assertSessionHasErrors('taux_horaire');
+    }
+
+    /** @test */
+    public function cannot_store_a_new_course_without_choosing_an_active_invoice()
+    {
+        $attributes = array_merge($this->courseAttributes, [
+            'facture_id' => '',
+        ]);
+
+        $response = $this->post(route('course.store'), $attributes);
+        $response->assertSessionHasErrors('facture_id');
+    }
+
+    /** @test */
+    public function can_render_only_the_active_invoices_in_select_invoice_list()
     {
         $response = $this->get(route('course.create'));
         $response->assertOk();

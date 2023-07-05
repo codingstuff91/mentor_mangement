@@ -24,7 +24,26 @@ class StoreCoursRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'student_id' => 'required',
+            'date_debut' => 'required',
+            'heure_debut' => 'required',
+            'heure_fin' => 'required',
+            'notions_apprises' => 'required',
+            'taux_horaire' => 'required',
+            'facture_id' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'student_id.required' => 'Veuillez sélectionner un étudiant',
+            'date_debut.required' => 'Veuillez sélectionner une date',
+            'heure_debut.required' => 'Veuillez choisir une heure de début',
+            'heure_fin.required' => 'Veuillez choisir une heure de fin',
+            'notions_apprises.required' => 'Veuillez préciser les notions abordées durant le cours',
+            'taux_horaire.required' => 'Veuillez saisir un taux horaire',
+            'facture_id.required' => 'Veuillez choisir une facture',
         ];
     }
 }
