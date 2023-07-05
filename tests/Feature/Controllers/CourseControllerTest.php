@@ -84,7 +84,7 @@ class CourseControllerTest extends TestCase
     }
 
     /** @test */
-    public function canStoreANewCourse()
+    public function can_store_a_new_course()
     {
         $this->post(route('course.store'), [
             'student_id' => $this->student->id,
@@ -93,7 +93,7 @@ class CourseControllerTest extends TestCase
             "heure_fin" => "19:00",
             'date_debut' => "2023-07-01 18:00:00",
             'date_fin' => "2023-07-01 19:00:00",
-            'notions' => "description des notions",
+            'notions_apprises' => "description des notions",
             'taux_horaire' => 50,
         ])->assertRedirect(route('course.index'));
 

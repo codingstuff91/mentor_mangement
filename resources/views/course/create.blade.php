@@ -42,7 +42,7 @@
                 </div>
 
                 <label class="my-2">Notions apprises</label>
-                <textarea name="notions" class="rounded-lg" cols="30" rows="2"></textarea>
+                <textarea name="notions_apprises" class="rounded-lg" cols="30" rows="2"></textarea>
 
                 <label class="my-2">Taux horaire</label>
                 <input type="number" name="taux_horaire" class="rounded-lg">

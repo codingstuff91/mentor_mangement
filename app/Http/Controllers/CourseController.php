@@ -57,7 +57,7 @@ class CourseController extends Controller
             'date_fin' => $request->date_debut ." ". $request->heure_fin,
             'nombre_heures' => $count_hours,
             'pack_heures' =>$pack_heures,
-            'notions_apprises' => $request->notions,
+            'notions_apprises' => $request->notions_apprises,
             'paye' => false,
             'facture_id' => $request->facture_id,
             'taux_horaire' => $request->taux_horaire
