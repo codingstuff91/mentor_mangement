@@ -62,14 +62,14 @@ class CourseControllerTest extends TestCase
     }
 
     /** @test */
-    public function canFetchAllTheCourses()
+    public function can_fetch_all_the_courses()
     {
         $response = $this->get(route('course.index'));
         $response->assertOk();
     }
 
     /** @test */
-    public function canRenderTheCourseCreationView()
+    public function can_render_the_course_creation_view()
     {
         $response = $this->get(route('course.create'));
         $response->assertOk();
@@ -184,14 +184,14 @@ class CourseControllerTest extends TestCase
     }
 
     /** @test */
-    public function canRenderTheEditCourseView()
+    public function can_render_the_edit_course_view()
     {
         $response = $this->get(route('course.edit', $this->course));
         $response->assertOk();
     }
 
     /** @test */
-    public function canRenderTheEditViewWithCourseInformations()
+    public function can_render_the_edit_view_with_course_informations()
     {
         $response = $this->get(route('course.edit', $this->course));
 
@@ -205,7 +205,7 @@ class CourseControllerTest extends TestCase
     }
 
     /** @test */
-    public function canUpdateACourse()
+    public function can_update_a_course()
     {
         $this->patch(route('course.update', $this->course), [
             'paye' => true,
@@ -225,7 +225,7 @@ class CourseControllerTest extends TestCase
     }
 
     /** @test */
-    public function canDeleteACourse()
+    public function can_delete_a_course()
     {
         $this
             ->delete(route('course.destroy', $this->course))
