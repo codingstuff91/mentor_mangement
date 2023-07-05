@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\Facture;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Services\CoursService;
 use App\Http\Requests\StoreCoursRequest;
@@ -12,10 +16,9 @@ use App\Http\Requests\UpdateCoursRequest;
 
 class CourseController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
@@ -24,10 +27,9 @@ class CourseController extends Controller
         return view('course.index')->with(['courses' => $courses]);
     }
 
+
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function create()
     {
@@ -37,11 +39,11 @@ class CourseController extends Controller
         return view('course.create')->with(['students' => $students, 'factures' => $factures]);
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCoursRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreCoursRequest $request
+     * @param CoursService $cours_service
+     * @return RedirectResponse
      */
     public function store(StoreCoursRequest $request, CoursService $cours_service)
     {
@@ -65,65 +67,45 @@ class CourseController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Course  $cours
-     * @return \Illuminate\Http\Response
+     * @param Course $course
+     * @return View
      */
-    public function show(Course $cours)
+    public function edit(Course $course)
     {
-        //
+        return view('course.edit')->with(['course' => $course]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Course  $cours
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Course $cours, Request $request)
-    {
-        $cours = Course::find($request->cour);
 
-        return view('cours.edit')->with(['cours' => $cours]);
+    /**
+     * @param UpdateCoursRequest $request
+     * @param Course $course
+     * @param CoursService $cours_service
+     * @return RedirectResponse
+     */
+    public function update(UpdateCoursRequest $request, Course $course, CoursService $cours_service)
+    {
+        $count_hours = $cours_service->count_lesson_hours($request->heure_fin, $request->heure_debut);
+
+        $course->update([
+            'paye' => $request->paye,
+            'nombre_heures' => $count_hours,
+            'date_debut' => $request->date_debut ." ". $request->heure_debut,
+            'date_fin' => $request->date_debut ." ". $request->heure_fin,
+            'notions_apprises' => $request->notions,
+        ]);
+
+        return redirect()->route('course.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCoursRequest  $request
-     * @param  \App\Models\Course  $cours
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCoursRequest $request, Course $cours, CoursService $cours_service)
-    {
-        $cours = Course::find($request->cour);
-
-        $count_hours = $cours_service->count_lesson_hours($request->heure_fin,$request->heure_debut);
-
-        $cours->paye = $request->paye;
-        $cours->nombre_heures = $count_hours;
-        $cours->date_debut = $request->date_debut ." ". $request->heure_debut;
-        $cours->date_fin = $request->date_debut ." ". $request->heure_fin;
-        $cours->notions_apprises = $request->notions;
-
-        $cours->save();
-
-        return redirect()->route('cours.index');
-    }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Course  $cours
-     * @return \Illuminate\Http\Response
+     * @param Course $course
+     * @return RedirectResponse
      */
-    public function destroy(Course $cours, Request $request)
+    public function destroy(Course $course)
     {
-        $cours = Course::find($request->cour);
+        $course->delete();
 
-        $cours->delete();
-
-        return redirect()->route('cours.index');
+        return redirect()->route('course.index');
     }
 }

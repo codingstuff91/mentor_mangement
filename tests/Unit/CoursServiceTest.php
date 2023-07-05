@@ -9,7 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 class CoursServiceTest extends TestCase
 {
-    public function test_count_lesson_hours_return_the_course_duration_in_hours()
+    /** @test */
+    public function it_returns_the_course_duration_in_hours()
     {
         $startHour = Carbon::createFromTime(18, 0);
         $endHour = Carbon::createFromTime(19, 0);
