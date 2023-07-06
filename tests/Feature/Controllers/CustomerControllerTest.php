@@ -24,17 +24,17 @@ class CustomerControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->matiere = Subject::factory()->create();
+        $this->subject = Subject::factory()->create();
 
-        $this->customer = Customer::factory()->create()->each(function($client){
+        $this->customer = Customer::factory()->create()->each(function($customer){
             Invoice::factory()->create([
-                'client_id' => $client->id,
+                'customer_id' => $customer->id,
             ]);
         });
 
         $this->student = Student::factory()->create([
-            'matiere_id' => $this->matiere->id,
-            'client_id' => Invoice::first()->id,
+            'subject_id' => $this->subject->id,
+            'customer_id' => Customer::first()->id,
         ]);
     }
 
