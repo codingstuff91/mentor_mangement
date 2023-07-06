@@ -11,6 +11,11 @@ class Student extends Model
 
     protected $guarded = [];
 
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
+
     public function subject()
     {
         return $this->belongsTo('App\Models\Subject');
