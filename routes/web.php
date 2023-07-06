@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\FactureController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MatiereController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
@@ -26,7 +26,7 @@ Route::middleware(['auth'])->group(function(){
 
     Route::resource('course', CourseController::class);
 
-    Route::resource('facture', FactureController::class);
+    Route::resource('invoice', InvoiceController::class);
 });
 
 

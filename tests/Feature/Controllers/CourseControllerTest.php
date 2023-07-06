@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\Customer;
-use App\Models\Facture;
+use App\Models\Invoice;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,12 +28,12 @@ class CourseControllerTest extends TestCase
         $this->matiere = Matiere::factory()->create();
 
         $this->customer = Customer::factory()->create()->each(function($customer){
-            Facture::factory()->create([
+            Invoice::factory()->create([
                 'customer_id' => $customer->id,
                 'payee' => false,
             ]);
 
-            Facture::factory()->create([
+            Invoice::factory()->create([
                 'customer_id' => $customer->id,
                 'payee' => true,
             ]);
@@ -41,7 +41,7 @@ class CourseControllerTest extends TestCase
 
         $this->student = Student::factory()->create([
             'matiere_id' => $this->matiere->id,
-            'customer_id' => Facture::first()->id,
+            'customer_id' => Invoice::first()->id,
         ]);
 
         $this->course = course::factory()->create([
@@ -51,7 +51,7 @@ class CourseControllerTest extends TestCase
 
         $this->courseAttributes = [
             'student_id' => $this->student->id,
-            'facture_id' => Facture::first()->id,
+            'facture_id' => Invoice::first()->id,
             "heure_debut" => "18:00",
             "heure_fin" => "19:00",
             'date_debut' => "2023-07-01 18:00:00",
@@ -88,7 +88,7 @@ class CourseControllerTest extends TestCase
     {
         $this->post(route('course.store'), [
             'student_id' => $this->student->id,
-            'facture_id' => Facture::first()->id,
+            'facture_id' => Invoice::first()->id,
             "heure_debut" => "18:00",
             "heure_fin" => "19:00",
             'date_debut' => "2023-07-01 18:00:00",
@@ -174,11 +174,11 @@ class CourseControllerTest extends TestCase
         $response = $this->get(route('course.create'));
         $response->assertOk();
 
-        $facturePayee = Facture::where('payee', true)->first();
+        $facturePayee = Invoice::where('payee', true)->first();
 
         $response->assertSee([
-                Facture::first()->month_year_creation,
-                Facture::first()->customer->nom
+                Invoice::first()->month_year_creation,
+                Invoice::first()->customer->nom
         ]);
         $response->assertDontSee('value=' . $facturePayee->id);
     }

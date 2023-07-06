@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Carbon\Carbon;
 use App\Models\Student;
-use App\Models\Facture;
+use App\Models\Invoice;
 use App\Services\CoursService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -29,7 +29,7 @@ class CourseFactory extends Factory
 
         return [
             'student_id' => Student::all()->random()->id,
-            'facture_id' => Facture::all()->random()->id,
+            'invoice_id' => Invoice::all()->random()->id,
             'date_debut' => $startHour,
             'date_fin' => $endHour,
             'nombre_heures' => $coursService->count_lesson_hours($endHour->hour,$startHour->hour),

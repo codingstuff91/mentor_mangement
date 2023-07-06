@@ -41,9 +41,9 @@ class Course extends Model
         return $this->taux_horaire * $this->nombre_heures;
     }
 
-    public function facture()
+    public function invoice()
     {
-        return $this->hasOne('App\Models\Facture');
+        return $this->hasOne('App\Models\Invoice');
     }
 
     public function student()

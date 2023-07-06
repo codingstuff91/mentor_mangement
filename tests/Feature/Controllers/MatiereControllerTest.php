@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Client;
-use App\Models\Facture;
+use App\Models\Invoice;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -28,7 +28,7 @@ class MatiereControllerTest extends TestCase
         $this->matiere = Matiere::factory()->create();
 
         $this->client = Client::factory()->create()->each(function($client){
-            Facture::factory()->create([
+            Invoice::factory()->create([
                 'client_id' => $client->id,
             ]);
         });

@@ -16,7 +16,7 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->integer('student_id');
-            $table->integer('facture_id');
+            $table->integer('invoice_id');
             $table->timestamp('date_debut');
             $table->timestamp('date_fin');
             $table->text('notions_apprises');

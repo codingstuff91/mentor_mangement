@@ -3,10 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Client;
-use App\Models\Matiere;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class EleveFactory extends Factory
+class InvoiceFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,9 +15,7 @@ class EleveFactory extends Factory
     public function definition()
     {
         return [
-            'nom' => $this->faker->name(),
-            'objectifs' => $this->faker->sentence(3),
-            'commentaires' => $this->faker->sentence(3),
+            'payee' => $this->faker->boolean,
         ];
     }
 }

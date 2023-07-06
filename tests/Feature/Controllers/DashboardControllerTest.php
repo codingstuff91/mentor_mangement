@@ -4,7 +4,7 @@ namespace Tests\Feature\Controllers;
 
 use App\Models\Course;
 use App\Models\Customer;
-use App\Models\Facture;
+use App\Models\Invoice;
 use App\Models\Matiere;
 use App\Models\Student;
 use App\Models\User;
@@ -29,19 +29,19 @@ class DashboardControllerTest extends TestCase
         $this->matiere = Matiere::factory()->create();
 
         $this->client = Customer::factory()->create()->each(function($client){
-            Facture::factory()->create([
+            Invoice::factory()->create([
                 'client_id' => $client->id,
             ]);
         });
 
         $this->student = Student::factory(10)->create([
             'matiere_id' => $this->matiere->id,
-            'client_id' => Facture::first()->id,
+            'client_id' => Invoice::first()->id,
         ]);
 
         $coursesHours = Course::factory(2)->create([
             'student_id'   => Student::first()->id,
-            'facture_id' => Facture::first()->id,
+            'facture_id' => Invoice::first()->id,
         ]);
     }
 

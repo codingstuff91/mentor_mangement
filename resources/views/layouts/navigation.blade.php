@@ -27,7 +27,7 @@
                     <x-nav-link :href="route('course.index')" :active="request()->routeIs('course.index')">
                         {{ __('Cours') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('facture.index')" :active="request()->routeIs('facture.index')">
+                    <x-nav-link :href="route('invoice.index')" :active="request()->routeIs('invoice.index')">
                         {{ __('Factures') }}
                     </x-nav-link>
                 </div>
@@ -103,7 +103,7 @@
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('facture.index')" :active="request()->routeIs('facture.index')">
+            <x-responsive-nav-link :href="route('invoice.index')" :active="request()->routeIs('invoice.index')">
                 {{ __('Factures') }}
             </x-responsive-nav-link>
         </div>

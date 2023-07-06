@@ -11,9 +11,9 @@ class Customer extends Model
 
     protected $guarded = [];
 
-    public function facture()
+    public function invoice()
     {
-        return $this->hasMany('App\Models\Facture');
+        return $this->hasMany('App\Models\Invoice');
     }
     public function eleve()
     {

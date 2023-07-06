@@ -2,18 +2,17 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Models\Customer;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Student;
-use App\Models\Client;
-use App\Models\Facture;
+use App\Models\Invoice;
 use App\Models\Matiere;
 use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class FactureControllerTest extends TestCase
+class InvoiceControllerTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -28,26 +27,26 @@ class FactureControllerTest extends TestCase
 
         $this->matiere = Matiere::factory()->create();
 
-        $this->client = Client::factory()->create()->each(function($client){
-            Facture::factory()->create([
-                'client_id' => $client->id,
+        $this->customer = Customer::factory()->create()->each(function($customer){
+            Invoice::factory()->create([
+                'customer_id' => $customer->id,
             ]);
         });
 
         $this->eleve = Student::factory()->create([
             'matiere_id' => $this->matiere->id,
-            'client_id' => Client::first()->id,
+            'customer_id' => Customer::first()->id,
         ]);
 
         $coursesHours = Course::factory(2)->create([
-            'eleve_id'   => Student::first()->id,
-            'facture_id' => Facture::first()->id,
+            'student_id'   => Student::first()->id,
+            'invoice_id' => Invoice::first()->id,
         ]);
     }
 
-    public function test_it_can_fetch_all_the_factures()
+    public function test_it_can_fetch_all_the_invoices()
     {
-        $response = $this->get(route('facture.index'));
+        $response = $this->get(route('invoice.index'));
         $response->assertOk();
     }
 
@@ -61,7 +60,7 @@ class FactureControllerTest extends TestCase
 
     public function test_it_can_show_the_details_of_a_facture()
     {
-        $facture = Facture::first();
+        $facture = Invoice::first();
 
         $response = $this->get(route('facture.show', $facture->id));
         $response->assertOk();
@@ -69,7 +68,7 @@ class FactureControllerTest extends TestCase
 
     public function test_it_can_show_the_total_number_of_hours_of_a_facture()
     {
-        $facture = Facture::first();
+        $facture = Invoice::first();
         $totalCoursesHours = Course::all()->count();
 
         $response = $this->get(route('facture.show', $facture->id));
@@ -80,7 +79,7 @@ class FactureControllerTest extends TestCase
 
     public function test_the_total_price_of_a_facture_is_correctly_calculated()
     {
-        $facture = Facture::first();
+        $facture = Invoice::first();
         $totalPriceOfCourses = Course::select('nombre_heures', 'taux_horaire')->get();
 
         $totalPrice = $totalPriceOfCourses->sum('taux_horaire');

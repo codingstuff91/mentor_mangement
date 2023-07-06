@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Student;
-use App\Models\Facture;
+use App\Models\Invoice;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -34,7 +34,7 @@ class CourseController extends Controller
     public function create()
     {
         $students = Student::where('active', true)->get();
-        $factures = Facture::with('customer')->where('payee', false)->get();
+        $factures = Invoice::with('customer')->where('payee', false)->get();
 
         return view('course.create')->with(['students' => $students, 'factures' => $factures]);
     }

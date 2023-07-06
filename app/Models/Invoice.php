@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Facture extends Model
+class Invoice extends Model
 {
     use HasFactory;
 
@@ -24,7 +24,7 @@ class Facture extends Model
     }
 
     // Une facture est liée à plusieurs cours
-    public function cours()
+    public function course()
     {
         return $this->hasMany('App\Models\Course');
     }
