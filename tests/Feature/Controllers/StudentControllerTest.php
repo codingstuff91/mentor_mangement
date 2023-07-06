@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Student;
 use App\Models\Client;
 use App\Models\Invoice;
-use App\Models\Matiere;
+use App\Models\Subject;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -24,7 +24,7 @@ class StudentControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->matiere = Matiere::factory()->create();
+        $this->matiere = Subject::factory()->create();
 
         $this->customer = Client::factory()->create()->each(function($client){
             Invoice::factory()->create([
@@ -52,7 +52,7 @@ class StudentControllerTest extends TestCase
         $response->assertOk();
 
         $view = $this->view('student.create', [
-            'clients' => Matiere::all(),
+            'clients' => Subject::all(),
             'matieres' => Client::all(),
         ]);
 
@@ -68,7 +68,7 @@ class StudentControllerTest extends TestCase
     {
         $response = $this->post(route('student.store', [
             'nom' => "John Doe",
-            'matiere_id' => Matiere::first()->id,
+            'matiere_id' => Subject::first()->id,
             'client_id' => Client::first()->id,
             'objectifs' => "Some random text to test",
             'commentaires' => "Some random text to test",

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Matiere;
+use App\Models\Subject;
 use Illuminate\Database\Seeder;
 
 class MatiereSeeder extends Seeder
@@ -14,17 +14,17 @@ class MatiereSeeder extends Seeder
      */
     public function run()
     {
-        Matiere::create([
+        Subject::create([
             'nom' => 'Excel'
         ]);
-        
-        Matiere::create([
+
+        Subject::create([
             'nom' => 'Html/css'
         ]);
-        
-        Matiere::create([
+
+        Subject::create([
             'nom' => 'Laravel'
         ]);
-        
+
     }
 }

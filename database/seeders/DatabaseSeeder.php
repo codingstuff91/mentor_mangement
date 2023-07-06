@@ -6,7 +6,7 @@ use App\Models\Course;
 use App\Models\Customer;
 use App\Models\Student;
 use App\Models\Invoice;
-use App\Models\Matiere;
+use App\Models\Subject;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,10 +24,10 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
-        Matiere::factory(5)->create()->each(function($matiere) use ($customers){
+        Subject::factory(5)->create()->each(function($subject) use ($customers){
             Student::factory()->create([
                 'customer_id' => $customers->random()->id,
-                'matiere_id' => $matiere->id
+                'subject_id' => $subject->id
             ])->each(function($student){
                 Course::factory(3)->create([
                     'student_id' => $student->id,

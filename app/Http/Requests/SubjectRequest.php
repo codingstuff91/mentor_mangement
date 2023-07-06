@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMatiereRequest extends FormRequest
+class SubjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +25,13 @@ class StoreMatiereRequest extends FormRequest
     {
         return [
             'nom' => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'nom.required' => 'Veuillez saisir un nom de matière',
         ];
     }
 }

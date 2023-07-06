@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Matiere extends Model
+class Subject extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function eleve()
+    public function student()
     {
         return $this->hasOne('App\Models\Student');
     }

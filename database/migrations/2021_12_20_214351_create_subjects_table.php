@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFacturesTable extends Migration
+class CreateSubjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateFacturesTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoices', function (Blueprint $table) {
+        Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->integer('customer_id');
-            $table->boolean('payee');
+            $table->string('nom');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateFacturesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('factures');
+        Schema::dropIfExists('matieres');
     }
 }

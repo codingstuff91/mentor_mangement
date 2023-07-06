@@ -21,7 +21,7 @@
                     <x-nav-link :href="route('customer.index')" :active="request()->routeIs('customer.index')">
                         {{ __('Clients') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('matiere.index')" :active="request()->routeIs('matiere.index')">
+                    <x-nav-link :href="route('subject.index')" :active="request()->routeIs('subject.index')">
                         {{ __('Matieres') }}
                     </x-nav-link>
                     <x-nav-link :href="route('course.index')" :active="request()->routeIs('course.index')">
@@ -93,7 +93,7 @@
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('matiere.index')" :active="request()->routeIs('matiere.index')">
+            <x-responsive-nav-link :href="route('subject.index')" :active="request()->routeIs('subject.index')">
                 {{ __('Matieres') }}
             </x-responsive-nav-link>
         </div>

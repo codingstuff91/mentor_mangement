@@ -8,7 +8,7 @@ use App\Models\Course;
 use App\Models\Student;
 use App\Models\Customer;
 use App\Models\Invoice;
-use App\Models\Matiere;
+use App\Models\Subject;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -25,7 +25,7 @@ class CourseControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->matiere = Matiere::factory()->create();
+        $this->matiere = Subject::factory()->create();
 
         $this->customer = Customer::factory()->create()->each(function($customer){
             Invoice::factory()->create([

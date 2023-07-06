@@ -5,7 +5,7 @@ namespace Tests\Feature\Controllers;
 use App\Models\Course;
 use App\Models\Customer;
 use App\Models\Invoice;
-use App\Models\Matiere;
+use App\Models\Subject;
 use App\Models\Student;
 use App\Models\User;
 use Database\Seeders\UserSeeder;
@@ -26,7 +26,7 @@ class DashboardControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->matiere = Matiere::factory()->create();
+        $this->matiere = Subject::factory()->create();
 
         $this->client = Customer::factory()->create()->each(function($client){
             Invoice::factory()->create([

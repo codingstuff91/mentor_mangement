@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Models\Client;
-use App\Models\Matiere;
+use App\Models\Subject;
 use App\Http\Requests\StoreEleveRequest;
 use App\Http\Requests\UpdateEleveRequest;
 
@@ -30,7 +30,7 @@ class StudentController extends Controller
     public function create()
     {
         $clients = Client::all();
-        $matieres = Matiere::all();
+        $matieres = Subject::all();
 
         return view('student.create')->with(['clients' => $clients, 'matieres' => $matieres]);
     }
@@ -78,7 +78,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        $matieres = Matiere::all();
+        $matieres = Subject::all();
         $clients = Client::all();
 
         return view('student.edit')->with([

@@ -11,17 +11,17 @@ class Student extends Model
 
     protected $guarded = [];
 
-    public function matiere()
+    public function subject()
     {
-        return $this->belongsTo('App\Models\Matiere');
+        return $this->belongsTo('App\Models\Subject');
     }
 
-    public function client()
+    public function customer()
     {
-        return $this->belongsTo('App\Models\Client');
+        return $this->belongsTo('App\Models\Customer');
     }
 
-    public function cours()
+    public function courses()
     {
         return $this->hasMany('App\Models\Course');
     }

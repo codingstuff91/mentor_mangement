@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Client;
-use App\Models\Matiere;
+use App\Models\Subject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StudentFactory extends Factory
