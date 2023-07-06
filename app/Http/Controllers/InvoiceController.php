@@ -12,20 +12,18 @@ use App\Http\Requests\UpdateFactureRequest;
 
 class InvoiceController extends Controller
 {
-
     /**
      * @return View
      */
     public function index()
     {
         $invoices = Invoice::with('customer')
-            ->withCount(['course as total' => function($query){
+            ->withCount(['courses as total' => function($query){
                 $query->select(DB::raw('SUM(nombre_heures * taux_horaire)'));
         }])->get();
 
         return view('invoice.index')->with(['invoices' => $invoices]);
     }
-
 
     /**
      * @return View
@@ -36,7 +34,6 @@ class InvoiceController extends Controller
 
         return view('invoice.create')->with(['customers' => $customers]);
     }
-
 
     /**
      * @param StoreFactureRequest $request
@@ -70,7 +67,6 @@ class InvoiceController extends Controller
         ]);
     }
 
-
     /**
      * @param Invoice $invoice
      * @return View
@@ -79,7 +75,6 @@ class InvoiceController extends Controller
     {
         return view('invoice.edit')->with(['invoive' => $invoice]);
     }
-
 
     /**
      * @param UpdateFactureRequest $request
