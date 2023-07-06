@@ -36,7 +36,7 @@ class Course extends Model
         return $date->format('H:i');
     }
 
-    public function getTotalPrixAttribute()
+    public function getTotalPriceAttribute()
     {
         return $this->taux_horaire * $this->nombre_heures;
     }

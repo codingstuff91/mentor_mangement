@@ -52,30 +52,20 @@ class InvoiceController extends Controller
         return redirect()->route('invoice.index');
     }
 
-
     /**
      * @param Invoice $invoice
      * @return View
      */
     public function show(Invoice $invoice)
     {
-        $course = $invoice->course()->get();
-        $total_heures = 0;
-        $total_invoice = 0;
+        $invoice->load('courses');
 
-        foreach ($cours as $lecon) {
-            // Ne pas prendre en compte les heures de type PACK pour le décompte des heures
-            if(!$lecon->pack_heures)
-            {
-                $total_heures += $lecon->nombre_heures;
-            }
-            $total_invoice += $lecon->total_prix;
-        }
+        $total_hours = $invoice->courses->where('pack_heures', false)->sum('nombre_heures');
+        $total_invoice = $invoice->courses->sum('total_price');
 
         return view('invoice.show')->with([
             'invoice' => $invoice,
-            'course' => $course,
-            'total_heures' => $total_heures,
+            'total_hours' => $total_hours,
             'total_invoice' => $total_invoice,
         ]);
     }

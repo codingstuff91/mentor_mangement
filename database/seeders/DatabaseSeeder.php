@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             ])->each(function($student){
                 Course::factory(3)->create([
                     'student_id' => $student->id,
-                    'facture_id' => Invoice::first()->id
+                    'invoice_id' => Invoice::first()->id
                 ]);
             });
         });

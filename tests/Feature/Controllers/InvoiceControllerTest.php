@@ -44,49 +44,66 @@ class InvoiceControllerTest extends TestCase
         ]);
     }
 
-    public function test_it_can_fetch_all_the_invoices()
+    /** @test */
+    public function can_render_the_index_invoices_view()
     {
         $response = $this->get(route('invoice.index'));
         $response->assertOk();
     }
 
-    public function test_it_can_render_the_facture_create_view()
+    /** @test */
+    public function can_render_the_facture_create_view()
     {
-        $response = $this->get(route('facture.create'));
+        $response = $this->get(route('invoice.create'));
 
         $response->assertOk();
         $response->assertSee('Nom du client');
     }
 
-    public function test_it_can_show_the_details_of_a_facture()
+    /** @test */
+    public function can_store_a_new_invoice()
+    {
+        $customer = Customer::factory()->create();
+
+        $this->post(route('invoice.store'), [
+            'customer_id' => $customer->id,
+        ]);
+
+        $this->assertDatabaseCount('invoices', 1);
+    }
+
+    /** @test */
+    public function can_render_the_show_invoice_view()
     {
         $facture = Invoice::first();
 
-        $response = $this->get(route('facture.show', $facture->id));
+        $response = $this->get(route('invoice.show', $facture->id));
         $response->assertOk();
     }
 
-    public function test_it_can_show_the_total_number_of_hours_of_a_facture()
+    /** @test */
+    public function can_show_the_total_number_of_hours_of_a_facture()
     {
-        $facture = Invoice::first();
-        $totalCoursesHours = Course::all()->count();
+        $invoice = Invoice::first();
+        $totalCoursesHours = $invoice->courses->sum('nombre_heures');
 
-        $response = $this->get(route('facture.show', $facture->id));
+        $response = $this->get(route('invoice.show', $invoice));
 
         $response->assertOk();
         $response->assertSee("Nombre heures : " . $totalCoursesHours);
     }
 
-    public function test_the_total_price_of_a_facture_is_correctly_calculated()
+    /** @test */
+    public function can_display_the_total_price_of_an_invoice()
     {
-        $facture = Invoice::first();
-        $totalPriceOfCourses = Course::select('nombre_heures', 'taux_horaire')->get();
+        $invoice = Invoice::first();
+        $totalPrice = $invoice->courses->sum(function ($course) {
+            return $course->nombre_heures * $course->taux_horaire;
+        });
 
-        $totalPrice = $totalPriceOfCourses->sum('taux_horaire');
-
-        $response = $this->get(route('facture.show', $facture->id));
+        $response = $this->get(route('invoice.show', $invoice));
 
         $response->assertOk();
-        $response->assertSee($totalPrice ." €");
+        $response->assertSee($totalPrice . " €");
     }
 }
