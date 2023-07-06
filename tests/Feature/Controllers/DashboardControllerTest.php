@@ -26,22 +26,22 @@ class DashboardControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->matiere = Subject::factory()->create();
+        $this->subject = Subject::factory()->create();
 
-        $this->client = Customer::factory()->create()->each(function($client){
+        $this->customer = Customer::factory()->create()->each(function($customer){
             Invoice::factory()->create([
-                'client_id' => $client->id,
+                'customer_id' => $customer->id,
             ]);
         });
 
         $this->student = Student::factory(10)->create([
-            'matiere_id' => $this->matiere->id,
-            'client_id' => Invoice::first()->id,
+            'subject_id' => $this->subject->id,
+            'customer_id' => Customer::first()->id,
         ]);
 
         $coursesHours = Course::factory(2)->create([
             'student_id'   => Student::first()->id,
-            'facture_id' => Invoice::first()->id,
+            'invoice_id' => Invoice::first()->id,
         ]);
     }
 
