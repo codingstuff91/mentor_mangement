@@ -5,14 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\Invoice;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use App\Services\CoursService;
-use App\Http\Requests\CoursRequest;
-use App\Http\Requests\UpdateCoursRequest;
+use App\Http\Requests\StoreCoursRequest;
+use App\Http\Requests\UpdateCourseRequest;
 
 class CourseController extends Controller
 {
@@ -41,11 +38,11 @@ class CourseController extends Controller
 
 
     /**
-     * @param CoursRequest $request
+     * @param StoreCoursRequest $request
      * @param CoursService $cours_service
      * @return RedirectResponse
      */
-    public function store(Request $request, CoursService $cours_service)
+    public function store(StoreCoursRequest $request, CoursService $cours_service)
     {
         $count_hours = $cours_service->count_lesson_hours($request->heure_fin,$request->heure_debut);
 
@@ -81,7 +78,7 @@ class CourseController extends Controller
      * @param CoursService $cours_service
      * @return RedirectResponse
      */
-    public function update(CoursRequest $request, Course $course, CoursService $cours_service)
+    public function update(UpdateCourseRequest $request, Course $course, CoursService $cours_service)
     {
         $count_hours = $cours_service->count_lesson_hours($request->heure_fin, $request->heure_debut);
 

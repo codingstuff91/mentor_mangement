@@ -34,7 +34,7 @@
                             <option value="1" @if ($course->paye == 1) selected="selected" @endif>OUI</option>
                         </select>
 
-                        <textarea name="notions" cols="30" rows="10">
+                        <textarea name="notions_apprises" cols="30" rows="10">
                             {!! $course->notions_apprises !!}
                         </textarea>
 

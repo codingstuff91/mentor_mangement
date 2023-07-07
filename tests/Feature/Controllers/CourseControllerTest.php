@@ -27,7 +27,7 @@ class CourseControllerTest extends TestCase
 
         $this->subject = Subject::factory()->create();
         $this->customer = Customer::factory()
-            ->has(Invoice::factory())
+            ->has(Invoice::factory()->unpaid())
             ->create();
 
         $this->student = Student::factory()->create([
@@ -113,11 +113,11 @@ class CourseControllerTest extends TestCase
     public function cannot_store_a_new_course_without_choising_an_student()
     {
         $attributes = array_merge($this->courseAttributes, [
-            'student_id' => '',
+            'student' => '',
         ]);
 
         $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('student_id');
+        $response->assertSessionHasErrors('student');
     }
 
     /** @test */
@@ -170,26 +170,23 @@ class CourseControllerTest extends TestCase
     public function cannot_store_a_new_course_without_choosing_an_active_invoice()
     {
         $attributes = array_merge($this->courseAttributes, [
-            'invoice_id' => '',
+            'invoice' => '',
         ]);
 
         $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('invoice_id');
+        $response->assertSessionHasErrors('invoice');
     }
 
     /** @test */
-    public function can_render_only_the_active_invoices_in_select_invoice_list()
+    public function can_render_only_the_unpaid_invoices_in_select_invoice_list()
     {
         $response = $this->get(route('course.create'));
         $response->assertOk();
 
-        $facturePayee = Invoice::where('payee', true)->first();
-
         $response->assertSee([
-                Invoice::first()->month_year_creation,
-                Invoice::first()->customer->nom
+            Invoice::first()->month_year_creation,
+            Invoice::first()->customer->nom,
         ]);
-        $response->assertDontSee('value=' . $facturePayee->id);
     }
 
     /** @test */
@@ -218,12 +215,11 @@ class CourseControllerTest extends TestCase
     {
         $this->patch(route('course.update', $this->course), [
             'paye' => true,
-            'nombre_heures' => 1,
             "heure_debut" => "18:00",
             "heure_fin" => "19:00",
             'date_debut' => "2023-07-01 18:00:00",
             'date_fin' => "2023-07-01 19:00:00",
-            'notions' => "texte",
+            'notions_apprises' => "texte",
         ]);
 
         $this->course->refresh();
