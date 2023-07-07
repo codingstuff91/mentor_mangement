@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Models;
+namespace Tests\Feature\Controllers;
 
 use App\Models\Customer;
 use Tests\TestCase;
@@ -97,13 +97,34 @@ class StudentControllerTest extends TestCase
     {
         $this->patch(route('student.update', $this->student), [
             "nom" => "test",
-            "active" => 1,
-            "customer_id" => $this->customer,
-            "subject_id" => $this->subject->id,
+            "objectifs" => "Learn php",
         ]);
 
         $this->student->refresh();
 
-        $this->assertEquals(Student::first()->nom, "test");
+        $this->assertEquals($this->student->nom, "test");
+        $this->assertEquals($this->student->objectifs, "Learn php");
+    }
+
+    /** @test */
+    public function cannot_update_a_student_without_a_name()
+    {
+        $response = $this->patch(route('student.update', $this->student), [
+            "nom" => "",
+            "objectifs" => "Learn php",
+        ]);
+
+        $response->assertSessionHasErrors('nom');
+    }
+
+    /** @test */
+    public function cannot_update_a_student_without_objectives()
+    {
+        $response = $this->patch(route('student.update', $this->student), [
+            "nom" => "test",
+            "objectifs" => "",
+        ]);
+
+        $response->assertSessionHasErrors('objectifs');
     }
 }

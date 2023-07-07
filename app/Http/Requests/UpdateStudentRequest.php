@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEleveRequest extends FormRequest
+class UpdateStudentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,6 @@ class StoreEleveRequest extends FormRequest
     {
         return [
             'nom' => 'required',
-            'matiere' => 'required',
             'objectifs' => 'required'
         ];
     }

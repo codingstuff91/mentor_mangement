@@ -5,18 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\Customer;
 use App\Models\Subject;
-use App\Http\Requests\StoreEleveRequest;
-use App\Http\Requests\StudentRequest;
+use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class StudentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
@@ -24,11 +23,9 @@ class StudentController extends Controller
 
         return view('student.index')->with(['students' => $students]);
     }
-
+    
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function create()
     {
@@ -39,12 +36,10 @@ class StudentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreEleveRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreStudentRequest $request
+     * @return RedirectResponse
      */
-    public function store(StoreEleveRequest $request)
+    public function store(StoreStudentRequest $request)
     {
         Student::create([
             'nom' => $request->nom,
@@ -58,10 +53,8 @@ class StudentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Student  $eleve
-     * @return \Illuminate\Http\Response
+     * @param Student $student
+     * @return View
      */
     public function show(Student $student)
     {
@@ -72,7 +65,6 @@ class StudentController extends Controller
 
         return view('student.show')->with(['student' => $student]);
     }
-
 
     /**
      * @param Student $student
@@ -91,13 +83,11 @@ class StudentController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\StudentRequest  $request
-     * @param  \App\Models\Student  $eleve
-     * @return \Illuminate\Http\Response
+     * @param UpdateStudentRequest $request
+     * @param Student $student
+     * @return RedirectResponse
      */
-    public function update(StudentRequest $request, Student $student)
+    public function update(UpdateStudentRequest $request, Student $student)
     {
         $student->update($request->validated());
 
