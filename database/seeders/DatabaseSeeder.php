@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $customers = Customer::factory(3)->create()->each(function($customer){
-            Invoice::factory()->create([
+            Invoice::factory()->unpaid()->create([
                 'customer_id' => $customer->id,
             ]);
         });
