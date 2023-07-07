@@ -26,11 +26,9 @@ class CustomerControllerTest extends TestCase
 
         $this->subject = Subject::factory()->create();
 
-        $this->customer = Customer::factory()->create()->each(function($customer){
-            Invoice::factory()->create([
-                'customer_id' => $customer->id,
-            ]);
-        });
+        $this->customer = Customer::factory()
+                            ->has(Invoice::factory())
+                            ->create();
 
         $this->student = Student::factory()->create([
             'subject_id' => $this->subject->id,
@@ -39,14 +37,14 @@ class CustomerControllerTest extends TestCase
     }
 
     /** @test */
-    public function canFetchTheCustomersList()
+    public function can_fetch_the_customers_list()
     {
         $response = $this->get(route('customer.index'));
         $response->assertOk();
     }
 
     /** @test */
-    public function canRenderTheCustomerCreateView()
+    public function can_render_the_customer_create_view()
     {
         $response = $this->get(route('customer.create'));
         $response->assertOk();
@@ -58,7 +56,7 @@ class CustomerControllerTest extends TestCase
     }
 
     /** @test */
-    public function canStoreANewCustomer()
+    public function can_store_a_new_customer()
     {
         $response = $this->post(route('customer.store', [
             'nom' => 'John Doe',
@@ -69,7 +67,7 @@ class CustomerControllerTest extends TestCase
     }
 
     /** @test */
-    public function aCustomerCouldNotBeCreatedWithoutAName()
+    public function cannot_store_a_new_customer_without_a_name()
     {
         $response = $this->post(route('customer.store', [
             'name' => '',
@@ -78,7 +76,7 @@ class CustomerControllerTest extends TestCase
     }
 
     /** @test */
-    public function canRenderTheEditViewWithCustomerInformations()
+    public function can_render_the_edit_view_with_customer_informations()
     {
         $response = $this->get(route('customer.edit', Customer::first()));
 
@@ -88,17 +86,19 @@ class CustomerControllerTest extends TestCase
     }
 
     /** @test */
-    public function canUpdateCustomerInformations()
+    public function can_update_customer_informations()
     {
-        $response = $this->patch(route('customer.update', $this->customer), [
+        $this->patch(route('customer.update', $this->customer), [
             'nom' => 'test edition'
         ]);
 
-        $this->assertEquals('test edition', Customer::first()->nom);
+        $this->customer->refresh();
+
+        $this->assertEquals('test edition', $this->customer->nom);
     }
 
     /** @test */
-    public function canDeleteACustomer()
+    public function can_delete_a_customer()
     {
         $this->delete(route('customer.destroy', $this->customer));
 

@@ -24,18 +24,15 @@ class StudentControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->subject = Subject::factory()->create();
+        $this->customer = Customer::factory()
+            ->has(Invoice::factory())
+            ->create();
 
-        $this->customer = Customer::factory()->create()->each(function($customer){
-            Invoice::factory()->create([
-                'customer_id' => $customer->id,
+        $this->student = Student::factory()
+            ->for(Subject::factory())
+            ->create([
+                'customer_id' => Customer::first()->id,
             ]);
-        });
-
-        $this->student = Student::factory()->create([
-            'subject_id' => $this->subject->id,
-            'customer_id' => Customer::first()->id,
-        ]);
     }
 
     /** @test */

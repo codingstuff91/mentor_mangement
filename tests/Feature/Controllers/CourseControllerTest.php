@@ -25,20 +25,21 @@ class CourseControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->subject = Subject::factory()->create();
         $this->customer = Customer::factory()
             ->has(Invoice::factory()->unpaid())
             ->create();
 
-        $this->student = Student::factory()->create([
-            'subject_id' => $this->subject->id,
-            'customer_id' => $this->customer->id,
-        ]);
+        $this->student = Student::factory()
+            ->for(Subject::factory())
+            ->create([
+                'customer_id' => $this->customer->id,
+            ]);
 
-        $this->course = course::factory()->create([
-            'student_id' => $this->student->id,
-            'invoice_id' => Invoice::first()->id,
-        ]);
+        $this->course = course::factory()
+            ->has(Student::factory())
+            ->create([
+                'invoice_id' => Invoice::first()->id,
+            ]);
 
         $this->courseAttributes = [
             'student_id' => $this->student->id,

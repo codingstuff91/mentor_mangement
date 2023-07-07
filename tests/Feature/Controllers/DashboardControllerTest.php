@@ -26,27 +26,19 @@ class DashboardControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->subject = Subject::factory()->create();
+        $this->customer = Customer::factory()
+                            ->has(Invoice::factory())
+                            ->create();
 
-        $this->customer = Customer::factory()->create()->each(function($customer){
-            Invoice::factory()->create([
-                'customer_id' => $customer->id,
+        $this->student = Student::factory(10)
+            ->for(Subject::factory())
+            ->create([
+                'customer_id' => $this->customer->id,
             ]);
-        });
-
-        $this->student = Student::factory(10)->create([
-            'subject_id' => $this->subject->id,
-            'customer_id' => Customer::first()->id,
-        ]);
-
-        $coursesHours = Course::factory(2)->create([
-            'student_id'   => Student::first()->id,
-            'invoice_id' => Invoice::first()->id,
-        ]);
     }
 
     /** @test */
-    public function canRenderTheDashboardMainPage()
+    public function can_render_the_dashboard_main_page()
     {
         $response = $this->get('/dashboard');
 
@@ -54,7 +46,7 @@ class DashboardControllerTest extends TestCase
     }
 
     /** @test */
-    public function canShowTheTotalOfCourseHoursGiven()
+    public function can_show_the_total_of_course_hours_given()
     {
         $response = $this->get('/dashboard');
 
@@ -63,7 +55,7 @@ class DashboardControllerTest extends TestCase
     }
 
     /** @test */
-    public function canShowTheTotalOfStudents()
+    public function can_show_the_total_of_students()
     {
         $response = $this->get('/dashboard');
 
@@ -72,7 +64,7 @@ class DashboardControllerTest extends TestCase
     }
 
     /** @test */
-    public function canShowTheTotalRevenue()
+    public function can_show_the_total_revenue()
     {
         $response = $this->get('/dashboard');
         $totalRevenues = Course::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->first();
@@ -82,7 +74,7 @@ class DashboardControllerTest extends TestCase
     }
 
     /** @test */
-    public function canShowTheTotalOfCourses()
+    public function can_show_the_total_of_courses()
     {
         $response = $this->get('/dashboard');
 

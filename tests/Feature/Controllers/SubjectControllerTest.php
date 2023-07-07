@@ -39,7 +39,7 @@ class SubjectControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_render_the_client_create_view()
+    public function can_render_the_subject_create_view()
     {
         $response = $this->get(route('subject.create'));
 

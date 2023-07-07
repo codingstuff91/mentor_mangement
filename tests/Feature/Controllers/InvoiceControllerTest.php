@@ -25,23 +25,15 @@ class InvoiceControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->subject = Subject::factory()->create();
+        $this->customer = Customer::factory()
+                            ->has(Invoice::factory())
+                            ->create();
 
-        $this->customer = Customer::factory()->create()->each(function($customer){
-            Invoice::factory()->create([
-                'customer_id' => $customer->id,
-            ]);
-        });
-
-        $this->eleve = Student::factory()->create([
-            'subject_id' => $this->subject->id,
-            'customer_id' => Customer::first()->id,
-        ]);
-
-        $coursesHours = Course::factory(2)->create([
-            'student_id' => Student::first()->id,
-            'invoice_id' => Invoice::first()->id,
-        ]);
+        $this->eleve = Student::factory()
+                        ->for(Subject::factory())
+                        ->create([
+                            'customer_id' => $this->customer->id,
+                        ]);
     }
 
     /** @test */
