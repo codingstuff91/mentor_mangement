@@ -7,8 +7,6 @@ use App\Models\Customer;
 use App\Models\Subject;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -23,7 +21,7 @@ class StudentController extends Controller
 
         return view('student.index')->with(['students' => $students]);
     }
-    
+
     /**
      * @return View
      */

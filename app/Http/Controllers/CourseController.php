@@ -8,12 +8,11 @@ use App\Models\Invoice;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Services\CoursService;
-use App\Http\Requests\StoreCoursRequest;
+use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 
 class CourseController extends Controller
 {
-
     /**
      * @return View
      */
@@ -23,7 +22,6 @@ class CourseController extends Controller
 
         return view('course.index')->with(['courses' => $courses]);
     }
-
 
     /**
      * @return View
@@ -36,13 +34,12 @@ class CourseController extends Controller
         return view('course.create')->with(['students' => $students, 'invoices' => $invoices]);
     }
 
-
     /**
-     * @param StoreCoursRequest $request
+     * @param StoreCourseRequest $request
      * @param CoursService $cours_service
      * @return RedirectResponse
      */
-    public function store(StoreCoursRequest $request, CoursService $cours_service)
+    public function store(StoreCourseRequest $request, CoursService $cours_service)
     {
         $count_hours = $cours_service->count_lesson_hours($request->heure_fin,$request->heure_debut);
 
@@ -71,9 +68,8 @@ class CourseController extends Controller
         return view('course.edit')->with(['course' => $course]);
     }
 
-
     /**
-     * @param UpdateCoursRequest $request
+     * @param UpdateCourseRequest $request
      * @param Course $course
      * @param CoursService $cours_service
      * @return RedirectResponse
@@ -92,7 +88,6 @@ class CourseController extends Controller
 
         return redirect()->route('course.index');
     }
-
 
     /**
      * @param Course $course

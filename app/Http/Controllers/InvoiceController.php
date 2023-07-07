@@ -7,8 +7,8 @@ use App\Models\Invoice;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StoreFactureRequest;
-use App\Http\Requests\UpdateFactureRequest;
+use App\Http\Requests\StoreInvoiceRequest;
+use App\Http\Requests\UpdateInvoiceRequest;
 
 class InvoiceController extends Controller
 {
@@ -36,10 +36,10 @@ class InvoiceController extends Controller
     }
 
     /**
-     * @param StoreFactureRequest $request
+     * @param StoreInvoiceRequest $request
      * @return RedirectResponse
      */
-    public function store(StoreFactureRequest $request)
+    public function store(StoreInvoiceRequest $request)
     {
         Invoice::create([
             'client_id' => $request->client_id,
@@ -77,13 +77,13 @@ class InvoiceController extends Controller
     }
 
     /**
-     * @param UpdateFactureRequest $request
+     * @param UpdateInvoiceRequest $request
      * @param Invoice $facture
      * @return RedirectResponse
      */
-    public function update(UpdateFactureRequest $request, Invoice $invoice)
+    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
     {
-        invoice->update([
+        $invoice->update([
             'payee' => $request->payee,
         ]);
 
