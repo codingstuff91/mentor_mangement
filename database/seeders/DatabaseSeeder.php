@@ -28,16 +28,19 @@ class DatabaseSeeder extends Seeder
         $this->seedStudentsAndCourses();
         $this->seedUser();
     }
+
     private function seedCustomers()
     {
         Customer::factory(self::NUMBER_OF_CUSTOMERS)
             ->has(Invoice::factory()->unpaid())
             ->create();
     }
+
     private function seedSubjects()
     {
         Subject::factory(self::NUMBER_OF_SUBJECTS)->create();
     }
+
     private function seedStudentsAndCourses()
     {
         $customers = Customer::all();
@@ -59,6 +62,7 @@ class DatabaseSeeder extends Seeder
             });
         });
     }
+    
     private function seedUser()
     {
         $this->call(UserSeeder::class);
