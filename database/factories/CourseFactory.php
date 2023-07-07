@@ -33,7 +33,7 @@ class CourseFactory extends Factory
             'date_debut' => $startHour,
             'date_fin' => $endHour,
             'nombre_heures' => $coursService->count_lesson_hours($endHour->hour,$startHour->hour),
-            'taux_horaire' => 50,
+            'taux_horaire' => 10,
             'notions_apprises' => $this->faker->sentence(3),
             'paye' => $this->faker->boolean,
         ];

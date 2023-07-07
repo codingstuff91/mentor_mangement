@@ -18,20 +18,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $customers = Customer::factory(3)->create()->each(function($customer){
-            Invoice::factory()->unpaid()->create([
-                'customer_id' => $customer->id,
-            ]);
-        });
+        $customers = Customer::factory(5)
+                    ->has(Invoice::factory()->unpaid())
+                    ->create();
 
         Subject::factory(5)->create()->each(function($subject) use ($customers){
             Student::factory()->create([
                 'customer_id' => $customers->random()->id,
                 'subject_id' => $subject->id
             ])->each(function($student){
-                Course::factory(3)->create([
+                Course::factory()->create([
                     'student_id' => $student->id,
-                    'invoice_id' => Invoice::first()->id
+                    'invoice_id' => Invoice::all()->random()->id
                 ]);
             });
         });
