@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
-use App\Models\Client;
+use App\Models\Customer;
 use App\Models\Subject;
 use App\Http\Requests\StoreEleveRequest;
-use App\Http\Requests\UpdateEleveRequest;
+use App\Http\Requests\StudentRequest;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class StudentController extends Controller
 {
@@ -17,7 +20,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::with('client')->orderBy('active', 'desc')->get();
+        $students = Student::with('customer')->orderByDesc('id')->get();
 
         return view('student.index')->with(['students' => $students]);
     }
@@ -29,10 +32,10 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $clients = Client::all();
-        $matieres = Subject::all();
+        $customers = Customer::all();
+        $subjects = Subject::all();
 
-        return view('student.create')->with(['clients' => $clients, 'matieres' => $matieres]);
+        return view('student.create')->with(['customers' => $customers, 'subjects' => $subjects]);
     }
 
     /**
@@ -45,8 +48,8 @@ class StudentController extends Controller
     {
         Student::create([
             'nom' => $request->nom,
-            'matiere_id' => $request->matiere,
-            'client_id' => $request->client,
+            'subject_id' => $request->subject,
+            'customer_id' => $request->customer,
             'objectifs' => $request->objectifs,
             'commentaires' => $request->commentaires
         ]);
@@ -63,39 +66,38 @@ class StudentController extends Controller
     public function show(Student $student)
     {
         $student = Student::where('id',$student->id)
-        ->with(['cours', 'matiere'])
-        ->withCount('cours')
+        ->with(['courses', 'subject'])
+        ->withCount('courses')
         ->first();
 
         return view('student.show')->with(['student' => $student]);
     }
 
+
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
+     * @param Student $student
+     * @return View
      */
     public function edit(Student $student)
     {
-        $matieres = Subject::all();
-        $clients = Client::all();
+        $subjects = Subject::all();
+        $customers = Customer::all();
 
         return view('student.edit')->with([
             'student' => $student,
-            'matieres' => $matieres,
-            'clients' => $clients
+            'subjects' => $subjects,
+            'customers' => $customers
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateEleveRequest  $request
+     * @param  \App\Http\Requests\StudentRequest  $request
      * @param  \App\Models\Student  $eleve
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEleveRequest $request, Student $student)
+    public function update(StudentRequest $request, Student $student)
     {
         $student->update($request->validated());
 

@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\Customer;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Student;
-use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\Subject;
 use Database\Seeders\UserSeeder;
@@ -24,52 +24,47 @@ class StudentControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->matiere = Subject::factory()->create();
+        $this->subject = Subject::factory()->create();
 
-        $this->customer = Client::factory()->create()->each(function($client){
+        $this->customer = Customer::factory()->create()->each(function($customer){
             Invoice::factory()->create([
-                'client_id' => $client->id,
+                'customer_id' => $customer->id,
             ]);
         });
 
         $this->student = Student::factory()->create([
-            'matiere_id' => $this->matiere->id,
-            'client_id' => Client::first()->id,
+            'subject_id' => $this->subject->id,
+            'customer_id' => Customer::first()->id,
         ]);
     }
 
     /** @test */
-    public function canFetchTheStudentsList()
+    public function can_fetch_the_students_index_view()
     {
         $response = $this->get(route('student.index'));
         $response->assertOk();
     }
 
     /** @test */
-    public function canRenderStudentCreatePage()
+    public function can_render_student_create_view()
     {
         $response = $this->get(route('student.create'));
-        $response->assertOk();
-
-        $view = $this->view('student.create', [
-            'clients' => Subject::all(),
-            'matieres' => Client::all(),
-        ]);
-
-        $view->assertSee('Nom');
-        $view->assertSee('Matière');
-        $view->assertSee('Client');
-        $view->assertSee('Objectifs');
-        $view->assertSee('Commentaires');
+        $response
+            ->assertOk()
+            ->assertSee('Nom')
+            ->assertSee('Matière')
+            ->assertSee('Client')
+            ->assertSee('Objectifs')
+            ->assertSee('Commentaires');
     }
 
     /** @test */
-    public function canStoreANewStudent()
+    public function can_store_a_new_student()
     {
-        $response = $this->post(route('student.store', [
+        $this->post(route('student.store', [
             'nom' => "John Doe",
             'matiere_id' => Subject::first()->id,
-            'client_id' => Client::first()->id,
+            'customer_id' => Customer::first()->id,
             'objectifs' => "Some random text to test",
             'commentaires' => "Some random text to test",
         ]));
@@ -78,35 +73,36 @@ class StudentControllerTest extends TestCase
     }
 
     /** @test */
-    public function canRenderTheShowStudentPage()
+    public function can_render_the_show_student_view()
     {
 
         $response = $this->get(route('student.show', $this->student));
-        $response->assertOk();
 
-        $view = $this->view('student.show', ['student' => $this->student]);
-
-        $view->assertSee($this->student->name);
-        $view->assertSee($this->student->objectifs);
-        $view->assertSee($this->student->matiere->name);
+        $response
+            ->assertOk()
+            ->assertSee($this->student->name)
+            ->assertSee($this->student->objectifs)
+            ->assertSee($this->student->subject->name);
     }
 
     /** @test */
-    public function canRenderTheEditStudentPage()
+    public function can_render_the_edit_student_view()
     {
         $response = $this->get(route('student.edit', $this->student));
         $response->assertOk();
     }
 
     /** @test */
-    public function canUpdateAStudent()
+    public function can_update_a_student()
     {
-        $response = $this->patch(route('student.update', $this->student), [
+        $this->patch(route('student.update', $this->student), [
             "nom" => "test",
             "active" => 1,
-            "client_id" => $this->customer,
-            "matiere_id" => $this->matiere->id,
+            "customer_id" => $this->customer,
+            "subject_id" => $this->subject->id,
         ]);
+
+        $this->student->refresh();
 
         $this->assertEquals(Student::first()->nom, "test");
     }

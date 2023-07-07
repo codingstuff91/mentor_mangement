@@ -16,18 +16,18 @@
                             <input type="text" name="nom" class="rounded-lg w-full"/>
 
                             <label>Matière</label>
-                            <select name="matiere" class="rounded-lg w-full">
+                            <select name="subject" class="rounded-lg w-full">
                                 <option value="">-- Choisir une matère --</option>
-                                @foreach ($matieres as $matiere)
-                                    <option value="{{$matiere->id }}">{{ $matiere->nom }}</option>
+                                @foreach ($subjects as $subject)
+                                    <option value="{{$subject->id }}">{{ $subject->nom }}</option>
                                 @endforeach
                             </select>
 
-                            <label>Client</label>
-                            <select name="client" class="rounded-lg w-full">
+                            <label>customer</label>
+                            <select name="customer" class="rounded-lg w-full">
                                 <option value="">-- Choisir un client --</option>
-                                @foreach ($clients as $client)
-                                    <option value="{{ $client->id }}">{{ $client->nom }}</option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}">{{ $customer->nom }}</option>
                                 @endforeach
                             </select>
                         </div>
