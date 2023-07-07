@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Student;
 use App\Models\Invoice;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Services\CoursService;
@@ -41,7 +42,7 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request, CoursService $cours_service)
     {
-        $count_hours = $cours_service->count_lesson_hours($request->heure_fin,$request->heure_debut);
+        $count_hours = $cours_service->count_lesson_hours($request->heure_fin, $request->heure_debut);
 
         $pack_heures = isset($request->pack_heures) ? 1 : 0;
 
