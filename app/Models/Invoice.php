@@ -12,7 +12,16 @@ class Invoice extends Model
 
     protected $guarded = [];
 
-    // Une facture est lié a un client
+    public function scopePaid($query)
+    {
+        return $query->where('payee', true);
+    }
+
+    public function scopeUnpaid($query)
+    {
+        return $query->where('payee', false);
+    }
+
     public function customer()
     {
         return $this->belongsTo('App\Models\Customer');
@@ -23,7 +32,6 @@ class Invoice extends Model
         return $this->created_at->format('M-Y');
     }
 
-    // Une facture est liée à plusieurs cours
     public function courses()
     {
         return $this->hasMany('App\Models\Course');
