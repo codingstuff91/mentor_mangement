@@ -10,7 +10,7 @@
             <form class="flex flex-col" action="{{ route('course.store') }}" method="post">
                 @csrf
                 <label class="my-2">Eleve</label>
-                <select class="rounded-lg" name="eleve_id">
+                <select class="rounded-lg" name="student">
                     @foreach ($students as $student)
                         <option value="{{ $student->id }}">{{ $student->nom }}</option>
                     @endforeach
@@ -61,7 +61,7 @@
                 @enderror
 
                 <label class="my-2">Facture concernée</label>
-                <select class="rounded-lg" name="invoice_id">
+                <select class="rounded-lg" name="invoice">
                     @foreach ($invoices as $invoice)
                         <option value="{{ $invoice->id }}">{{ $invoice->month_year_creation }} -- {{ $invoice->customer->nom }}</option>
                     @endforeach

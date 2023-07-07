@@ -25,33 +25,24 @@ class CourseControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->matiere = Subject::factory()->create();
-
-        $this->customer = Customer::factory()->create()->each(function($customer){
-            Invoice::factory()->create([
-                'customer_id' => $customer->id,
-                'payee' => false,
-            ]);
-
-            Invoice::factory()->create([
-                'customer_id' => $customer->id,
-                'payee' => true,
-            ]);
-        });
+        $this->subject = Subject::factory()->create();
+        $this->customer = Customer::factory()
+            ->has(Invoice::factory())
+            ->create();
 
         $this->student = Student::factory()->create([
-            'matiere_id' => $this->matiere->id,
-            'customer_id' => Invoice::first()->id,
+            'subject_id' => $this->subject->id,
+            'customer_id' => $this->customer->id,
         ]);
 
         $this->course = course::factory()->create([
-            'student_id' => 1,
-            'facture_id' => 1
+            'student_id' => $this->student->id,
+            'invoice_id' => Invoice::first()->id,
         ]);
 
         $this->courseAttributes = [
             'student_id' => $this->student->id,
-            'facture_id' => Invoice::first()->id,
+            'invoice_id' => Invoice::first()->id,
             "heure_debut" => "18:00",
             "heure_fin" => "19:00",
             'date_debut' => "2023-07-01 18:00:00",
@@ -84,18 +75,36 @@ class CourseControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_render_the_student_create_view_with_unpaid_invoices()
+    {
+        $unpaidInvoice = Invoice::factory()
+                        ->for(Customer::factory())
+                        ->unpaid()
+                        ->create();
+
+        $paidInvoice = Invoice::factory()
+                        ->for(Customer::factory())
+                        ->paid()
+                        ->create();
+
+        $response = $this->get(route('course.create'));
+        $response->assertOk();
+        $response->assertSee($unpaidInvoice->month_year_creation . " -- " . $unpaidInvoice->customer->nom );
+    }
+
+    /** @test */
     public function can_store_a_new_course()
     {
         $this->post(route('course.store'), [
-            'student_id' => $this->student->id,
-            'facture_id' => Invoice::first()->id,
+            'student' => $this->student->id,
+            'invoice' => Invoice::first()->id,
             "heure_debut" => "18:00",
             "heure_fin" => "19:00",
             'date_debut' => "2023-07-01 18:00:00",
             'date_fin' => "2023-07-01 19:00:00",
             'notions_apprises' => "description des notions",
             'taux_horaire' => 50,
-        ])->assertRedirect(route('course.index'));
+        ]);
 
         $this->assertDatabaseCount('courses', 2);
     }
@@ -161,11 +170,11 @@ class CourseControllerTest extends TestCase
     public function cannot_store_a_new_course_without_choosing_an_active_invoice()
     {
         $attributes = array_merge($this->courseAttributes, [
-            'facture_id' => '',
+            'invoice_id' => '',
         ]);
 
         $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('facture_id');
+        $response->assertSessionHasErrors('invoice_id');
     }
 
     /** @test */

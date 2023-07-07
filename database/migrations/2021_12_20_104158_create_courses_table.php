@@ -20,7 +20,7 @@ class CreateCoursesTable extends Migration
             $table->timestamp('date_debut');
             $table->timestamp('date_fin');
             $table->text('notions_apprises');
-            $table->boolean('paye');
+            $table->boolean('paye')->default(false);
             $table->timestamps();
         });
     }

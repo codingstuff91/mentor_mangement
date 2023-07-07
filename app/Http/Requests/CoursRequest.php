@@ -24,8 +24,8 @@ class CoursRequest extends FormRequest
     public function rules()
     {
         return [
-            'student_id' => 'required',
-            'invoice_id' => 'required',
+            'student' => 'required',
+            'invoice' => 'required',
             'date_debut' => 'required',
             'heure_debut' => 'required',
             'heure_fin' => 'required',
@@ -37,8 +37,8 @@ class CoursRequest extends FormRequest
     public function messages()
     {
         return [
-            'student_id.required' => 'Veuillez sélectionner un étudiant',
-            'invoice_id.required' => 'Veuillez choisir une facture',
+            'student.required' => 'Veuillez sélectionner un étudiant',
+            'invoice.required' => 'Veuillez choisir une facture',
             'date_debut.required' => 'Veuillez sélectionner une date',
             'heure_debut.required' => 'Veuillez choisir une heure de début',
             'heure_fin.required' => 'Veuillez choisir une heure de fin',
