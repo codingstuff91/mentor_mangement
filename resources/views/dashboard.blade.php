@@ -15,7 +15,7 @@
                         </div>
                         <div class="p-2 flex flex-col content-center items-center">
                             <h2 class="text-sm sm:text-xl">Total Heures</h2>
-                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $total_heures[0]->total }}</h3>
+                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $totalCoursesHours[0]->total }}</h3>
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                         </div>
                         <div class="p-2 flex flex-col content-center items-center">
                             <h2 class="text-sm sm:text-xl">Total Cours</h2>
-                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $total_heures[0]->total }}</h3>
+                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $totalCourses }}</h3>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         </div>
                         <div class="p-2 flex flex-col content-center items-center">
                             <h2 class="text-sm sm:text-xl">Total revenus</h2>
-                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $total_gains[0]->total }}</h3>
+                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $totalRevenues[0]->total }}</h3>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                         </div>
                         <div class="p-2 flex flex-col content-center items-center">
                             <h2 class="text-sm sm:text-xl">Total Eleves</h2>
-                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $total_eleves }}</h3>
+                            <h3 class="text-sm mt-2 font-bold sm:text-xl">{{ $totalStudents }}</h3>
                         </div>
                     </div>
                 </div>
@@ -74,16 +74,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for ($i = 0; $i < $nombre_heures_par_eleve->count(); $i++)
+                            @for ($i = 0; $i < $totalHoursPerSubject->count(); $i++)
                                 <tr>
-                                    <td class="border-2 border-gray-600 p-2 bg-blue-200 text-center sm:text-x">{{ $nombre_heures_par_eleve[$i]->nom }}</td>
-                                    <td class="border-2 border-gray-600 p-2 bg-blue-200 text-center sm:text-x">{{ $nombre_heures_par_eleve[$i]->total }}</td>
+                                    <td class="border-2 border-gray-600 p-2 bg-blue-200 text-center sm:text-x">{{ $totalHoursPerSubject[$i]->nom }}</td>
+                                    <td class="border-2 border-gray-600 p-2 bg-blue-200 text-center sm:text-x">{{ $totalHoursPerSubject[$i]->total }}</td>
                                 </tr>
                             @endfor
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
 </x-app-layout>

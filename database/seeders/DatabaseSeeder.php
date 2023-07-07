@@ -2,18 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Models\Cours;
-use App\Models\Eleve;
-use App\Models\Client;
-use App\Models\Facture;
-use App\Models\Matiere;
+use App\Models\Course;
+use App\Models\Customer;
+use App\Models\Student;
+use App\Models\Invoice;
+use App\Models\Subject;
 use Illuminate\Database\Seeder;
-use Database\Seeders\UserSeeder;
-use Database\Seeders\ClientSeeder;
-use Database\Seeders\MatiereSeeder;
 
 class DatabaseSeeder extends Seeder
 {
+    private const NUMBER_OF_CUSTOMERS = 5;
+    private const NUMBER_OF_SUBJECTS = 5;
+    private const NUMBER_OF_STUDENTS_PER_SUBJECT = 1;
+    private const NUMBER_OF_COURSES_PER_STUDENT = 1;
+
     /**
      * Seed the application's database.
      *
@@ -21,24 +23,44 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $clients = Client::factory(3)->create()->each(function($client){
-            Facture::factory()->create([
-                'client_id' => $client->id,
-            ]);
-        });
+        $this->seedCustomers();
+        $this->seedSubjects();
+        $this->seedStudentsAndCourses();
+        $this->seedUser();
+    }
+    private function seedCustomers()
+    {
+        Customer::factory(self::NUMBER_OF_CUSTOMERS)
+            ->has(Invoice::factory()->unpaid())
+            ->create();
+    }
+    private function seedSubjects()
+    {
+        Subject::factory(self::NUMBER_OF_SUBJECTS)->create();
+    }
+    private function seedStudentsAndCourses()
+    {
+        $customers = Customer::all();
+        $subjects = Subject::all();
 
-        Matiere::factory(5)->create()->each(function($matiere) use ($clients){
-            Eleve::factory()->create([
-                'client_id' => $clients->random()->id,
-                'matiere_id' => $matiere->id
-            ])->each(function($eleve){
-                Cours::factory(3)->create([
-                    'eleve_id' => $eleve->id,
-                    'facture_id' => Facture::first()->id
+        $subjects->each(function ($subject) use ($customers) {
+            $students = Student::factory(self::NUMBER_OF_STUDENTS_PER_SUBJECT)->create([
+                'customer_id' => $customers->random()->id,
+                'subject_id' => $subject->id,
+            ]);
+
+            $students->each(function ($student) {
+                $invoiceId = Invoice::all()->random()->id;
+
+                Course::factory(self::NUMBER_OF_COURSES_PER_STUDENT)->create([
+                    'student_id' => $student->id,
+                    'invoice_id' => $invoiceId,
                 ]);
             });
         });
-
+    }
+    private function seedUser()
+    {
         $this->call(UserSeeder::class);
     }
 }

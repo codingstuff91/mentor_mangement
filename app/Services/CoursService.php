@@ -2,13 +2,32 @@
 
 namespace App\Services;
 
+use App\Exceptions\InvalidCourseHoursOrderException;
+
 class CoursService
 {
     /**
-     * Calcul le nombre d'heures d'un cours
+     * @param string $rawEndHour
+     * @param string $rawStartHour
+     * @return int
+     * @throws \Throwable
      */
-    public function count_lesson_hours($heure_fin, $heure_debut)
+    public function count_lesson_hours(string $rawEndHour, string $rawStartHour): int
     {
-        return explode(":",$heure_fin)[0] - explode(":",$heure_debut)[0];
+        $startHour = $this->getHour($rawStartHour);
+        $endHour = $this->getHour($rawEndHour);
+
+        throw_if($endHour < $startHour || $startHour > $endHour, InvalidCourseHoursOrderException::class);
+
+        return $endHour - $startHour;
+    }
+
+    /**
+     * @param string $rawHour
+     * @return int
+     */
+    public function getHour(string $rawHour): int
+    {
+        return explode(":", $rawHour)[0];
     }
 }
