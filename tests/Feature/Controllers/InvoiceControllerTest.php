@@ -25,7 +25,7 @@ class InvoiceControllerTest extends TestCase
 
         $this->actingAs($user);
 
-        $this->matiere = Subject::factory()->create();
+        $this->subject = Subject::factory()->create();
 
         $this->customer = Customer::factory()->create()->each(function($customer){
             Invoice::factory()->create([
@@ -34,12 +34,12 @@ class InvoiceControllerTest extends TestCase
         });
 
         $this->eleve = Student::factory()->create([
-            'matiere_id' => $this->matiere->id,
+            'subject_id' => $this->subject->id,
             'customer_id' => Customer::first()->id,
         ]);
 
         $coursesHours = Course::factory(2)->create([
-            'student_id'   => Student::first()->id,
+            'student_id' => Student::first()->id,
             'invoice_id' => Invoice::first()->id,
         ]);
     }
@@ -52,7 +52,7 @@ class InvoiceControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_render_the_facture_create_view()
+    public function can_render_the_invoice_create_view()
     {
         $response = $this->get(route('invoice.create'));
 
