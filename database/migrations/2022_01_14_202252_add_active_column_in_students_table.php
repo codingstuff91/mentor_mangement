@@ -14,7 +14,7 @@ class AddActiveColumnInStudentsTable extends Migration
     public function up()
     {
         Schema::table('students', function (Blueprint $table) {
-            $table->boolean('active')->after('client_id')->default(true);
+            $table->boolean('active')->after('customer_id')->default(true);
         });
     }
 
