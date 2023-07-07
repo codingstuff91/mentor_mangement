@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StudentRequest extends FormRequest
+class StoreInvoiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,14 @@ class StudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom' => 'required',
-            'active' => 'required',
-            'customer' => 'required',
-            'subject' => 'required'
+            'client_id' => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'client_id.required' => 'Veuillez saisir un nom de client'
         ];
     }
 }
