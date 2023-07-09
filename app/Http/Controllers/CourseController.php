@@ -14,6 +14,13 @@ use App\Http\Requests\UpdateCourseRequest;
 
 class CourseController extends Controller
 {
+    protected $coursService;
+
+    public function __construct(CoursService $coursService)
+    {
+        $this->coursService = $coursService;
+    }
+
     /**
      * @return View
      */
@@ -40,9 +47,9 @@ class CourseController extends Controller
      * @param CoursService $cours_service
      * @return RedirectResponse
      */
-    public function store(StoreCourseRequest $request, CoursService $cours_service)
+    public function store(StoreCourseRequest $request)
     {
-        $count_hours = $cours_service->count_lesson_hours($request->heure_fin, $request->heure_debut);
+        $count_hours = $this->coursService->count_lesson_hours($request->heure_fin, $request->heure_debut);
 
         $pack_heures = isset($request->pack_heures) ? 1 : 0;
 
@@ -75,9 +82,9 @@ class CourseController extends Controller
      * @param CoursService $cours_service
      * @return RedirectResponse
      */
-    public function update(UpdateCourseRequest $request, Course $course, CoursService $cours_service)
+    public function update(UpdateCourseRequest $request, Course $course)
     {
-        $count_hours = $cours_service->count_lesson_hours($request->heure_fin, $request->heure_debut);
+        $count_hours = $this->coursService->count_lesson_hours($request->heure_fin, $request->heure_debut);
 
         $course->update([
             'paye' => $request->paye,
