@@ -17,10 +17,14 @@ class CreateCoursesTable extends Migration
             $table->id();
             $table->integer('student_id');
             $table->integer('invoice_id');
-            $table->timestamp('date_debut');
-            $table->timestamp('date_fin');
-            $table->text('notions_apprises');
-            $table->boolean('paye')->default(false);
+            $table->timestamp('date');
+            $table->timestamp('start_hour');
+            $table->timestamp('end_hour');
+            $table->integer('hours_count');
+            $table->boolean('hours_pack')->default(false);
+            $table->integer('hourly_rate');
+            $table->text('learned_notions');
+            $table->boolean('paid')->default(false);
             $table->timestamps();
         });
     }
