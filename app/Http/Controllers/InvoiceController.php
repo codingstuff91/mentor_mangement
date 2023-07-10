@@ -6,9 +6,9 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreInvoiceRequest;
-use App\Http\Requests\UpdateInvoiceRequest;
 
 class InvoiceController extends Controller
 {
@@ -77,11 +77,10 @@ class InvoiceController extends Controller
     }
 
     /**
-     * @param UpdateInvoiceRequest $request
      * @param Invoice $facture
      * @return RedirectResponse
      */
-    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
+    public function update(Request $request, Invoice $invoice)
     {
         $invoice->update([
             'paid' => $request->paid,
