@@ -25,14 +25,14 @@
                         <label class="mt-2">Matiere concernée</label>
                         <select class="mt-2 rounded-lg" name="subject_id" class="rounded-lg">
                             @foreach ($subjects as $subject)
-                                <option value="{{ $subject->id}}" @if ($subject->id == $student->subject_id) selected="selected" @endif>{{ $subject->nom }}</option>
+                                <option value="{{ $subject->id}}" @if ($subject->id == $student->subject_id) selected="selected" @endif>{{ $subject->name }}</option>
                             @endforeach
                         </select>
 
                         <label class="mt-2">Client concerné</label>
                         <select class="mt-2 mb-4 rounded-lg" name="client_id" class="rounded-lg">
                             @foreach ($customers as $customer)
-                                <option value="{{ $customer->id}}" @if ($customer->id == $student->customer_id) selected="selected" @endif>{{ $customer->nom }}</option>
+                                <option value="{{ $customer->id}}" @if ($customer->id == $student->customer_id) selected="selected" @endif>{{ $customer->name }}</option>
                             @endforeach
                         </select>
 
