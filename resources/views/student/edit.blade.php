@@ -14,7 +14,7 @@
                         @method('patch')
 
                         <label>Nom de l'élève</label>
-                        <input type="text" name="nom" value="{{ $student->nom }}" class="rounded-lg mt-2">
+                        <input type="text" name="nom" value="{{ $student->name }}" class="rounded-lg mt-2">
 
                         <label class="mt-2">Statut élève</label>
                         <select class="mt-2 rounded-lg" name="active" class="rounded-lg" value="{{ $student->active }}">
@@ -37,7 +37,7 @@
                         </select>
 
                         <label for="">Objectifs</label>
-                        <textarea name="objectifs" cols="30" rows="10">{!! $student->objectifs !!}</textarea>
+                        <textarea name="objectifs" cols="30" rows="10">{!! $student->goals !!}</textarea>
 
                         <input type="submit" value="Confirmer" class="p-2 mt-4 rounded-lg bg-green-400">
                     </form>

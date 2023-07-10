@@ -24,8 +24,8 @@ class UpdateStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom' => 'required',
-            'objectifs' => 'required'
+            'name' => 'required',
+            'goals' => 'required'
         ];
     }
 }

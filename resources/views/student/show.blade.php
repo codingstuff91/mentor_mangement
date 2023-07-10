@@ -1,17 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
-            {{ $student->nom }}
+            {{ $student->name }}
         </h2>
         <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
-            {{ $student->subject->nom }}
+            {{ $student->subject->name }}
         </h2>
     </x-slot>
 
     <div class="py-4">
         <h2 class="text-2xl font-bold text-center mb-2">Objectifs</h2>
         <div class="w-full p-4 bg-white border-b border-gray-400 mb-4">
-            <p class="my-2 text-center text-lg">{!! $student->objectifs !!}</p>
+            <p class="my-2 text-center text-lg">{!! $student->goals !!}</p>
         </div>
 
         <h2 class="text-2xl font-bold text-center mt-4 mb-2">{{ $student->cours_count }} Cours réalisés</h2>

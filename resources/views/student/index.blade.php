@@ -19,7 +19,7 @@
                 @foreach ($students as $student)
                     <div class="my-4 flex flex-row justify-between items-center w-full mx-auto">
                         <div class="flex flex-col">
-                            <h2 class="text-3xl flex items-center">{{ $student->nom }}</h2>
+                            <h2 class="text-3xl flex items-center">{{ $student->name }}</h2>
                             <div class="flex">
                                 <p class="ml-2 p-2 text-xs rounded-lg bg-blue-100"><i class="fas fa-user mr-2"></i>{{ $student->customer->nom }}</^p>
                                 <p class="ml-2 p-2 text-xs rounded-lg bg-amber-300"><i class="fas fa-book mr-2"></i>{{ $student->subject->nom }}</p>
