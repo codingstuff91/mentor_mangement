@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvoiceFactory extends Factory
@@ -15,7 +14,7 @@ class InvoiceFactory extends Factory
     public function definition()
     {
         return [
-            'payee' => $this->faker->boolean,
+            'paid' => $this->faker->boolean,
         ];
     }
 
@@ -28,7 +27,7 @@ class InvoiceFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'payee' => false,
+                'paid' => false,
             ];
         });
     }
@@ -42,7 +41,7 @@ class InvoiceFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'payee' => false,
+                'paid' => true,
             ];
         });
     }

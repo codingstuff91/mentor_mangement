@@ -43,7 +43,7 @@ class InvoiceController extends Controller
     {
         Invoice::create([
             'client_id' => $request->client_id,
-            'payee' => 0
+            'paid' => 0,
         ]);
 
         return redirect()->route('invoice.index');
@@ -73,7 +73,7 @@ class InvoiceController extends Controller
      */
     public function edit(Invoice $invoice)
     {
-        return view('invoice.edit')->with(['invoive' => $invoice]);
+        return view('invoice.edit')->with(['invoice' => $invoice]);
     }
 
     /**
@@ -84,7 +84,7 @@ class InvoiceController extends Controller
     public function update(UpdateInvoiceRequest $request, Invoice $invoice)
     {
         $invoice->update([
-            'payee' => $request->payee,
+            'paid' => $request->paid,
         ]);
 
         return redirect()->route('invoice.index');

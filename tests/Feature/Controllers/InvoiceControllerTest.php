@@ -74,9 +74,10 @@ class InvoiceControllerTest extends TestCase
     }
 
     /** @test */
-    public function can_show_the_total_number_of_hours_of_a_facture()
+    public function can_show_the_total_number_of_hours_of_an_invoice()
     {
         $invoice = Invoice::first();
+
         $totalCoursesHours = $invoice->courses->sum('nombre_heures');
 
         $response = $this->get(route('invoice.show', $invoice));
@@ -89,6 +90,7 @@ class InvoiceControllerTest extends TestCase
     public function can_display_the_total_price_of_an_invoice()
     {
         $invoice = Invoice::first();
+
         $totalPrice = $invoice->courses->sum(function ($course) {
             return $course->nombre_heures * $course->taux_horaire;
         });

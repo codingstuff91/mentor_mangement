@@ -2,7 +2,7 @@
     <x-slot name="header">
         <h2 class="p-2 font-semibold text-xl text-gray-800 text-center">
             <i class="fas fa-user mr-2"></i>
-            {{ $invoice->customer->nom }}
+            {{ $invoice->customer->name }}
             <i class="fas fa-calendar-day mx-2"></i>
             {{ $invoice->month_year_creation }}
         </h2>
@@ -21,7 +21,7 @@
                 <div class="mb-2 p-2 bg-gray-200 rounded-lg flex justify-between">
                     <p class="text-lg font-bold">
                         <i class="fas fa-user mr-2"></i>
-                        {{ $course->student->nom }} -- {{ $course->nombre_heures }}h
+                        {{ $course->student->name }} -- {{ $course->nombre_heures }}h
                     </p>
                     <p class="font-bold mr-2">{{ $course->total_prix }} €</p>
                 </div>

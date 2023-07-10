@@ -14,12 +14,12 @@ class Invoice extends Model
 
     public function scopePaid($query)
     {
-        return $query->where('payee', true);
+        return $query->where('paid', true);
     }
 
     public function scopeUnpaid($query)
     {
-        return $query->where('payee', false);
+        return $query->where('paid', false);
     }
 
     public function customer()
