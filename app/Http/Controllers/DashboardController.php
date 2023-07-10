@@ -21,8 +21,8 @@ class DashboardController extends Controller
                                     ->join('courses', 'courses.student_id', '=', 'students.id')
                                     ->join('subjects', 'subjects.id', '=', 'students.subject_id')
                                     ->where('courses.pack_heures', false)
-                                    ->select(DB::raw('subjects.nom, SUM(nombre_heures) as total'))
-                                    ->groupBy('subjects.nom')
+                                    ->select(DB::raw('subjects.name, SUM(nombre_heures) as total'))
+                                    ->groupBy('subjects.name')
                                     ->orderBy('total', 'desc')
                                     ->get();
 
