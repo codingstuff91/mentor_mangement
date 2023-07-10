@@ -12,58 +12,58 @@
                 <label class="my-2">Eleve</label>
                 <select class="rounded-lg" name="student">
                     @foreach ($students as $student)
-                        <option value="{{ $student->id }}">{{ $student->nom }}</option>
+                        <option value="{{ $student->id }}">{{ $student->name }}</option>
                     @endforeach
                 </select>
 
                 <div class="my-2 flex flex-row justify-between items-center">
                     <div class="flex flex-col align-items-center">
                         <label class="my-2">Date du cours</label>
-                        <input type="date" name="date_debut" class="rounded-lg">
-                        @error('date_debut')
+                        <input type="date" name="date" class="rounded-lg">
+                        @error('date')
                             <div class="text-red-400">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="flex flex-col justify-center">
                         <label>Pack d'heures</label>
-                        <input type="checkbox" class="rounded-lg" name="pack_heures">
+                        <input type="checkbox" class="rounded-lg" name="hours_pack">
                     </div>
                 </div>
 
                 <div class="my-2 columns-2 gap-4">
                     <div class="flex flex-col align-items-center">
                         <label class="my-2">Heure début</label>
-                        <input type="time" name="heure_debut" class="rounded-lg">
-                        @error('heure_debut')
+                        <input type="time" name="start_hour" class="rounded-lg">
+                        @error('start_hour')
                             <div class="text-red-400">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div class="flex flex-col align-items-center">
                         <label class="my-2">Heure fin</label>
-                        <input type="time" name="heure_fin" class="rounded-lg">
-                        @error('heure_fin')
+                        <input type="time" name="end_hour" class="rounded-lg">
+                        @error('end_hour')
                             <div class="text-red-400">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
 
                 <label class="my-2">Notions apprises</label>
-                <textarea name="notions_apprises" class="rounded-lg" cols="30" rows="2"></textarea>
-                @error('notions_apprises')
+                <textarea name="learned_notions" class="rounded-lg" cols="30" rows="2"></textarea>
+                @error('learned_notions')
                     <div class="text-red-400">{{ $message }}</div>
                 @enderror
 
                 <label class="my-2">Taux horaire</label>
-                <input type="number" name="taux_horaire" class="rounded-lg">
-                @error('taux_horaire')
+                <input type="number" name="hourly_rate" class="rounded-lg">
+                @error('hourly_rate')
                     <div class="text-red-400">{{ $message }}</div>
                 @enderror
 
                 <label class="my-2">Facture concernée</label>
                 <select class="rounded-lg" name="invoice">
                     @foreach ($invoices as $invoice)
-                        <option value="{{ $invoice->id }}">{{ $invoice->month_year_creation }} -- {{ $invoice->customer->nom }}</option>
+                        <option value="{{ $invoice->id }}">{{ $invoice->month_year_creation }} -- {{ $invoice->customer->name }}</option>
                     @endforeach
                 </select>
                 @error('invoice_id')
