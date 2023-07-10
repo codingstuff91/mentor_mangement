@@ -35,7 +35,7 @@ class SubjectControllerTest extends TestCase
     public function can_display_all_subjects_on_index_view()
     {
         $response = $this->get(route('subject.index'));
-        $response->assertSee($this->subject->nom);
+        $response->assertSee($this->subject->name);
     }
 
     /** @test */
@@ -51,7 +51,7 @@ class SubjectControllerTest extends TestCase
     public function can_store_a_new_subject()
     {
         $this->post(route('subject.store'), [
-            'nom' => 'php',
+            'name' => 'php',
         ]);
 
         $this->assertDatabaseCount('subjects', 2);
@@ -61,10 +61,10 @@ class SubjectControllerTest extends TestCase
     public function cannot_store_a_new_subject_without_a_name()
     {
         $response = $this->post(route('subject.store'), [
-            'nom' => '',
+            'name' => '',
         ]);
 
-        $response->assertSessionHasErrors(['nom']);
+        $response->assertSessionHasErrors(['name']);
     }
 
     /** @test */
@@ -80,12 +80,12 @@ class SubjectControllerTest extends TestCase
     public function can_update_a_subject()
     {
         $this->patch(route('subject.update', $this->subject),[
-            'nom' => 'excel'
+            'name' => 'excel'
         ]);
 
         $this->subject->refresh();
 
-        $this->assertEquals('excel', $this->subject->nom);
+        $this->assertEquals('excel', $this->subject->name);
     }
 
     /** @test */
