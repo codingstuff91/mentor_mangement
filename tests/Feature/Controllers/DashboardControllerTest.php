@@ -67,7 +67,7 @@ class DashboardControllerTest extends TestCase
     public function can_show_the_total_revenue()
     {
         $response = $this->get('/dashboard');
-        $totalRevenues = Course::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->first();
+        $totalRevenues = Course::select(DB::raw('SUM(hours_count * hourly_rate) as total'))->first();
 
         $response->assertSeeText("Total revenus");
         $response->assertSee($totalRevenues['total']);
