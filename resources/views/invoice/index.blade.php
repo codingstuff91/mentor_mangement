@@ -24,7 +24,7 @@
                                 {{ $invoice->customer->name }}
                                 ---
                                 <i class="fas fa-calendar-day mx-2"></i>
-                                {{ $invoice->month_year_creation }}
+                                {{ $invoice->created_at->format('M-Y') }}
                             </h2>
                         </div>
                         <div class="mt-4 flex justify-center items-center columns-2 gap-4">
@@ -38,10 +38,15 @@
 
                         <div class="mt-4 flex justify-center">
                             <button class="mx-2 p-2 rounded-lg bg-blue-600 text-white">
-                                <a href="{{ route('invoice.show', $invoice->id) }}"><i class="fas fa-search mr-2"></i>Détails</a>
+                                <a href="{{ route('invoice.show', $invoice->id) }}">
+                                    <i class="fas fa-search mr-2"></i>
+                                    Détails
+                                </a>
                             </button>
                             <button class="mx-2">
-                                <a href="{{ route('invoice.edit', $invoice->id) }}" class="p-2 rounded-lg bg-cyan-300"><i class="fas fa-edit mr-2"></i>Editer statut</a>
+                                <a href="{{ route('invoice.edit', $invoice->id) }}" class="p-2 rounded-lg bg-cyan-300">
+                                    <i class="fas fa-edit mr-2"></i>Editer statut
+                                </a>
                             </button>
                         </div>
                     </div>
