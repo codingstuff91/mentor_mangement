@@ -31,7 +31,7 @@ class StoreInvoiceRequest extends FormRequest
     public function messages()
     {
         return [
-            'client_id.required' => 'Veuillez saisir un nom de client'
+            'customer_id.required' => 'Veuillez saisir un nom de client'
         ];
     }
 }

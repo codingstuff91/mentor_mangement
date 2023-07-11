@@ -42,14 +42,13 @@ class CourseControllerTest extends TestCase
             ]);
 
         $this->courseAttributes = [
-            'student_id' => $this->student->id,
-            'invoice_id' => Invoice::first()->id,
-            "heure_debut" => "18:00",
-            "heure_fin" => "19:00",
-            'date_debut' => "2023-07-01 18:00:00",
-            'date_fin' => "2023-07-01 19:00:00",
-            'notions' => "description des notions",
-            'taux_horaire' => 50,
+            'student' => $this->student->id,
+            'invoice' => Invoice::first()->id,
+            "start_hour" => "18:00",
+            "end_hour" => "19:00",
+            'date' => "2023-07-01 18:00:00",
+            'learned_notions' => "description des notions",
+            'hourly_rate' => 50,
         ];
     }
 
@@ -90,28 +89,19 @@ class CourseControllerTest extends TestCase
 
         $response = $this->get(route('course.create'));
         $response->assertOk();
-        $response->assertSee($unpaidInvoice->month_year_creation . " -- " . $unpaidInvoice->customer->nom );
+        $response->assertSee($unpaidInvoice->month_year_creation . " -- " . $unpaidInvoice->customer->name );
     }
 
     /** @test */
     public function can_store_a_new_course()
     {
-        $this->post(route('course.store'), [
-            'student' => $this->student->id,
-            'invoice' => Invoice::first()->id,
-            "heure_debut" => "18:00",
-            "heure_fin" => "19:00",
-            'date_debut' => "2023-07-01 18:00:00",
-            'date_fin' => "2023-07-01 19:00:00",
-            'notions_apprises' => "description des notions",
-            'taux_horaire' => 50,
-        ]);
+        $this->post(route('course.store'), $this->courseAttributes);
 
         $this->assertDatabaseCount('courses', 2);
     }
 
     /** @test */
-    public function cannot_store_a_new_course_without_choising_an_student()
+    public function cannot_store_a_new_course_without_choosing_an_student()
     {
         $attributes = array_merge($this->courseAttributes, [
             'student' => '',
@@ -125,46 +115,46 @@ class CourseControllerTest extends TestCase
     public function cannot_store_a_new_course_without_choising_a_date()
     {
         $attributes = array_merge($this->courseAttributes, [
-            'date_debut' => '',
+            'start_hour' => '',
         ]);
 
         $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('date_debut');
+        $response->assertSessionHasErrors('start_hour');
     }
 
     /** @test */
     public function cannot_store_a_new_course_without_choising_a_start_hour_and_end_hour()
     {
         $attributes = array_merge($this->courseAttributes, [
-            'heure_debut' => '',
-            'heure_fin' => ''
+            'start_hour' => '',
+            'end_hour' => ''
         ]);
 
         $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('heure_debut');
-        $response->assertSessionHasErrors('heure_fin');
+        $response->assertSessionHasErrors('start_hour');
+        $response->assertSessionHasErrors('end_hour');
     }
 
     /** @test */
     public function cannot_store_a_new_course_without_writing_the_course_covered_concepts()
     {
         $attributes = array_merge($this->courseAttributes, [
-            'notions_apprises' => '',
+            'learned_notions' => '',
         ]);
 
         $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('notions_apprises');
+        $response->assertSessionHasErrors('learned_notions');
     }
 
     /** @test */
     public function cannot_store_a_new_course_without_giving_an_hourly_rate_price()
     {
         $attributes = array_merge($this->courseAttributes, [
-            'taux_horaire' => '',
+            'hourly_rate' => '',
         ]);
 
         $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('taux_horaire');
+        $response->assertSessionHasErrors('hourly_rate');
     }
 
     /** @test */
@@ -204,30 +194,29 @@ class CourseControllerTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee($this->course->date_debut->format('Y-m-d'))
-            ->assertSee($this->course->date_debut->format('H:i'))
-            ->assertSee($this->course->date_fin->format('H:i'))
-            ->assertSee($this->course->paye)
-            ->assertSeeText($this->course->notions_apprises);
+            ->assertSee($this->course->date->format('Y-m-d'))
+            ->assertSee($this->course->start_hour->format('H:i'))
+            ->assertSee($this->course->end_hour->format('H:i'))
+            ->assertSee($this->course->paid)
+            ->assertSeeText($this->course->learned_notions);
     }
 
     /** @test */
     public function can_update_a_course()
     {
         $this->patch(route('course.update', $this->course), [
-            'paye' => true,
-            "heure_debut" => "18:00",
-            "heure_fin" => "19:00",
-            'date_debut' => "2023-07-01 18:00:00",
-            'date_fin' => "2023-07-01 19:00:00",
-            'notions_apprises' => "texte",
+            'paid' => true,
+            'date' => "2023-07-01",
+            "start_hour" => "18:00",
+            "end_hour" => "19:00",
+            'learned_notions' => "texte",
         ]);
 
         $this->course->refresh();
 
-        $this->assertEquals($this->course->notions_apprises, "texte");
-        $this->assertEquals(1, $this->course->paye);
-        $this->assertEquals(1, $this->course->nombre_heures);
+        $this->assertEquals($this->course->learned_notions, "texte");
+        $this->assertEquals(1, $this->course->paid);
+        $this->assertEquals(1, $this->course->hours_count);
     }
 
     /** @test */

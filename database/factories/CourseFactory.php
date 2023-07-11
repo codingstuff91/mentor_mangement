@@ -30,12 +30,13 @@ class CourseFactory extends Factory
         return [
             'student_id' => Student::all()->random()->id,
             'invoice_id' => Invoice::all()->random()->id,
-            'date_debut' => $startHour,
-            'date_fin' => $endHour,
-            'nombre_heures' => $coursService->count_lesson_hours($endHour->hour,$startHour->hour),
-            'taux_horaire' => 10,
-            'notions_apprises' => $this->faker->sentence(3),
-            'paye' => $this->faker->boolean,
+            'date' => now(),
+            'start_hour' => $startHour,
+            'end_hour' => $endHour,
+            'hours_count' => $coursService->count_lesson_hours($endHour->hour,$startHour->hour),
+            'hourly_rate' => 10,
+            'learned_notions' => $this->faker->sentence(3),
+            'paid' => $this->faker->boolean,
         ];
     }
 }

@@ -40,11 +40,11 @@ class StudentController extends Controller
     public function store(StoreStudentRequest $request)
     {
         Student::create([
-            'nom' => $request->nom,
+            'name' => $request->nom,
             'subject_id' => $request->subject,
             'customer_id' => $request->customer,
-            'objectifs' => $request->objectifs,
-            'commentaires' => $request->commentaires
+            'goals' => $request->objectifs,
+            'comments' => $request->commentaires
         ]);
 
         return redirect()->route('student.index');

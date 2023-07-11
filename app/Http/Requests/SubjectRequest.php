@@ -24,14 +24,14 @@ class SubjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom' => 'required'
+            'name' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'nom.required' => 'Veuillez saisir un nom de matière',
+            'name.required' => 'Veuillez saisir un nom de matière',
         ];
     }
 }

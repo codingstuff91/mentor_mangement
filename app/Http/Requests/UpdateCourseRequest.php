@@ -24,20 +24,20 @@ class UpdateCourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'date_debut' => 'required',
-            'heure_debut' => 'required',
-            'heure_fin' => 'required',
-            'notions_apprises' => 'required',
+            'date' => 'required',
+            'start_hour' => 'required',
+            'end_hour' => 'required',
+            'learned_notions' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'date_debut.required' => 'Veuillez sélectionner une date',
-            'heure_debut.required' => 'Veuillez choisir une heure de début',
-            'heure_fin.required' => 'Veuillez choisir une heure de fin',
-            'notions_apprises.required' => 'Veuillez préciser les notions abordées durant le cours',
+            'date.required' => 'Veuillez sélectionner une date',
+            'start_hour.required' => 'Veuillez choisir une heure de début',
+            'end_hour.required' => 'Veuillez choisir une heure de fin',
+            'learned_notions.required' => 'Veuillez préciser les notions abordées durant le cours',
         ];
     }
 }

@@ -19,7 +19,7 @@
                             <select name="subject" class="rounded-lg w-full">
                                 <option value="">-- Choisir une matère --</option>
                                 @foreach ($subjects as $subject)
-                                    <option value="{{$subject->id }}">{{ $subject->nom }}</option>
+                                    <option value="{{$subject->id }}">{{ $subject->name }}</option>
                                 @endforeach
                             </select>
 

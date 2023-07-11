@@ -13,7 +13,7 @@
                         @csrf
 
                         <label>Nom de la matière</label>
-                        <input type="text" name="nom" class="rounded-lg w-full"/>
+                        <input type="text" name="name" class="rounded-lg w-full"/>
 
                         @error('nom')
                             <div class="text-red-400">{{ $message }}</div>

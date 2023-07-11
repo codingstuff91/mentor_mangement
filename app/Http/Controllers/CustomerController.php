@@ -36,8 +36,8 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         Customer::create([
-            'nom' => $request->nom,
-            'commentaires' => $request->commentaires
+            'name'     => $request->name,
+            'comments' => $request->comments
         ]);
 
         return redirect()->route('customer.index');
@@ -61,11 +61,10 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        $customer = Customer::find($customer->id);
-        $customer->nom = $request->nom;
-        $customer->commentaires = $request->commentaires;
-
-        $customer->save();
+        $customer->update([
+            'name'     => $request->name,
+            'comments' => $request->comments
+        ]);
 
         return redirect()->route('customer.index');
     }

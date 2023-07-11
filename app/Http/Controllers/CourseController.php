@@ -49,19 +49,20 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        $count_hours = $this->coursService->count_lesson_hours($request->heure_fin, $request->heure_debut);
+        $count_hours = $this->coursService->count_lesson_hours($request->end_hour, $request->start_hour);
 
-        $pack_heures = isset($request->pack_heures) ? 1 : 0;
+        $pack_heures = isset($request->hours_pack) ? 1 : 0;
 
         Course::create([
             'student_id' => $request->student,
             'invoice_id' => $request->invoice,
-            'date_debut' => $request->date_debut ." ". $request->heure_debut,
-            'date_fin' => $request->date_debut ." ". $request->heure_fin,
-            'nombre_heures' => $count_hours,
-            'pack_heures' => $pack_heures,
-            'notions_apprises' => $request->notions_apprises,
-            'taux_horaire' => $request->taux_horaire
+            'date' => $request->date_debut ." ". $request->start_hour,
+            'start_hour' => $request->date_debut ." ". $request->start_hour,
+            'end_hour' => $request->date_debut ." ". $request->end_hour,
+            'hours_count' => $count_hours,
+            'hours_pack' => $pack_heures,
+            'learned_notions' => $request->learned_notions,
+            'hourly_rate' => $request->hourly_rate
         ]);
 
         return redirect()->route('course.index');
@@ -84,14 +85,15 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        $count_hours = $this->coursService->count_lesson_hours($request->heure_fin, $request->heure_debut);
+        $count_hours = $this->coursService->count_lesson_hours($request->end_hour, $request->start_hour);
 
         $course->update([
-            'paye' => $request->paye,
-            'nombre_heures' => $count_hours,
-            'date_debut' => $request->date_debut ." ". $request->heure_debut,
-            'date_fin' => $request->date_debut ." ". $request->heure_fin,
-            'notions_apprises' => $request->notions_apprises,
+            'paid' => $request->paid,
+            'hours_count' => $count_hours,
+            'date' => $request->date,
+            'start_hour' => $request->date ." ". $request->start_hour,
+            'end_hour' => $request->date ." ". $request->end_hour,
+            'learned_notions' => $request->learned_notions,
         ]);
 
         return redirect()->route('course.index');

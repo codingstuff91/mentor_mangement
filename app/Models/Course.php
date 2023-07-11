@@ -12,33 +12,20 @@ class Course extends Model
 
     protected $guarded = [];
 
-    public function getDateFormatedAttribute()
-    {
-        $date = new Carbon($this->date_debut);
-        return $date->format('d/m/Y');
-    }
-
-    public function getDateDebutEditedAttribute()
-    {
-        $date = new Carbon($this->date_debut);
-        return $date->format('Y-m-d');
-    }
-
-    public function getHeureDebutAttribute()
-    {
-        $date = new Carbon($this->date_debut);
-        return $date->format('H:i');
-    }
-
-    public function getHeureFinAttribute()
-    {
-        $date = new Carbon($this->date_fin);
-        return $date->format('H:i');
-    }
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'date' => 'date',
+        'start_hour' => 'datetime',
+        'end_hour' => 'datetime',
+    ];
 
     public function getTotalPriceAttribute()
     {
-        return $this->taux_horaire * $this->nombre_heures;
+        return $this->hourly_rate * $this->hours_count;
     }
 
     public function invoice()

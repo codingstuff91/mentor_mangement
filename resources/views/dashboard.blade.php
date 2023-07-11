@@ -76,7 +76,7 @@
                         <tbody>
                             @for ($i = 0; $i < $totalHoursPerSubject->count(); $i++)
                                 <tr>
-                                    <td class="border-2 border-gray-600 p-2 bg-blue-200 text-center sm:text-x">{{ $totalHoursPerSubject[$i]->nom }}</td>
+                                    <td class="border-2 border-gray-600 p-2 bg-blue-200 text-center sm:text-x">{{ $totalHoursPerSubject[$i]->name }}</td>
                                     <td class="border-2 border-gray-600 p-2 bg-blue-200 text-center sm:text-x">{{ $totalHoursPerSubject[$i]->total }}</td>
                                 </tr>
                             @endfor

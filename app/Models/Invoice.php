@@ -10,16 +10,26 @@ class Invoice extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime',
+        'paid' => 'boolean',
+    ];
+
     protected $guarded = [];
 
     public function scopePaid($query)
     {
-        return $query->where('payee', true);
+        return $query->where('paid', true);
     }
 
     public function scopeUnpaid($query)
     {
-        return $query->where('payee', false);
+        return $query->where('paid', false);
     }
 
     public function customer()

@@ -15,7 +15,7 @@
                             <select name="customer_id" class="rounded-lg w-full">
                                 <option value="">-- Choisir un client --</option>
                                 @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->nom }}</option>
+                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
                             @error('customer_id')
@@ -24,6 +24,7 @@
 
                         <input type="submit" class="bg-green-400 rounded p-2 mt-4 w-full" value="Confirmer"/>
                     </form>
+                </div>
             </div>
         </div>
     </div>

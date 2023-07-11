@@ -18,7 +18,7 @@
             <div>
                 @foreach ($subjects as $subject)
                     <div class=" w-full mx-auto mt-2 p-4 bg-white flex justify-between items-center sm:w-2/3 lg:w-1/2">
-                        <p class="font-bold text-lg">{{ $subject->nom }}</p>
+                        <p class="font-bold text-lg">{{ $subject->name }}</p>
                         <div class="flex flex-row">
                             <button class="p-2 rounded-lg bg-blue-300"><a href="{{ route('subject.edit',$subject->id) }}"><i class="fas fa-edit"></i></a></button>
                             <form action="{{ route('subject.destroy', $subject->id) }}" method="post">

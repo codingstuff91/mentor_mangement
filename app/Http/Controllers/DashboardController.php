@@ -11,18 +11,18 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalCoursesHours = Course::where('courses.pack_heures', false)
-                            ->select(DB::raw("SUM(nombre_heures) as total"))
+        $totalCoursesHours = Course::where('courses.hours_pack', false)
+                            ->select(DB::raw("SUM(hours_count) as total"))
                             ->get();
 
-        $totalRevenues = Course::select(DB::raw('SUM(nombre_heures * taux_horaire) as total'))->get();
+        $totalRevenues = Course::select(DB::raw('SUM(hours_count * hourly_rate) as total'))->get();
 
         $classHoursPerSubject = DB::table('students')
                                     ->join('courses', 'courses.student_id', '=', 'students.id')
                                     ->join('subjects', 'subjects.id', '=', 'students.subject_id')
-                                    ->where('courses.pack_heures', false)
-                                    ->select(DB::raw('subjects.nom, SUM(nombre_heures) as total'))
-                                    ->groupBy('subjects.nom')
+                                    ->where('courses.hours_pack', false)
+                                    ->select(DB::raw('subjects.name, SUM(hours_count) as total'))
+                                    ->groupBy('subjects.name')
                                     ->orderBy('total', 'desc')
                                     ->get();
 

@@ -2,9 +2,9 @@
     <x-slot name="header">
         <h2 class="p-2 font-semibold text-xl text-gray-800 text-center">
             <i class="fas fa-user mr-2"></i>
-            {{ $invoice->customer->nom }}
+            {{ $invoice->customer->name }}
             <i class="fas fa-calendar-day mx-2"></i>
-            {{ $invoice->month_year_creation }}
+            {{ $invoice->created_at->format('M-Y') }}
         </h2>
     </x-slot>
 
@@ -21,13 +21,19 @@
                 <div class="mb-2 p-2 bg-gray-200 rounded-lg flex justify-between">
                     <p class="text-lg font-bold">
                         <i class="fas fa-user mr-2"></i>
-                        {{ $course->student->nom }} -- {{ $course->nombre_heures }}h
+                        {{ $course->student->name }} -- {{ $course->hours_count }}h
                     </p>
-                    <p class="font-bold mr-2">{{ $course->total_prix }} €</p>
+                    <p class="font-bold mr-2">{{ $course->total_price }} €</p>
                 </div>
 
-                <p><i class="fas fa-calendar-day mr-2"></i>le {{ $course->date_formated }}</p>
-                <p><i class="fas fa-clock mr-2"></i>{{ $course->heure_debut }} --> {{ $course->heure_fin }}</p>
+                <p>
+                    <i class="fas fa-calendar-day mr-2"></i>
+                    le {{ $course->date->format('d/m/Y') }}
+                </p>
+                <p>
+                    <i class="fas fa-clock mr-2"></i>
+                    {{ $course->start_hour->format('H:i') }} --> {{ $course->end_hour->format('H:i') }}
+                </p>
             </div>
         @endforeach
     </div>

@@ -72,7 +72,6 @@ class StudentControllerTest extends TestCase
     /** @test */
     public function can_render_the_show_student_view()
     {
-
         $response = $this->get(route('student.show', $this->student));
 
         $response
@@ -93,35 +92,35 @@ class StudentControllerTest extends TestCase
     public function can_update_a_student()
     {
         $this->patch(route('student.update', $this->student), [
-            "nom" => "test",
-            "objectifs" => "Learn php",
+            "name" => "test",
+            "goals" => "Learn php",
         ]);
 
         $this->student->refresh();
 
-        $this->assertEquals($this->student->nom, "test");
-        $this->assertEquals($this->student->objectifs, "Learn php");
+        $this->assertEquals($this->student->name, "test");
+        $this->assertEquals($this->student->goals, "Learn php");
     }
 
     /** @test */
     public function cannot_update_a_student_without_a_name()
     {
         $response = $this->patch(route('student.update', $this->student), [
-            "nom" => "",
-            "objectifs" => "Learn php",
+            "name" => "",
+            "goals" => "Learn php",
         ]);
 
-        $response->assertSessionHasErrors('nom');
+        $response->assertSessionHasErrors('name');
     }
 
     /** @test */
     public function cannot_update_a_student_without_objectives()
     {
         $response = $this->patch(route('student.update', $this->student), [
-            "nom" => "test",
-            "objectifs" => "",
+            "name" => "test",
+            "goals" => "",
         ]);
 
-        $response->assertSessionHasErrors('objectifs');
+        $response->assertSessionHasErrors('goals');
     }
 }

@@ -21,26 +21,20 @@
                 <div class="p-2 bg-white border-b border-gray-200 overflow-hidden shadow-sm sm:rounded-lg flex justify-between">
                     <div class="flex flex-col">
                         <div class="text-base font-bold mb-2 p-2 bg-gray-200 rounded-lg">
-                            <i class="fas fa-user mr-2"></i>{{ $course->student->nom }}
+                            <i class="fas fa-user mr-2"></i>{{ $course->student->name }}
                         </div>
                         <h1 class="text-sm font-extrabold">
-                            <i class="fas fa-calendar-day mr-2"></i>{{ $course->date_formated }}
-                            @if ($course->paye)
-                                <span class="px-2 text-xs rounded bg-green-200">
-                                    <i class="fas fa-dollar-sign"></i>
-                                    Payé
-                                </span>
-                            @else
-                                <span class="px-2 text-xs rounded bg-red-200">
-                                    <i class="fas fa-dollar-sign"></i>
-                                    Non Payé
-                                </span>
-                            @endif
+                            <i class="fas fa-calendar-day mr-2"></i>{{ $course->date->format('d/m/Y') }}
+
+                            <span class="px-2 text-xs rounded {{$course->paid ? "bg-green-200" : "bg-red-200"}}">
+                                <i class="fas fa-dollar-sign"></i>
+                                {{ $course->paid ? "Payé" : "Non payé" }}
+                            </span>
                         </h1>
                         <p class="text-sm font-extrabold">
-                            <i class="fas fa-clock my-2"></i> {{ $course->heure_debut }} -> {{ $course->heure_fin }} ({{ $course->nombre_heures }} heure{{ $course->nombre_heures > 1 ? "s" : "" }})
+                            <i class="fas fa-clock my-2"></i> {{ $course->start_hour->format('H:i') }} -> {{ $course->end_hour->format('H:i') }} ({{ $course->hours_count }} heure{{ $course->hours_count > 1 ? "s" : "" }})
                         </p>
-                        <p class="mt-2">{!! $course->notions_apprises !!}</p>
+                        <p class="mt-2">{!! $course->learned_notions !!}</p>
                     </div>
                     <div class="flex flex-row h-1/2">
                         <button class="p-2 rounded-lg bg-blue-400 mr-2">
@@ -49,7 +43,9 @@
                         <form action="{{ route('course.destroy', $course->id) }}" method="post">
                             @csrf
                             @method('delete')
-                            <button class="bg-red-400 p-2 rounded-lg" type="submit"><i class="fas fa-trash"></i></button>
+                            <button class="bg-red-400 p-2 rounded-lg" type="submit" onclick="return confirm('êtes-vous sur de vouloir le supprimer ?')">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </form>
                     </div>
                 </div>

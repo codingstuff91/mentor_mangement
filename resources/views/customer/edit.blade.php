@@ -15,12 +15,12 @@
 
                         <div class="mb-4 mx-auto">
                             <label>Nom du client</label>
-                            <input type="text" name="nom" class="rounded-lg w-full" value="{{ $customer->nom }}"/>
+                            <input type="text" name="nom" class="rounded-lg w-full" value="{{ $customer->name }}"/>
                         </div>
-                        
+
                         <div class="w-full my-4">
                             <label class="block">Commentaires</label>
-                            <textarea class="block rounded-lg w-full" name="commentaires" cols="4" rows="2">{{ $customer->commentaires }}</textarea>
+                            <textarea class="block rounded-lg w-full" name="commentaires" cols="4" rows="2">{{ $customer->comments }}</textarea>
                         </div>
 
                         <button class="bg-green-400 rounded p-2 mt-4 w-full">Confirmer</button>

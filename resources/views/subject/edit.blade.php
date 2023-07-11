@@ -15,7 +15,7 @@
 
                         <div class="mt-4 mx-auto">
                             <label>Nom de la matière</label>
-                            <input type="text" name="nom" class="rounded-lg w-full" value="{{ $subject->nom }}"/>
+                            <input type="text" name="name" class="rounded-lg w-full" value="{{ $subject->name }}"/>
                         </div>
 
                         <button class="bg-green-400 rounded-lg p-2 mt-4 w-full">Confirmer</button>

@@ -59,8 +59,8 @@ class CustomerControllerTest extends TestCase
     public function can_store_a_new_customer()
     {
         $response = $this->post(route('customer.store', [
-            'nom' => 'John Doe',
-            'commentaires' => 'Exemple de commentaires',
+            'name' => 'John Doe',
+            'comments' => 'Exemple de commentaires',
         ]));
 
         $this->assertDatabaseCount('customers', 2);
@@ -72,7 +72,7 @@ class CustomerControllerTest extends TestCase
         $response = $this->post(route('customer.store', [
             'name' => '',
         ]));
-        $response->assertSessionHasErrors(['nom']);
+        $response->assertSessionHasErrors(['name']);
     }
 
     /** @test */
@@ -81,20 +81,20 @@ class CustomerControllerTest extends TestCase
         $response = $this->get(route('customer.edit', Customer::first()));
 
         $response->assertOk();
-        $response->assertSee(Customer::first()->nom);
-        $response->assertSee(Customer::first()->commentaires);
+        $response->assertSee(Customer::first()->name);
+        $response->assertSee(Customer::first()->comments);
     }
 
     /** @test */
     public function can_update_customer_informations()
     {
         $this->patch(route('customer.update', $this->customer), [
-            'nom' => 'test edition'
+            'name' => 'test edition'
         ]);
 
         $this->customer->refresh();
 
-        $this->assertEquals('test edition', $this->customer->nom);
+        $this->assertEquals('test edition', $this->customer->name);
     }
 
     /** @test */

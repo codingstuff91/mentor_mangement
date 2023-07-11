@@ -6,9 +6,9 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreInvoiceRequest;
-use App\Http\Requests\UpdateInvoiceRequest;
 
 class InvoiceController extends Controller
 {
@@ -19,7 +19,7 @@ class InvoiceController extends Controller
     {
         $invoices = Invoice::with('customer')
             ->withCount(['courses as total' => function($query){
-                $query->select(DB::raw('SUM(nombre_heures * taux_horaire)'));
+                $query->select(DB::raw('SUM(hours_count * hourly_rate)'));
         }])->get();
 
         return view('invoice.index')->with(['invoices' => $invoices]);
@@ -43,7 +43,7 @@ class InvoiceController extends Controller
     {
         Invoice::create([
             'client_id' => $request->client_id,
-            'payee' => 0
+            'paid' => 0,
         ]);
 
         return redirect()->route('invoice.index');
@@ -73,18 +73,17 @@ class InvoiceController extends Controller
      */
     public function edit(Invoice $invoice)
     {
-        return view('invoice.edit')->with(['invoive' => $invoice]);
+        return view('invoice.edit')->with(['invoice' => $invoice]);
     }
 
     /**
-     * @param UpdateInvoiceRequest $request
      * @param Invoice $facture
      * @return RedirectResponse
      */
-    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
+    public function update(Request $request, Invoice $invoice)
     {
         $invoice->update([
-            'payee' => $request->payee,
+            'paid' => $request->paid,
         ]);
 
         return redirect()->route('invoice.index');
