@@ -45,8 +45,9 @@ class StudentControllerTest extends TestCase
             ]);
 
         $this->studentAttributes = [
-            'name' => 'John Doe',
+            'name' => 'test',
             'subject' => Subject::first(),
+            'active' => true,
             'customer' => $this->customer->id,
             'goals' => 'Learn PHP',
         ];
@@ -197,15 +198,13 @@ class StudentControllerTest extends TestCase
     /** @test */
     public function can_update_a_student()
     {
-        $this->patch(route('student.update', $this->student), [
-            "name" => "test",
-            "goals" => "Learn php",
-        ]);
+        $response = $this->patch(route('student.update', $this->student), $this->studentAttributes);
+        $response->assertSessionHasNoErrors();
 
         $this->student->refresh();
 
         $this->assertEquals($this->student->name, "test");
-        $this->assertEquals($this->student->goals, "Learn php");
+        $this->assertEquals($this->student->goals, "Learn PHP");
     }
 
     /** @test */

@@ -14,30 +14,30 @@
                         @method('patch')
 
                         <label>Nom de l'élève</label>
-                        <input type="text" name="nom" value="{{ $student->name }}" class="rounded-lg mt-2">
+                        <input type="text" name="name" value="{{ $student->name }}" class="rounded-lg mt-2">
 
                         <label class="mt-2">Statut élève</label>
-                        <select class="mt-2 rounded-lg" name="active" class="rounded-lg" value="{{ $student->active }}">
+                        <select class="mt-2 rounded-lg" name="active">
                             <option value="0" @if ($student->active == 0) selected="selected" @endif>INACTIF/VE</option>
                             <option value="1" @if ($student->active == 1) selected="selected" @endif>ACTIF/VE</option>
                         </select>
 
                         <label class="mt-2">Matiere concernée</label>
-                        <select class="mt-2 rounded-lg" name="subject_id" class="rounded-lg">
+                        <select class="mt-2 rounded-lg" name="subject">
                             @foreach ($subjects as $subject)
                                 <option value="{{ $subject->id}}" @if ($subject->id == $student->subject_id) selected="selected" @endif>{{ $subject->name }}</option>
                             @endforeach
                         </select>
 
                         <label class="mt-2">Client concerné</label>
-                        <select class="mt-2 mb-4 rounded-lg" name="client_id" class="rounded-lg">
+                        <select class="mt-2 mb-4 rounded-lg" name="customer" class="rounded-lg">
                             @foreach ($customers as $customer)
                                 <option value="{{ $customer->id}}" @if ($customer->id == $student->customer_id) selected="selected" @endif>{{ $customer->name }}</option>
                             @endforeach
                         </select>
 
                         <label for="">Objectifs</label>
-                        <textarea name="objectifs" cols="30" rows="10">{!! $student->goals !!}</textarea>
+                        <textarea name="goals" cols="30" rows="10">{!! $student->goals !!}</textarea>
 
                         <input type="submit" value="Confirmer" class="p-2 mt-4 rounded-lg bg-green-400">
                     </form>
