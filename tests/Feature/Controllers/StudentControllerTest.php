@@ -84,6 +84,16 @@ class StudentControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_render_the_subjects_list_into_the_student_create_view()
+    {
+        $response = $this->get(route('student.create'));
+
+        $response
+            ->assertOk()
+            ->assertSee(Subject::first()->name);
+    }
+
+    /** @test */
     public function can_store_a_new_student()
     {
         $this->post(route('student.store', [
