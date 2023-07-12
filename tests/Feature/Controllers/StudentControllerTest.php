@@ -74,17 +74,27 @@ class StudentControllerTest extends TestCase
     }
 
     /** @test */
+    public function can_render_the_customers_list_into_the_student_create_view()
+    {
+        $response = $this->get(route('student.create'));
+
+        $response
+            ->assertOk()
+            ->assertSee($this->customer->name);
+    }
+
+    /** @test */
     public function can_store_a_new_student()
     {
         $this->post(route('student.store', [
-            'nom' => "John Doe",
-            'matiere_id' => Subject::first()->id,
-            'customer_id' => Customer::first()->id,
-            'objectifs' => "Some random text to test",
-            'commentaires' => "Some random text to test",
+            'name' => "John Doe",
+            'subject' => Subject::first()->id,
+            'customer' => $this->customer->id,
+            'goals' => "Some random text to test",
+            'comments' => "Some random text to test",
         ]));
 
-        $this->assertDatabaseCount('students', 2);
+        $this->assertDatabaseCount('students', 3);
     }
 
     /** @test */

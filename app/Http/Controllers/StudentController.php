@@ -9,6 +9,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -39,14 +40,14 @@ class StudentController extends Controller
      * @param StoreStudentRequest $request
      * @return RedirectResponse
      */
-    public function store(StoreStudentRequest $request)
+    public function store(Request $request)
     {
         Student::create([
-            'name' => $request->nom,
+            'name' => $request->name,
             'subject_id' => $request->subject,
             'customer_id' => $request->customer,
-            'goals' => $request->objectifs,
-            'comments' => $request->commentaires
+            'goals' => $request->goals,
+            'comments' => $request->comments
         ]);
 
         return redirect()->route('student.index');

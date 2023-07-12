@@ -13,7 +13,7 @@
                         @csrf
                         <div class="mb-4 mx-auto w-full columns-3">
                             <label>Nom</label>
-                            <input type="text" name="nom" class="rounded-lg w-full"/>
+                            <input type="text" name="name" class="rounded-lg w-full"/>
 
                             <label>Matière</label>
                             <select name="subject" class="rounded-lg w-full">
@@ -23,21 +23,21 @@
                                 @endforeach
                             </select>
 
-                            <label>customer</label>
+                            <label>Client</label>
                             <select name="customer" class="rounded-lg w-full">
                                 <option value="">-- Choisir un client --</option>
                                 @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">{{ $customer->nom }}</option>
+                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="w-full my-4">
                             <label>Objectifs</label>
-                            <textarea class="block rounded-lg w-full" name="objectifs" cols="4" rows="2"></textarea>
+                            <textarea class="block rounded-lg w-full" name="goals" cols="4" rows="2"></textarea>
                         </div>
                         <div class="w-full my-4">
                             <label class="block">Commentaires</label>
-                            <textarea class="block rounded-lg w-full" name="commentaires" cols="4" rows="2"></textarea>
+                            <textarea class="block rounded-lg w-full" name="comments" cols="4" rows="2"></textarea>
                         </div>
 
                         <input type="submit" class="bg-green-400 rounded p-2 mt-4 w-full" value="Confirmer"/>
