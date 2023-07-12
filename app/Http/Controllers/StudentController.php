@@ -40,7 +40,7 @@ class StudentController extends Controller
      * @param StoreStudentRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreStudentRequest $request)
     {
         Student::create([
             'name' => $request->name,

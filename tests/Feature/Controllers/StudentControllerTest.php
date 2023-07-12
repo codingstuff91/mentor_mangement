@@ -43,6 +43,13 @@ class StudentControllerTest extends TestCase
             ->create([
                 'customer_id' => $this->customer->id,
             ]);
+
+        $this->studentAttributes = [
+            'name' => 'John Doe',
+            'subject' => Subject::first(),
+            'customer' => $this->customer->id,
+            'goals' => 'Learn PHP',
+        ];
     }
 
     /** @test */
@@ -105,6 +112,50 @@ class StudentControllerTest extends TestCase
         ]));
 
         $this->assertDatabaseCount('students', 3);
+    }
+
+    /** @test */
+    public function cannot_store_a_new_student_without_a_name()
+    {
+        $incompleteStudentAttributes = array_merge($this->studentAttributes, [
+            'name' => '',
+        ]);
+
+        $response = $this->post(route('student.store'), $incompleteStudentAttributes);
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** @test */
+    public function cannot_store_a_new_student_without_a_customer()
+    {
+        $incompleteStudentAttributes = array_merge($this->studentAttributes, [
+            'customer' => '',
+        ]);
+
+        $response = $this->post(route('student.store'), $incompleteStudentAttributes);
+        $response->assertSessionHasErrors('customer');
+    }
+
+    /** @test */
+    public function cannot_store_a_new_student_without_a_subject()
+    {
+        $incompleteStudentAttributes = array_merge($this->studentAttributes, [
+            'subject' => '',
+        ]);
+
+        $response = $this->post(route('student.store'), $incompleteStudentAttributes);
+        $response->assertSessionHasErrors('subject');
+    }
+
+    /** @test */
+    public function cannot_store_a_new_student_without_goals()
+    {
+        $incompleteStudentAttributes = array_merge($this->studentAttributes, [
+            'goals' => '',
+        ]);
+
+        $response = $this->post(route('student.store'), $incompleteStudentAttributes);
+        $response->assertSessionHasErrors('goals');
     }
 
     /** @test */
