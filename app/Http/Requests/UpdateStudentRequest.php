@@ -25,7 +25,9 @@ class UpdateStudentRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'goals' => 'required'
+            'goals' => 'required',
+            'customer' => 'required',
+            'subject' => 'required',
         ];
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -17,7 +18,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::with('customer')->orderByDesc('id')->get();
+        $students = Student::with('customer')
+                    ->orderByDesc('active')
+                    ->get();
 
         return view('student.index')->with(['students' => $students]);
     }
@@ -40,11 +43,11 @@ class StudentController extends Controller
     public function store(StoreStudentRequest $request)
     {
         Student::create([
-            'name' => $request->nom,
+            'name' => $request->name,
             'subject_id' => $request->subject,
             'customer_id' => $request->customer,
-            'goals' => $request->objectifs,
-            'comments' => $request->commentaires
+            'goals' => $request->goals,
+            'comments' => $request->comments
         ]);
 
         return redirect()->route('student.index');
@@ -87,7 +90,16 @@ class StudentController extends Controller
      */
     public function update(UpdateStudentRequest $request, Student $student)
     {
-        $student->update($request->validated());
+//        dd($request->all());
+
+        $student->update([
+            'name' => $request->name,
+            'active' => $request->active,
+            'subject_id' => $request->subject,
+            'customer_id' => $request->customer,
+            'goals' => $request->goals,
+            'comments' => $request->comments
+        ]);
 
         return redirect()->route('student.index');
     }
