@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Models\Course;
 use App\Models\Customer;
 use Tests\TestCase;
 use App\Models\User;
@@ -30,6 +31,7 @@ class StudentControllerTest extends TestCase
 
         $this->student = Student::factory()
             ->for(Subject::factory())
+            ->has(Course::factory())
             ->create([
                 'customer_id' => Customer::first()->id,
             ]);
@@ -79,6 +81,23 @@ class StudentControllerTest extends TestCase
             ->assertSee($this->student->name)
             ->assertSee($this->student->objectifs)
             ->assertSee($this->student->subject->name);
+    }
+
+    /** @test */
+    public function can_display_the_course_details_of_a_student()
+    {
+        $response = $this->get(route('student.show', $this->student));
+
+        $firstStudentCourse = $this->student->courses->first();
+
+        $response
+            ->assertOk()
+            ->assertSee($this->student->goals)
+            ->assertSee($firstStudentCourse->date->format('d/m/Y'))
+            ->assertSee($firstStudentCourse->start_hour->format('H:i'))
+            ->assertSee($firstStudentCourse->end_hour->format('H:i'))
+            ->assertSeeText($firstStudentCourse->hours_count . "heure")
+            ->assertSee($firstStudentCourse->learned_notions);
     }
 
     /** @test */
