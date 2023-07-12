@@ -21,4 +21,18 @@ class StudentFactory extends Factory
             'comments' => $this->faker->sentence(3),
         ];
     }
+
+    /**
+     * Indicate that the student is inactive.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function inactive()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'active' => false,
+            ];
+        });
+    }
 }

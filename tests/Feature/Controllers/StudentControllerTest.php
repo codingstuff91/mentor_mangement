@@ -33,7 +33,15 @@ class StudentControllerTest extends TestCase
             ->for(Subject::factory())
             ->has(Course::factory())
             ->create([
-                'customer_id' => Customer::first()->id,
+                'customer_id' => $this->customer->id,
+            ]);
+
+        $this->inactiveStudent = Student::factory()
+            ->inactive()
+            ->for(Subject::factory())
+            ->has(Course::factory())
+            ->create([
+                'customer_id' => $this->customer->id,
             ]);
     }
 
@@ -42,6 +50,14 @@ class StudentControllerTest extends TestCase
     {
         $response = $this->get(route('student.index'));
         $response->assertOk();
+    }
+
+    /** @test */
+    public function can_display_the_students_sorted_by_status()
+    {
+        $this->get(route('student.index'))
+            ->assertOk()
+            ->assertSeeInOrder([$this->student->name, $this->inactiveStudent->name]);
     }
 
     /** @test */
@@ -68,7 +84,7 @@ class StudentControllerTest extends TestCase
             'commentaires' => "Some random text to test",
         ]));
 
-        $this->assertDatabaseCount('students', 1);
+        $this->assertDatabaseCount('students', 2);
     }
 
     /** @test */
