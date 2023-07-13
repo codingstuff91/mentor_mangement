@@ -42,7 +42,7 @@ class InvoiceController extends Controller
     public function store(StoreInvoiceRequest $request)
     {
         Invoice::create([
-            'client_id' => $request->client_id,
+            'customer_id' => $request->customer,
             'paid' => 0,
         ]);
 
@@ -57,7 +57,7 @@ class InvoiceController extends Controller
     {
         $invoice->load('courses');
 
-        $total_hours = $invoice->courses->where('pack_heures', false)->sum('nombre_heures');
+        $total_hours = $invoice->courses->where('hours_pack', false)->sum('hours_count');
         $total_invoice = $invoice->courses->sum('total_price');
 
         return view('invoice.show')->with([

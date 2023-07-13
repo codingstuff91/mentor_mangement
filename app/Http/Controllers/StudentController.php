@@ -18,7 +18,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::with('customer')
+        $students = Student::with(['customer', 'subject'])
                     ->orderByDesc('active')
                     ->get();
 
@@ -90,8 +90,6 @@ class StudentController extends Controller
      */
     public function update(UpdateStudentRequest $request, Student $student)
     {
-//        dd($request->all());
-
         $student->update([
             'name' => $request->name,
             'active' => $request->active,

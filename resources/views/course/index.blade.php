@@ -17,7 +17,7 @@
             </div>
 
             @foreach ($courses as $course)
-            <div class="mt-2 w-full mx-auto">
+            <div class="mt-2 w-full mx-auto sm:w-2/3 lg:w-1/2">
                 <div class="p-2 bg-white border-b border-gray-200 overflow-hidden shadow-sm sm:rounded-lg flex justify-between">
                     <div class="flex flex-col">
                         <div class="text-base font-bold mb-2 p-2 bg-gray-200 rounded-lg">
