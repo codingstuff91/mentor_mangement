@@ -80,6 +80,7 @@
                             </tbody>
                         </table>
                     </div>
+                    {{ $students->links() }}
                 </div>
             </div>
         </div>

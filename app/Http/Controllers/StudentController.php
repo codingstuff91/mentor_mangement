@@ -20,7 +20,7 @@ class StudentController extends Controller
     {
         $students = Student::with(['customer', 'subject'])
                     ->orderByDesc('active')
-                    ->get();
+                    ->paginate(10);
 
         return view('student.index')->with(['students' => $students]);
     }
