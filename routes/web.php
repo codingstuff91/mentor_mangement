@@ -12,10 +12,6 @@ use App\Http\Controllers\CustomerController;
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/', function () {
-        return view('welcome');
-    });
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('student', StudentController::class);
