@@ -42,7 +42,7 @@ class InvoiceController extends Controller
     public function store(StoreInvoiceRequest $request)
     {
         Invoice::create([
-            'client_id' => $request->client_id,
+            'customer_id' => $request->customer,
             'paid' => 0,
         ]);
 

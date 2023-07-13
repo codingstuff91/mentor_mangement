@@ -24,14 +24,14 @@ class StoreInvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'client_id' => 'required'
+            'customer' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'customer_id.required' => 'Veuillez saisir un nom de client'
+            'customer.required' => 'Veuillez saisir un nom de client'
         ];
     }
 }

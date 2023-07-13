@@ -12,13 +12,13 @@
                     <form action="{{ route('invoice.store') }}" method="post">
                         @csrf
                             <label>Nom du client</label>
-                            <select name="customer_id" class="rounded-lg w-full">
+                            <select name="customer" class="rounded-lg w-full">
                                 <option value="">-- Choisir un client --</option>
                                 @foreach ($customers as $customer)
                                 <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
-                            @error('customer_id')
+                            @error('customer')
                                 <p class="text-xl text-red-400">{{ $message }}</p>
                             @enderror
 

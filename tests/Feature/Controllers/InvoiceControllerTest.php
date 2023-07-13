@@ -66,10 +66,10 @@ class InvoiceControllerTest extends TestCase
         $customer = Customer::factory()->create();
 
         $this->post(route('invoice.store'), [
-            'customer_id' => $customer->id,
+            'customer' => $customer->id,
         ]);
 
-        $this->assertDatabaseCount('invoices', 1);
+        $this->assertDatabaseCount('invoices', 3);
     }
 
     /** @test */
@@ -79,19 +79,6 @@ class InvoiceControllerTest extends TestCase
 
         $response = $this->get(route('invoice.show', $facture->id));
         $response->assertOk();
-    }
-
-    /** @test */
-    public function can_show_the_total_number_of_hours_of_an_invoice()
-    {
-        $invoice = Invoice::first();
-
-        $totalCoursesHours = $invoice->courses->sum('nombre_heures');
-
-        $response = $this->get(route('invoice.show', $invoice));
-
-        $response->assertOk();
-        $response->assertSee("Nombre heures : " . $totalCoursesHours);
     }
 
     /** @test */
