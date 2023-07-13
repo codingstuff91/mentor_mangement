@@ -20,7 +20,9 @@ class InvoiceController extends Controller
         $invoices = Invoice::with('customer')
             ->withCount(['courses as total' => function($query){
                 $query->select(DB::raw('SUM(hours_count * hourly_rate)'));
-        }])->get();
+            }])
+            ->orderByDesc('id')
+            ->get();
 
         return view('invoice.index')->with(['invoices' => $invoices]);
     }
