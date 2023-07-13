@@ -19,7 +19,7 @@
                         <div class="flex justify-between my-4 w-full mx-auto sm:w-2/3">
                             <div class="px-2">
                                 <h2 class="text-xl font-bold">{{ $customer->name }}</h2>
-                                <p>{{ $customer->comments }}</p>
+                                <p>{!! $customer->comments !!}</p>
                             </div>
                             <div class="flex flex-row items-center">
                                 <button class="p-2 bg-blue-300 rounded-lg mr-2"><a href="{{ route('customer.edit', $customer->id) }}"><i class="fas fa-edit"></i></a></button>
