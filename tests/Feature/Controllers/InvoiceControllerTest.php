@@ -25,15 +25,23 @@ class InvoiceControllerTest extends TestCase
 
         $this->actingAs($user);
 
+        $this->invoice = Invoice::factory()
+                                ->for(Customer::factory())
+                                ->create();
+
         $this->customer = Customer::factory()
                             ->has(Invoice::factory())
                             ->create();
 
-        $this->eleve = Student::factory()
+        $this->student = Student::factory()
                         ->for(Subject::factory())
                         ->create([
                             'customer_id' => $this->customer->id,
                         ]);
+
+        $this->course = Course::factory()->create([
+            'invoice_id' => $this->invoice->id,
+        ]);
     }
 
     /** @test */
@@ -99,5 +107,18 @@ class InvoiceControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertSee($totalPrice . " €");
+    }
+
+    /** @test */
+    public function can_display_the_total_hours_count_of_an_invoice()
+    {
+        $invoice = Invoice::first();
+        $courses = $invoice->courses;
+        $invoiceTotalHours = $invoice->courses->where('hours_pack', false)->sum('hours_count');
+
+        $response = $this->get(route('invoice.show', $invoice));
+
+        $response->assertOk();
+        $response->assertSee("Nombre heures : " . $invoiceTotalHours);
     }
 }
