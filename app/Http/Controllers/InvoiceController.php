@@ -22,7 +22,7 @@ class InvoiceController extends Controller
                 $query->select(DB::raw('SUM(hours_count * hourly_rate)'));
             }])
             ->orderByDesc('id')
-            ->get();
+            ->paginate(10);
 
         return view('invoice.index')->with(['invoices' => $invoices]);
     }
