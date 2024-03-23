@@ -93,6 +93,17 @@ class CourseControllerTest extends TestCase
     }
 
     /** @test */
+    public function fills_the_create_student_page_with_current_date()
+    {
+        $currentDate = now()->format('Y-m-d');
+
+        $response = $this->get(route('course.create'));
+
+        $response->assertOk();
+        $response->assertSee($currentDate);
+    }
+
+    /** @test */
     public function can_store_a_new_course()
     {
         $this->post(route('course.store'), $this->courseAttributes);
