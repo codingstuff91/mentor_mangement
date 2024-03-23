@@ -39,7 +39,13 @@ class CourseController extends Controller
         $students = Student::active()->get();
         $invoices = Invoice::with('customer')->unpaid()->get();
 
-        return view('course.create')->with(['students' => $students, 'invoices' => $invoices]);
+        $currentDay = now()->format('Y-m-d');
+
+        return view('course.create')->with([
+            'students' => $students,
+            'invoices' => $invoices,
+            'currentDay' => $currentDay,
+        ]);
     }
 
     /**
