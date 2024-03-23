@@ -19,7 +19,7 @@
                 <div class="my-2 flex flex-row justify-between items-center">
                     <div class="flex flex-col align-items-center">
                         <label class="my-2">Date du cours</label>
-                        <input type="date" name="date" class="rounded-lg">
+                        <input type="date" name="date" class="rounded-lg" value="{{ $currentDay }}">
                         @error('date')
                             <div class="text-red-400">{{ $message }}</div>
                         @enderror
