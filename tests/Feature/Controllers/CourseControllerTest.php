@@ -46,7 +46,7 @@ class CourseControllerTest extends TestCase
             'invoice' => Invoice::first()->id,
             "start_hour" => "18:00",
             "end_hour" => "19:00",
-            'date' => "2023-07-01 18:00:00",
+            'date' => "2023-07-01",
             'learned_notions' => "description des notions",
             'hourly_rate' => 50,
         ];

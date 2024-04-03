@@ -14,11 +14,11 @@ use App\Http\Requests\UpdateCourseRequest;
 
 class CourseController extends Controller
 {
-    protected $coursService;
+    protected $courseService;
 
     public function __construct(CoursService $coursService)
     {
-        $this->coursService = $coursService;
+        $this->courseService = $coursService;
     }
 
     /**
@@ -55,18 +55,18 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        $count_hours = $this->coursService->count_lesson_hours($request->end_hour, $request->start_hour);
+        $count_hours = $this->courseService->count_lesson_hours($request->end_hour, $request->start_hour);
 
-        $pack_heures = isset($request->hours_pack) ? 1 : 0;
+        $isHoursPack = isset($request->hours_pack) ? 1 : 0;
 
         Course::create([
             'student_id' => $request->student,
             'invoice_id' => $request->invoice,
-            'date' => $request->date_debut ." ". $request->start_hour,
-            'start_hour' => $request->date_debut ." ". $request->start_hour,
-            'end_hour' => $request->date_debut ." ". $request->end_hour,
+            'date' => $request->date ." ". $request->start_hour,
+            'start_hour' => $request->date ." ". $request->start_hour,
+            'end_hour' => $request->date ." ". $request->end_hour,
             'hours_count' => $count_hours,
-            'hours_pack' => $pack_heures,
+            'hours_pack' => $isHoursPack,
             'learned_notions' => $request->learned_notions,
             'hourly_rate' => $request->hourly_rate
         ]);
@@ -91,7 +91,7 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        $count_hours = $this->coursService->count_lesson_hours($request->end_hour, $request->start_hour);
+        $count_hours = $this->courseService->count_lesson_hours($request->end_hour, $request->start_hour);
 
         $course->update([
             'paid' => $request->paid,
