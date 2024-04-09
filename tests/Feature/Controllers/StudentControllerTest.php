@@ -31,7 +31,7 @@ class StudentControllerTest extends TestCase
 
         $this->student = Student::factory()
             ->for(Subject::factory())
-            ->has(Course::factory())
+            ->has(Course::factory()->count(3))
             ->create([
                 'customer_id' => $this->customer->id,
             ]);
@@ -169,6 +169,19 @@ class StudentControllerTest extends TestCase
             ->assertSee($this->student->name)
             ->assertSee($this->student->objectifs)
             ->assertSee($this->student->subject->name);
+    }
+
+    /** @test */
+    public function can_display_total_hours_of_a_student()
+    {
+        $totalCoursesHours = $this->student->courses->sum('hours_count');
+
+        $response = $this->get(route('student.show', $this->student));
+
+        $response
+            ->assertOk()
+            ->assertSeeText($totalCoursesHours);
+
     }
 
     /** @test */
