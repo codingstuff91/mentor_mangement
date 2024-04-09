@@ -59,12 +59,17 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
+        $totalHours = $student->courses->sum('hours_count');
+
         $student = Student::where('id',$student->id)
         ->with(['courses', 'subject'])
         ->withCount('courses')
         ->first();
 
-        return view('student.show')->with(['student' => $student]);
+        return view('student.show')->with([
+            'student' => $student,
+            'totalHours' => $totalHours,
+        ]);
     }
 
     /**

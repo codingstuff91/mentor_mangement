@@ -14,7 +14,7 @@
             <p class="my-2 text-center text-lg">{!! $student->goals !!}</p>
         </div>
 
-        <h2 class="text-2xl font-bold text-center mt-4 mb-2">{{ $student->cours_count }} Cours réalisés</h2>
+        <h2 class="text-2xl font-bold text-center mt-4 mb-2">{{ $totalHours }}h de cours réalisées</h2>
         @foreach ($student->courses as $course)
             <div class="p-2 bg-white shadow-sm border-b border-gray-400 w-full my-4 mx-auto sm:w-3/4">
                 <div class="my-2 flex flex-col justify-between">
