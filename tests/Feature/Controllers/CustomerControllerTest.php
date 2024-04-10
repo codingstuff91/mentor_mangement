@@ -1,107 +1,77 @@
 <?php
 
-namespace Tests\Feature\Controllers;
-
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Student;
 use App\Models\Customer;
-use App\Models\Invoice;
+use App\Models\Student;
 use App\Models\Subject;
-use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\patch;
+use function Pest\Laravel\post;
 
-class CustomerControllerTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    loginAsUser();
 
-    public function setUp() :void
-    {
-        parent::setUp();
+    $this->customer = createCustomerWithInvoice();
 
-        $this->seed(UserSeeder::class);
-        $user = User::first();
+    $this->student = Student::factory()
+        ->for(Subject::factory())
+        ->for($this->customer);
+});
 
-        $this->actingAs($user);
+test('can fetch the customers list', function () {
+    $response = get(route('customer.index'));
 
-        $this->subject = Subject::factory()->create();
+    $response->assertOk();
+});
 
-        $this->customer = Customer::factory()
-                            ->has(Invoice::factory())
-                            ->create();
+test('can render the customer create view', function () {
+    $response = get(route('customer.create'));
 
-        $this->student = Student::factory()->create([
-            'subject_id' => $this->subject->id,
-            'customer_id' => Customer::first()->id,
-        ]);
-    }
+    $response
+        ->assertOk()
+        ->assertSee('Nom du client')
+        ->assertSee('Commentaires');
+});
 
-    /** @test */
-    public function can_fetch_the_customers_list()
-    {
-        $response = $this->get(route('customer.index'));
-        $response->assertOk();
-    }
+test('can store a new customer', function () {
+    post(route('customer.store', [
+        'name' => 'John Doe',
+        'comments' => 'Exemple de commentaires',
+    ]));
 
-    /** @test */
-    public function can_render_the_customer_create_view()
-    {
-        $response = $this->get(route('customer.create'));
-        $response->assertOk();
+    assertDatabaseCount('customers', 2);
+});
 
-        $view = $this->view('customer.create');
+test('cannot store a customer without a name', function () {
+    $response = post(route('customer.store', [
+        'name' => '',
+    ]));
 
-        $view->assertSee('Nom du client');
-        $view->assertSee('Commentaires');
-    }
+    $response->assertSessionHasErrors(['name']);
+});
 
-    /** @test */
-    public function can_store_a_new_customer()
-    {
-        $response = $this->post(route('customer.store', [
-            'name' => 'John Doe',
-            'comments' => 'Exemple de commentaires',
-        ]));
+test('can render the edit view with customer informations', function () {
+    $response = get(route('customer.edit', Customer::first()));
 
-        $this->assertDatabaseCount('customers', 2);
-    }
+    $response
+        ->assertOk()
+        ->assertSee(Customer::first()->name)
+        ->assertSee(Customer::first()->comments);
+});
 
-    /** @test */
-    public function cannot_store_a_new_customer_without_a_name()
-    {
-        $response = $this->post(route('customer.store', [
-            'name' => '',
-        ]));
-        $response->assertSessionHasErrors(['name']);
-    }
+test('can update customer informations', function () {
+    patch(route('customer.update', $this->customer), [
+        'name' => 'test edition'
+    ]);
 
-    /** @test */
-    public function can_render_the_edit_view_with_customer_informations()
-    {
-        $response = $this->get(route('customer.edit', Customer::first()));
+    $this->customer->refresh();
 
-        $response->assertOk();
-        $response->assertSee(Customer::first()->name);
-        $response->assertSee(Customer::first()->comments);
-    }
+    expect($this->customer->name)->toBe('test edition');
+});
 
-    /** @test */
-    public function can_update_customer_informations()
-    {
-        $this->patch(route('customer.update', $this->customer), [
-            'name' => 'test edition'
-        ]);
+test('can delete a customer', function () {
+    delete(route('customer.destroy', $this->customer));
 
-        $this->customer->refresh();
-
-        $this->assertEquals('test edition', $this->customer->name);
-    }
-
-    /** @test */
-    public function can_delete_a_customer()
-    {
-        $this->delete(route('customer.destroy', $this->customer));
-
-        $this->assertDatabaseCount('customers', 0);
-    }
-}
+    assertDatabaseCount('customers', 0);
+});
