@@ -41,7 +41,7 @@ function loginAsUser() {
 
 function createCustomerWithInvoice() {
     return Customer::factory()
-        ->has(Invoice::factory())
+        ->has(Invoice::factory()->unpaid())
         ->create();
 }
 
