@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Course;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\Student;
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
@@ -39,5 +42,19 @@ function loginAsUser() {
 function createCustomerWithInvoice() {
     return Customer::factory()
         ->has(Invoice::factory())
+        ->create();
+}
+
+function createStudentWithSubjectAndCustomer(Customer $customer) {
+    return Student::factory()
+        ->for(Subject::factory())
+        ->for($customer)
+        ->create();
+}
+
+function createCourseWithStudentAndInvoice(Student $student, Invoice $invoice) {
+    return course::factory()
+        ->for($student)
+        ->for($invoice)
         ->create();
 }
