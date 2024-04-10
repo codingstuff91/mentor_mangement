@@ -1,242 +1,165 @@
 <?php
 
-namespace Tests\Feature\Controllers;
-
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Course;
-use App\Models\Student;
 use App\Models\Customer;
 use App\Models\Invoice;
-use App\Models\Subject;
-use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\CourseRequestDataFactory;
+use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\patch;
+use function Pest\Laravel\post;
 
-class CourseControllerTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    loginAsUser();
 
-    public function setUp() :void
-    {
-        parent::setUp();
+    $this->customer = createCustomerWithInvoice();
 
-        $this->seed(UserSeeder::class);
-        $user = User::first();
+    $this->student = createStudentWithSubjectAndCustomer($this->customer);
 
-        $this->actingAs($user);
+    $this->course = createCourseWithStudentAndInvoice($this->student, $this->customer->invoice->first());
 
-        $this->customer = Customer::factory()
-            ->has(Invoice::factory()->unpaid())
-            ->create();
+    $this->courseRequestData = CourseRequestDataFactory::new();
+});
 
-        $this->student = Student::factory()
-            ->for(Subject::factory())
-            ->create([
-                'customer_id' => $this->customer->id,
-            ]);
+test('can fetch all the courses', function () {
+    $response = get(route('course.index'));
 
-        $this->course = course::factory()
-            ->has(Student::factory())
-            ->create([
-                'invoice_id' => Invoice::first()->id,
-            ]);
+    $response->assertOk();
+});
 
-        $this->courseAttributes = [
-            'student' => $this->student->id,
-            'invoice' => Invoice::first()->id,
-            "start_hour" => "18:00",
-            "end_hour" => "19:00",
-            'date' => "2023-07-01",
-            'learned_notions' => "description des notions",
-            'hourly_rate' => 50,
-        ];
-    }
+test('can render the course creation view', function () {
+    $response = get(route('course.create'));
 
-    /** @test */
-    public function can_fetch_all_the_courses()
-    {
-        $response = $this->get(route('course.index'));
-        $response->assertOk();
-    }
+    $response
+        ->assertOk()
+        ->assertSee('Eleve')
+        ->assertSee('Date du cours')
+        ->assertSee('Heure début')
+        ->assertSee('Heure fin')
+        ->assertSee('Notions apprises')
+        ->assertSee('Taux horaire')
+        ->assertSee('Facture concernée');
+});
 
-    /** @test */
-    public function can_render_the_course_creation_view()
-    {
-        $response = $this->get(route('course.create'));
-        $response->assertOk();
+test('can render the student create view with unpaid invoices', function () {
+    $unpaidInvoice = Invoice::factory()
+        ->for(Customer::factory())
+        ->unpaid()
+        ->create();
 
-        $response->assertSee('Eleve');
-        $response->assertSee('Date du cours');
-        $response->assertSee('Heure début');
-        $response->assertSee('Heure fin');
-        $response->assertSee('Notions apprises');
-        $response->assertSee('Taux horaire');
-        $response->assertSee('Facture concernée');
-    }
+    $paidInvoice = Invoice::factory()
+        ->for(Customer::factory())
+        ->paid()
+        ->create();
 
-    /** @test */
-    public function can_render_the_student_create_view_with_unpaid_invoices()
-    {
-        $unpaidInvoice = Invoice::factory()
-                        ->for(Customer::factory())
-                        ->unpaid()
-                        ->create();
+    $response = get(route('course.create'));
 
-        $paidInvoice = Invoice::factory()
-                        ->for(Customer::factory())
-                        ->paid()
-                        ->create();
+    $response
+        ->assertOk()
+        ->assertSee($unpaidInvoice->month_year_creation . " -- " . $unpaidInvoice->customer->name )
+        ->assertDontSee($paidInvoice->month_year_creation . " -- " . $paidInvoice->customer->name );
+});
 
-        $response = $this->get(route('course.create'));
-        $response->assertOk();
-        $response->assertSee($unpaidInvoice->month_year_creation . " -- " . $unpaidInvoice->customer->name );
-    }
+test('fills the create student page with current date', function () {
+    $currentDate = now()->format('Y-m-d');
 
-    /** @test */
-    public function fills_the_create_student_page_with_current_date()
-    {
-        $currentDate = now()->format('Y-m-d');
+    $response = $this->get(route('course.create'));
 
-        $response = $this->get(route('course.create'));
+    $response->assertOk();
+    $response->assertSee($currentDate);
+});
 
-        $response->assertOk();
-        $response->assertSee($currentDate);
-    }
+test('can store a new course', function () {
+    post(route('course.store'), $this->courseRequestData->create());
 
-    /** @test */
-    public function can_store_a_new_course()
-    {
-        $this->post(route('course.store'), $this->courseAttributes);
+    assertDatabaseCount('courses', 2);
+});
 
-        $this->assertDatabaseCount('courses', 2);
-    }
+test('cannot store a new course without choosing an student', function () {
+    $response = post(route('course.store'), $this->courseRequestData->create(['student' => null]));
 
-    /** @test */
-    public function cannot_store_a_new_course_without_choosing_an_student()
-    {
-        $attributes = array_merge($this->courseAttributes, [
-            'student' => '',
-        ]);
+    $response->assertSessionHasErrors('student');
+});
 
-        $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('student');
-    }
+test('cannot store a new course without a start hour', function () {
+    $response = $this->post(route('course.store'), $this->courseRequestData->create(['start_hour' => null]));
 
-    /** @test */
-    public function cannot_store_a_new_course_without_choising_a_date()
-    {
-        $attributes = array_merge($this->courseAttributes, [
-            'start_hour' => '',
-        ]);
+    $response->assertSessionHasErrors('start_hour');
+});
 
-        $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('start_hour');
-    }
+test('cannot store a new course without an end hour', function () {
+    $response = post(route('course.store'), $this->courseRequestData->create(['end_hour' => null]));
 
-    /** @test */
-    public function cannot_store_a_new_course_without_choising_a_start_hour_and_end_hour()
-    {
-        $attributes = array_merge($this->courseAttributes, [
-            'start_hour' => '',
-            'end_hour' => ''
-        ]);
+    $response->assertSessionHasErrors('end_hour');
+});
 
-        $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('start_hour');
-        $response->assertSessionHasErrors('end_hour');
-    }
+test('cannot store a new course without writing the course covered concepts', function () {
+    $response = post(route('course.store'), $this->courseRequestData->create(['learned_notions' => null]));
 
-    /** @test */
-    public function cannot_store_a_new_course_without_writing_the_course_covered_concepts()
-    {
-        $attributes = array_merge($this->courseAttributes, [
-            'learned_notions' => '',
-        ]);
+    $response->assertSessionHasErrors('learned_notions');
+});
 
-        $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('learned_notions');
-    }
+test('cannot store a new course without giving an hourly rate price', function () {
+    $response = post(route('course.store'), $this->courseRequestData->create(['hourly_rate' => null]));
 
-    /** @test */
-    public function cannot_store_a_new_course_without_giving_an_hourly_rate_price()
-    {
-        $attributes = array_merge($this->courseAttributes, [
-            'hourly_rate' => '',
-        ]);
+    $response->assertSessionHasErrors('hourly_rate');
+});
 
-        $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('hourly_rate');
-    }
+test('cannot store a new course without choosing an active invoice', function () {
+    $response = post(route('course.store'), $this->courseRequestData->create(['invoice' => null]));
 
-    /** @test */
-    public function cannot_store_a_new_course_without_choosing_an_active_invoice()
-    {
-        $attributes = array_merge($this->courseAttributes, [
-            'invoice' => '',
-        ]);
+    $response->assertSessionHasErrors('invoice');
+});
 
-        $response = $this->post(route('course.store'), $attributes);
-        $response->assertSessionHasErrors('invoice');
-    }
+test('only the unpaid invoices are available into invoice select list', function () {
+    $response = get(route('course.create'));
 
-    /** @test */
-    public function can_render_only_the_unpaid_invoices_in_select_invoice_list()
-    {
-        $response = $this->get(route('course.create'));
-        $response->assertOk();
-
-        $response->assertSee([
+    $response
+        ->assertOk()
+        ->assertSee([
             Invoice::first()->month_year_creation,
             Invoice::first()->customer->nom,
         ]);
-    }
+});
 
-    /** @test */
-    public function can_render_the_edit_course_view()
-    {
-        $response = $this->get(route('course.edit', $this->course));
-        $response->assertOk();
-    }
+test('can render the edit course view', function () {
+    $response = get(route('course.edit', $this->course));
 
-    /** @test */
-    public function can_render_the_edit_view_with_course_informations()
-    {
-        $response = $this->get(route('course.edit', $this->course));
+    $response->assertOk();
+});
 
-        $response
-            ->assertOk()
-            ->assertSee($this->course->date->format('Y-m-d'))
-            ->assertSee($this->course->start_hour->format('H:i'))
-            ->assertSee($this->course->end_hour->format('H:i'))
-            ->assertSee($this->course->paid)
-            ->assertSeeText($this->course->learned_notions);
-    }
+test('can render the edit view with course informations', function () {
+    $response = get(route('course.edit', $this->course));
 
-    /** @test */
-    public function can_update_a_course()
-    {
-        $this->patch(route('course.update', $this->course), [
-            'paid' => true,
-            'date' => "2023-07-01",
-            "start_hour" => "18:00",
-            "end_hour" => "19:00",
-            'learned_notions' => "texte",
-        ]);
+    $response
+        ->assertOk()
+        ->assertSee($this->course->date->format('Y-m-d'))
+        ->assertSee($this->course->start_hour->format('H:i'))
+        ->assertSee($this->course->end_hour->format('H:i'))
+        ->assertSee($this->course->paid)
+        ->assertSeeText($this->course->learned_notions);
+});
 
-        $this->course->refresh();
+test('can update a course', function () {
+    patch(route('course.update', $this->course), [
+        'paid' => true,
+        'date' => "2023-07-01",
+        "start_hour" => "18:00",
+        "end_hour" => "19:00",
+        'learned_notions' => "texte",
+    ]);
 
-        $this->assertEquals($this->course->learned_notions, "texte");
-        $this->assertEquals(1, $this->course->paid);
-        $this->assertEquals(1, $this->course->hours_count);
-    }
+    $this->course->refresh();
 
-    /** @test */
-    public function can_delete_a_course()
-    {
-        $this
-            ->delete(route('course.destroy', $this->course))
-            ->assertRedirect(route('course.index'));
+    expect($this->course->learned_notions)
+        ->toBe("texte")
+        ->and($this->course->paid)->toBe(1)
+        ->and($this->course->hours_count)->toBe(1);
+});
 
-        $this->assertDatabaseCount('courses', 0);
-    }
-}
+test('can delete a course', function () {
+    delete(route('course.destroy', $this->course))
+        ->assertRedirect(route('course.index'));
+
+    $this->assertDatabaseCount('courses', 0);
+});
