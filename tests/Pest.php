@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Customer;
+use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
@@ -16,8 +18,8 @@ use function Pest\Laravel\actingAs;
 | need to change it using the "uses()" function to bind a different classes or traits.
 |
 */
-
 uses(TestCase::class, RefreshDatabase::class, CreatesApplication::class)->in('Feature', 'Unit');
+
 /*
 |--------------------------------------------------------------------------
 | Functions
@@ -32,4 +34,10 @@ function loginAsUser() {
     $user = User::factory()->create();
 
     actingAs($user);
+}
+
+function createCustomerWithInvoice() {
+    return Customer::factory()
+        ->has(Invoice::factory())
+        ->create();
 }
