@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Course extends Model
 {
@@ -30,7 +29,7 @@ class Course extends Model
 
     public function invoice()
     {
-        return $this->hasOne('App\Models\Invoice');
+        return $this->belongsTo('App\Models\Invoice');
     }
 
     public function student()
