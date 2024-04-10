@@ -1,100 +1,71 @@
 <?php
 
-namespace Tests\Feature\Controllers;
-
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Subject;
-use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\patch;
+use function Pest\Laravel\post;
 
-class SubjectControllerTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    loginAsUser();
 
-    public function setUp() :void
-    {
-        parent::setUp();
+    $this->subject = Subject::factory()->create();
+});
 
-        $this->seed(UserSeeder::class);
-        $user = User::first();
+test('can render the subjects index view', function () {
+    $response = get(route('subject.index'));
 
-        $this->actingAs($user);
+    expect($response->status())->toBe(200);
+});
 
-        $this->subject = Subject::factory()->create();
-    }
+test('can display all subjects on index view', function () {
+    $response = get(route('subject.index'));
+    $response->assertSee($this->subject->name);
+});
 
-    /** @test */
-    public function can_render_the_subjects_index_view()
-    {
-        $response = $this->get(route('subject.index'));
-        $response->assertOk();
-    }
+test('can render the subject create view', function () {
+    $response = get(route('subject.create'));
 
-    /** @test */
-    public function can_display_all_subjects_on_index_view()
-    {
-        $response = $this->get(route('subject.index'));
-        $response->assertSee($this->subject->name);
-    }
+    $response->assertOk();
+    $response->assertSee('Nom de la matière');
+});
 
-    /** @test */
-    public function can_render_the_subject_create_view()
-    {
-        $response = $this->get(route('subject.create'));
+test('can store a new subject', function () {
+    post(route('subject.store'), [
+        'name' => 'php',
+    ]);
 
-        $response->assertOk();
-        $response->assertSee('Nom de la matière');
-    }
+    $this->assertDatabaseCount('subjects', 2);
+});
 
-    /** @test */
-    public function can_store_a_new_subject()
-    {
-        $this->post(route('subject.store'), [
-            'name' => 'php',
-        ]);
+test('cannot store a new subject without a name', function () {
+    $response = post(route('subject.store'), [
+        'name' => '',
+    ]);
 
-        $this->assertDatabaseCount('subjects', 2);
-    }
+    $response->assertSessionHasErrors(['name']);
+});
 
-    /** @test */
-    public function cannot_store_a_new_subject_without_a_name()
-    {
-        $response = $this->post(route('subject.store'), [
-            'name' => '',
-        ]);
+test('can render the edit view with subject informations', function () {
+    $response = get(route('subject.edit', $this->subject));
 
-        $response->assertSessionHasErrors(['name']);
-    }
+    $response->assertOk();
+    $response->assertSee($this->subject->nom);
+});
 
-    /** @test */
-    public function can_render_the_edit_view_with_subject_informations()
-    {
-        $response = $this->get(route('subject.edit', $this->subject));
+test('can update a subject', function () {
+    patch(route('subject.update', $this->subject),[
+        'name' => 'excel'
+    ]);
 
-        $response->assertOk();
-        $response->assertSee($this->subject->nom);
-    }
+    $this->subject->refresh();
 
-    /** @test */
-    public function can_update_a_subject()
-    {
-        $this->patch(route('subject.update', $this->subject),[
-            'name' => 'excel'
-        ]);
+    $this->assertEquals('excel', $this->subject->name);
+});
 
-        $this->subject->refresh();
+test('can delete a subject', function () {
+    delete(route('subject.destroy', $this->subject))
+        ->assertRedirect(route('subject.index'));
 
-        $this->assertEquals('excel', $this->subject->name);
-    }
-
-    /** @test */
-    public function can_delete_a_subject()
-    {
-        $this
-            ->delete(route('subject.destroy', $this->subject))
-            ->assertRedirect(route('subject.index'));
-
-        $this->assertDatabaseCount('courses', 0);
-    }
-}
+    $this->assertDatabaseCount('courses', 0);
+});
