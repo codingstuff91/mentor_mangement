@@ -65,13 +65,20 @@ test('render the edit view with customer informations', function () {
 });
 
 test('can update customer informations', function () {
-    patch(route('customer.update', $this->customer), [
-        'name' => 'test edition'
-    ]);
+    patch(
+        route('customer.update', $this->customer),
+        $this->customerRequestDataFactory
+            ->withName('Ellen Ripley')
+            ->withComments('Example comment')
+            ->create(),
+    )->assertRedirect(route('customer.index'));
 
     $this->customer->refresh();
 
-    expect($this->customer->name)->toBe('test edition');
+    expect($this->customer->name)
+        ->toBe('Ellen Ripley')
+        ->and($this->customer->comments)
+        ->toBe('Example comment');
 });
 
 test('can delete a customer', function () {
