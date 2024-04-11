@@ -2,6 +2,7 @@
 
 use App\Models\Invoice;
 use function Pest\Laravel\get;
+use function Pest\Laravel\patch;
 use function Pest\Laravel\post;
 
 beforeEach(function () {
@@ -61,3 +62,12 @@ test('display the total hours count of an invoice', function () {
     ->assertOk()
     ->assertSee("Nombre heures : " . $invoiceTotalHours);
 });
+
+test('update the status paid to an invoice', function () {
+    patch(route('invoice.update', $this->course->invoice), [
+        'paid' => 1,
+    ]);
+
+    expect(Invoice::first()->paid)->toBeTrue();
+});
+
