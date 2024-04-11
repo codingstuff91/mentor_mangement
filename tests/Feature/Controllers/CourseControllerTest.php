@@ -22,9 +22,8 @@ beforeEach(function () {
 });
 
 test('can fetch all the courses', function () {
-    $response = get(route('course.index'));
-
-    $response->assertOk();
+    get(route('course.index'))
+    ->assertOk();
 });
 
 test('can render the course creation view', function () {
@@ -41,7 +40,7 @@ test('can render the course creation view', function () {
         ->assertSee('Facture concernée');
 });
 
-test('can render the student create view with unpaid invoices', function () {
+test('render the student create view with unpaid invoices', function () {
     $unpaidInvoice = Invoice::factory()
         ->for(Customer::factory())
         ->unpaid()
@@ -69,7 +68,7 @@ test('fills the create student page with current date', function () {
     $response->assertSee($currentDate);
 });
 
-test('can store a new course', function () {
+test('store a new course', function () {
     post(route('course.store'), $this->courseRequestData->create());
 
     assertDatabaseCount('courses', 2);
@@ -111,7 +110,7 @@ test('cannot store a new course without choosing an active invoice', function ()
     $response->assertSessionHasErrors('invoice');
 });
 
-test('only the unpaid invoices are available into invoice select list', function () {
+test('show only the unpaid invoices into invoice select list', function () {
     $response = get(route('course.create'));
 
     $response
@@ -122,13 +121,13 @@ test('only the unpaid invoices are available into invoice select list', function
         ]);
 });
 
-test('can render the edit course view', function () {
+test('render the edit course view', function () {
     $response = get(route('course.edit', $this->course));
 
     $response->assertOk();
 });
 
-test('can render the edit view with course informations', function () {
+test('render the edit view with course informations', function () {
     $response = get(route('course.edit', $this->course));
 
     $response
@@ -140,7 +139,7 @@ test('can render the edit view with course informations', function () {
         ->assertSeeText($this->course->learned_notions);
 });
 
-test('can update a course', function () {
+test('update a course', function () {
     patch(route('course.update', $this->course), [
         'paid' => true,
         'date' => "2023-07-01",
@@ -157,7 +156,7 @@ test('can update a course', function () {
         ->and($this->course->hours_count)->toBe(1);
 });
 
-test('can delete a course', function () {
+test('delete a course', function () {
     delete(route('course.destroy', $this->course))
         ->assertRedirect(route('course.index'));
 
