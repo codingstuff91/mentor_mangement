@@ -17,10 +17,11 @@ class CourseRequestDataFactory
         return $extra + [
             'student' => Student::first()->id,
             'invoice' => Invoice::first()->id,
+            'paid' => true,
             "start_hour" => "18:00",
             "end_hour" => "19:00",
             'date' => "2023-07-01",
-            'learned_notions' => "description des notions",
+            'learned_notions' => "Example notions text",
             'hourly_rate' => 50,
         ];
     }
