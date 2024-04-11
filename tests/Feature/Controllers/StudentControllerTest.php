@@ -1,244 +1,182 @@
 <?php
 
-namespace Tests\Feature\Controllers;
-
 use App\Models\Course;
-use App\Models\Customer;
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Student;
-use App\Models\Invoice;
 use App\Models\Subject;
-use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Factories\StudentRequestDataFactory;
+use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\patch;
+use function Pest\Laravel\post;
 
-class StudentControllerTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    loginAsUser();
 
-    public function setUp() :void
-    {
-        parent::setUp();
+    $this->customer = createCustomerWithInvoice();
 
-        $this->seed(UserSeeder::class);
-        $user = User::first();
+    $this->student = createStudentWithSubjectAndCustomer($this->customer);
 
-        $this->actingAs($user);
+    $this->course = createCourseWithStudentAndInvoice($this->student, $this->customer->invoice->first());
 
-        $this->customer = Customer::factory()
-            ->has(Invoice::factory())
-            ->create();
-
-        $this->student = Student::factory()
-            ->for(Subject::factory())
-            ->has(Course::factory()->count(3))
-            ->create([
-                'customer_id' => $this->customer->id,
-            ]);
-
-        $this->inactiveStudent = Student::factory()
-            ->inactive()
-            ->for(Subject::factory())
-            ->has(Course::factory())
-            ->create([
-                'customer_id' => $this->customer->id,
-            ]);
-
-        $this->studentAttributes = [
-            'name' => 'test',
-            'subject' => Subject::first(),
-            'active' => true,
-            'customer' => $this->customer->id,
-            'goals' => 'Learn PHP',
-        ];
-    }
-
-    /** @test */
-    public function can_fetch_the_students_index_view()
-    {
-        $response = $this->get(route('student.index'));
-        $response->assertOk();
-    }
-
-    /** @test */
-    public function can_display_the_students_sorted_by_status()
-    {
-        $this->get(route('student.index'))
-            ->assertOk()
-            ->assertSeeInOrder([$this->student->name, $this->inactiveStudent->name]);
-    }
-
-    /** @test */
-    public function can_render_student_create_view()
-    {
-        $response = $this->get(route('student.create'));
-        $response
-            ->assertOk()
-            ->assertSee('Nom')
-            ->assertSee('Matière')
-            ->assertSee('Client')
-            ->assertSee('Objectifs')
-            ->assertSee('Commentaires');
-    }
-
-    /** @test */
-    public function can_render_the_customers_list_into_the_student_create_view()
-    {
-        $response = $this->get(route('student.create'));
-
-        $response
-            ->assertOk()
-            ->assertSee($this->customer->name);
-    }
-
-    /** @test */
-    public function can_render_the_subjects_list_into_the_student_create_view()
-    {
-        $response = $this->get(route('student.create'));
-
-        $response
-            ->assertOk()
-            ->assertSee(Subject::first()->name);
-    }
-
-    /** @test */
-    public function can_store_a_new_student()
-    {
-        $this->post(route('student.store', [
-            'name' => "John Doe",
-            'subject' => Subject::first()->id,
-            'customer' => $this->customer->id,
-            'goals' => "Some random text to test",
-            'comments' => "Some random text to test",
-        ]));
-
-        $this->assertDatabaseCount('students', 3);
-    }
-
-    /** @test */
-    public function cannot_store_a_new_student_without_a_name()
-    {
-        $incompleteStudentAttributes = array_merge($this->studentAttributes, [
-            'name' => '',
+    $this->inactiveStudent = Student::factory()
+        ->inactive()
+        ->for(Subject::factory())
+        ->has(Course::factory())
+        ->create([
+            'customer_id' => $this->customer->id,
         ]);
 
-        $response = $this->post(route('student.store'), $incompleteStudentAttributes);
-        $response->assertSessionHasErrors('name');
-    }
+    $this->studentRequestData = StudentRequestDataFactory::new();
+});
 
-    /** @test */
-    public function cannot_store_a_new_student_without_a_customer()
-    {
-        $incompleteStudentAttributes = array_merge($this->studentAttributes, [
-            'customer' => '',
-        ]);
+test('can fetch all the courses', function () {
+    $response = get(route('course.index'));
 
-        $response = $this->post(route('student.store'), $incompleteStudentAttributes);
-        $response->assertSessionHasErrors('customer');
-    }
+    $response->assertOk();
+});
 
-    /** @test */
-    public function cannot_store_a_new_student_without_a_subject()
-    {
-        $incompleteStudentAttributes = array_merge($this->studentAttributes, [
-            'subject' => '',
-        ]);
+test('can fetch the students index view', function () {
+    $response = $this->get(route('student.index'));
+    $response->assertOk();
+});
 
-        $response = $this->post(route('student.store'), $incompleteStudentAttributes);
-        $response->assertSessionHasErrors('subject');
-    }
+test('can display the students sorted by status', function () {
+    $this->get(route('student.index'))
+        ->assertOk()
+        ->assertSeeInOrder([$this->student->name, $this->inactiveStudent->name]);
+});
 
-    /** @test */
-    public function cannot_store_a_new_student_without_goals()
-    {
-        $incompleteStudentAttributes = array_merge($this->studentAttributes, [
-            'goals' => '',
-        ]);
+test('can render student create view', function () {
+    $response = get(route('student.create'));
+    $response
+        ->assertOk()
+        ->assertSee('Nom')
+        ->assertSee('Matière')
+        ->assertSee('Client')
+        ->assertSee('Objectifs')
+        ->assertSee('Commentaires');
+});
 
-        $response = $this->post(route('student.store'), $incompleteStudentAttributes);
-        $response->assertSessionHasErrors('goals');
-    }
+test('can render the customers list into the student create view', function () {
+    $response = $this->get(route('student.create'));
 
-    /** @test */
-    public function can_render_the_show_student_view()
-    {
-        $response = $this->get(route('student.show', $this->student));
+    $response
+        ->assertOk()
+        ->assertSee($this->customer->name);
+});
 
-        $response
-            ->assertOk()
-            ->assertSee($this->student->name)
-            ->assertSee($this->student->objectifs)
-            ->assertSee($this->student->subject->name);
-    }
+test('can render the subjects list into the student create view', function () {
+    $response = $this->get(route('student.create'));
 
-    /** @test */
-    public function can_display_total_hours_of_a_student()
-    {
-        $totalCoursesHours = $this->student->courses->sum('hours_count');
+    $response
+        ->assertOk()
+        ->assertSee(Subject::first()->name);
+});
 
-        $response = $this->get(route('student.show', $this->student));
+test('can store a new student', function () {
+    $this->post(route('student.store', $this->studentRequestData->create()));
 
-        $response
-            ->assertOk()
-            ->assertSeeText($totalCoursesHours);
+    $this->assertDatabaseCount('students', 3);
+});
 
-    }
+test('cannot store a new student without a name', function () {
+    $response = $this->post(
+        route('student.store'),
+        $this->studentRequestData->withName('')->create()
+    );
 
-    /** @test */
-    public function can_display_the_course_details_of_a_student()
-    {
-        $response = $this->get(route('student.show', $this->student));
+    $response->assertSessionHasErrors('name');
+});
 
-        $firstStudentCourse = $this->student->courses->first();
+test('cannot store a new student without a customer', function () {
+    $response = $this->post(
+        route('student.store'),
+        $this->studentRequestData->create(['customer' => null])
+    );
 
-        $response
-            ->assertOk()
-            ->assertSee($this->student->goals)
-            ->assertSee($firstStudentCourse->date->format('d/m/Y'))
-            ->assertSee($firstStudentCourse->start_hour->format('H:i'))
-            ->assertSee($firstStudentCourse->end_hour->format('H:i'))
-            ->assertSeeText($firstStudentCourse->hours_count . "heure")
-            ->assertSee($firstStudentCourse->learned_notions);
-    }
+    $response->assertSessionHasErrors('customer');
+});
 
-    /** @test */
-    public function can_render_the_edit_student_view()
-    {
-        $response = $this->get(route('student.edit', $this->student));
-        $response->assertOk();
-    }
+test('cannot store a new student without a subject', function () {
+    $response = $this->post(
+        route('student.store'),
+        $this->studentRequestData->create(['subject' => null])
+    );
 
-    /** @test */
-    public function can_update_a_student()
-    {
-        $response = $this->patch(route('student.update', $this->student), $this->studentAttributes);
-        $response->assertSessionHasNoErrors();
+    $response->assertSessionHasErrors('subject');
+});
 
-        $this->student->refresh();
+test('cannot store a new student without goals', function () {
+    $response = $this->post(route('student.store'), $this->studentRequestData->withGoals('')->create());
 
-        $this->assertEquals($this->student->name, "test");
-        $this->assertEquals($this->student->goals, "Learn PHP");
-    }
+    $response->assertSessionHasErrors('goals');
+});
 
-    /** @test */
-    public function cannot_update_a_student_without_a_name()
-    {
-        $response = $this->patch(route('student.update', $this->student), [
-            "name" => "",
-            "goals" => "Learn php",
-        ]);
+test('can render the show student view', function () {
+    $response = $this->get(route('student.show', $this->student));
 
-        $response->assertSessionHasErrors('name');
-    }
+    $response
+        ->assertOk()
+        ->assertSee($this->student->name)
+        ->assertSee($this->student->objectifs)
+        ->assertSee($this->student->subject->name);
+});
 
-    /** @test */
-    public function cannot_update_a_student_without_objectives()
-    {
-        $response = $this->patch(route('student.update', $this->student), [
-            "name" => "test",
-            "goals" => "",
-        ]);
+test('can display total hours of a student', function () {
+    $totalCoursesHours = $this->student->courses->sum('hours count');
 
-        $response->assertSessionHasErrors('goals');
-    }
-}
+    $response = $this->get(route('student.show', $this->student));
+
+    $response
+        ->assertOk()
+        ->assertSeeText($totalCoursesHours);
+});
+
+test('can display the course details of a student', function () {
+    $response = $this->get(route('student.show', $this->student));
+
+    $firstStudentCourse = $this->student->courses->first();
+
+    $response
+        ->assertOk()
+        ->assertSee($this->student->goals)
+        ->assertSee($firstStudentCourse->date->format('d/m/Y'))
+        ->assertSee($firstStudentCourse->start_hour->format('H:i'))
+        ->assertSee($firstStudentCourse->end_hour->format('H:i'))
+        ->assertSeeText($firstStudentCourse->hours_count . "heure")
+        ->assertSee($firstStudentCourse->learned_notions);
+});
+
+test('can render the edit student view', function () {
+    $response = $this->get(route('student.edit', $this->student));
+
+    $response->assertOk();
+});
+
+test('can update a student', function () {
+    $response = $this->patch(
+        route('student.update', $this->student),
+        $this->studentRequestData->create(),
+    )->assertSessionHasNoErrors();
+
+    $this->student->refresh();
+
+    expect($this->student->name)
+        ->toBe("test")
+        ->and($this->student->goals)->toBe("Learn PHP");
+});
+
+test('cannot update a student without a name', function () {
+    $response = $this->patch(
+        route('student.update', $this->student),
+        $this->studentRequestData->withName('')->create()
+    )->assertSessionHasErrors('name');
+});
+
+test('cannot update a student without objectives', function () {
+    $response = $this->patch(
+        route('student.update', $this->student),
+        $this->studentRequestData->withGoals('')->create()
+    )->assertSessionHasErrors('goals');
+});
