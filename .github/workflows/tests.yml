@@ -26,5 +26,5 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
-      - name: Run PHPUNIT tests
-        run: ./vendor/bin/phpunit
+      - name: Run PEST tests
+        run: ./vendor/bin/pest
