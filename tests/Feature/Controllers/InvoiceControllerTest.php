@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Invoice;
-use Tests\Factories\StudentRequestDataFactory;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
@@ -45,7 +44,7 @@ test('display the total price of an invoice', function () {
     $invoice = Invoice::first();
 
     $totalPrice = $invoice->courses->sum(function ($course) {
-        return $course->nombre_heures * $course->taux_horaire;
+        return $course->hours_count * $course->hourly_rate;
     });
 
     get(route('invoice.show', $invoice))
