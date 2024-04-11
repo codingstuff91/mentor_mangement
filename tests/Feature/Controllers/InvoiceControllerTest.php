@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Invoice;
+use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
 use function Pest\Laravel\patch;
 use function Pest\Laravel\post;
@@ -69,5 +70,11 @@ test('update the status paid to an invoice', function () {
     ]);
 
     expect(Invoice::first()->paid)->toBeTrue();
+});
+
+test('Delete an invoice', function () {
+    delete(route('invoice.destroy', $this->course->invoice));
+
+    expect(Invoice::count())->toBe(0);
 });
 
