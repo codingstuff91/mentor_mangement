@@ -3,6 +3,7 @@
 use App\Models\Customer;
 use App\Models\Student;
 use App\Models\Subject;
+use Tests\Factories\CustomerRequestDataFactory;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
@@ -17,12 +18,15 @@ beforeEach(function () {
     $this->student = Student::factory()
         ->for(Subject::factory())
         ->for($this->customer);
+
+    $this->customerRequestDataFactory = CustomerRequestDataFactory::new();
 });
 
 test('can fetch the customers list', function () {
-    $response = get(route('customer.index'));
-
-    $response->assertOk();
+    get(route('customer.index'))
+        ->assertOk()
+        ->assertSee($this->customer->name)
+        ->assertSee($this->customer->comments);
 });
 
 test('can render the customer create view', function () {
@@ -34,24 +38,24 @@ test('can render the customer create view', function () {
         ->assertSee('Commentaires');
 });
 
-test('can store a new customer', function () {
-    post(route('customer.store', [
-        'name' => 'John Doe',
-        'comments' => 'Exemple de commentaires',
-    ]));
+test('store a new customer', function () {
+    post(
+        route('customer.store',$this->customerRequestDataFactory->create())
+    );
 
     assertDatabaseCount('customers', 2);
 });
 
 test('cannot store a customer without a name', function () {
-    $response = post(route('customer.store', [
-        'name' => '',
-    ]));
+    $response = post(
+        route('customer.store'),
+        $this->customerRequestDataFactory->withName('')->create(),
+    );
 
     $response->assertSessionHasErrors(['name']);
 });
 
-test('can render the edit view with customer informations', function () {
+test('render the edit view with customer informations', function () {
     $response = get(route('customer.edit', Customer::first()));
 
     $response
