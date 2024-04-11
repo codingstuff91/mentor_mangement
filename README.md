@@ -34,27 +34,27 @@ Into this menu you can manage the subjects by adding, editing or deleting the su
 One student can be assigned to one subject, and one subject can be assigned to many students.
 
 ## Courses management
-Into this menu, you can manage every course by adding, editing them.
+Into this menu, you can manage every course by adding or editing them.
 
 You can add a course by specifing the date of the course, the start hour, the end hour (the hours duration is calculated automatically).
 
-NB : Each course must be linked to an invoice. If the invoice doesn't exists, you have to create if first.
+NB : Each course must be linked to an invoice. If the invoice doesn't exists, you have to create it first.
 
 For each course, you must provide the topics of the course, the hourly rate and the main invoice it belongs to.
 
 ## Invoices management
 Into this menu, you can manage every course by adding, editing the invoices.
 
-For each invoice the Month and the Year is automaticaly provided.
+For each invoice the Month and the Year is automatically provided.
 
-Each invoice is linked only one customer and many courses, and you can display the details of an invoice.
+Each invoice is linked to only one customer and many courses, and you can display the details of an invoice.
 
 It allows to have the number of courses linked to this invoice and the total of revenues.
 
 ## Technologies 
 This project was made with the PHP framework Laravel.
 
-The testing part has been made with PHPUnit
+The testing part has initially been made with PHPUnit by recently i replaced it by the PEST testing framework.
 
 ## Installation
 This web application is open source.
