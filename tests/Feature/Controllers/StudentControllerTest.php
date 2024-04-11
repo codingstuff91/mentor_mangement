@@ -30,26 +30,19 @@ beforeEach(function () {
     $this->studentRequestData = StudentRequestDataFactory::new();
 });
 
-test('can fetch all the courses', function () {
-    $response = get(route('course.index'));
-
-    $response->assertOk();
-});
-
 test('can fetch the students index view', function () {
     $response = $this->get(route('student.index'));
     $response->assertOk();
 });
 
 test('can display the students sorted by status', function () {
-    $this->get(route('student.index'))
+    get(route('student.index'))
         ->assertOk()
         ->assertSeeInOrder([$this->student->name, $this->inactiveStudent->name]);
 });
 
 test('can render student create view', function () {
-    $response = get(route('student.create'));
-    $response
+    get(route('student.create'))
         ->assertOk()
         ->assertSee('Nom')
         ->assertSee('Matière')
@@ -59,64 +52,53 @@ test('can render student create view', function () {
 });
 
 test('can render the customers list into the student create view', function () {
-    $response = $this->get(route('student.create'));
-
-    $response
+    get(route('student.create'))
         ->assertOk()
         ->assertSee($this->customer->name);
 });
 
 test('can render the subjects list into the student create view', function () {
-    $response = $this->get(route('student.create'));
-
-    $response
+    get(route('student.create'))
         ->assertOk()
         ->assertSee(Subject::first()->name);
 });
 
 test('can store a new student', function () {
-    $this->post(route('student.store', $this->studentRequestData->create()));
+    post(route('student.store', $this->studentRequestData->create()));
 
     $this->assertDatabaseCount('students', 3);
 });
 
 test('cannot store a new student without a name', function () {
-    $response = $this->post(
+    post(
         route('student.store'),
         $this->studentRequestData->withName('')->create()
-    );
-
-    $response->assertSessionHasErrors('name');
+    )->assertSessionHasErrors('name');
 });
 
 test('cannot store a new student without a customer', function () {
-    $response = $this->post(
+    post(
         route('student.store'),
         $this->studentRequestData->create(['customer' => null])
-    );
-
-    $response->assertSessionHasErrors('customer');
+    )->assertSessionHasErrors('customer');
 });
 
 test('cannot store a new student without a subject', function () {
-    $response = $this->post(
+    post(
         route('student.store'),
         $this->studentRequestData->create(['subject' => null])
-    );
-
-    $response->assertSessionHasErrors('subject');
+    )->assertSessionHasErrors('subject');
 });
 
 test('cannot store a new student without goals', function () {
-    $response = $this->post(route('student.store'), $this->studentRequestData->withGoals('')->create());
-
-    $response->assertSessionHasErrors('goals');
+    post(
+        route('student.store'),
+        $this->studentRequestData->withGoals('')->create()
+    )->assertSessionHasErrors('goals');
 });
 
 test('can render the show student view', function () {
-    $response = $this->get(route('student.show', $this->student));
-
-    $response
+    get(route('student.show', $this->student))
         ->assertOk()
         ->assertSee($this->student->name)
         ->assertSee($this->student->objectifs)
@@ -126,19 +108,15 @@ test('can render the show student view', function () {
 test('can display total hours of a student', function () {
     $totalCoursesHours = $this->student->courses->sum('hours count');
 
-    $response = $this->get(route('student.show', $this->student));
-
-    $response
+    get(route('student.show', $this->student))
         ->assertOk()
         ->assertSeeText($totalCoursesHours);
 });
 
 test('can display the course details of a student', function () {
-    $response = $this->get(route('student.show', $this->student));
-
     $firstStudentCourse = $this->student->courses->first();
 
-    $response
+    get(route('student.show', $this->student))
         ->assertOk()
         ->assertSee($this->student->goals)
         ->assertSee($firstStudentCourse->date->format('d/m/Y'))
@@ -149,13 +127,12 @@ test('can display the course details of a student', function () {
 });
 
 test('can render the edit student view', function () {
-    $response = $this->get(route('student.edit', $this->student));
-
-    $response->assertOk();
+    get(route('student.edit', $this->student))
+        ->assertOk();
 });
 
 test('can update a student', function () {
-    $response = $this->patch(
+    patch(
         route('student.update', $this->student),
         $this->studentRequestData->create(),
     )->assertSessionHasNoErrors();
@@ -168,14 +145,14 @@ test('can update a student', function () {
 });
 
 test('cannot update a student without a name', function () {
-    $response = $this->patch(
+    patch(
         route('student.update', $this->student),
         $this->studentRequestData->withName('')->create()
     )->assertSessionHasErrors('name');
 });
 
 test('cannot update a student without objectives', function () {
-    $response = $this->patch(
+    patch(
         route('student.update', $this->student),
         $this->studentRequestData->withGoals('')->create()
     )->assertSessionHasErrors('goals');
