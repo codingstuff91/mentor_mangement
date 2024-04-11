@@ -1,84 +1,48 @@
 <?php
 
-namespace Tests\Feature\Controllers;
-
 use App\Models\Course;
-use App\Models\Customer;
-use App\Models\Invoice;
-use App\Models\Subject;
 use App\Models\Student;
-use App\Models\User;
-use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Subject;
 use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
+use function Pest\Laravel\get;
 
-class DashboardControllerTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    loginAsUser();
 
-    public function setUp() :void
-    {
-        parent::setUp();
+    $this->customer = createCustomerWithInvoice();
 
-        $this->seed(UserSeeder::class);
-        $user = User::first();
+    $this->student = Student::factory()
+        ->for(Subject::factory())
+        ->for($this->customer);
+});
 
-        $this->actingAs($user);
+test('render the dashboard main page', function () {
+    get(route('dashboard'))->assertOk();
+});
 
-        $this->customer = Customer::factory()
-                            ->has(Invoice::factory())
-                            ->create();
+test('show the total of course hours given', function () {
+    $response = get(route('dashboard'));
 
-        $this->student = Student::factory(10)
-            ->for(Subject::factory())
-            ->create([
-                'customer_id' => $this->customer->id,
-            ]);
-    }
+    $response->assertSeeText("Total Heures");
+    $response->assertSee(Course::count());
+});
 
-    /** @test */
-    public function can_render_the_dashboard_main_page()
-    {
-        $response = $this->get('/dashboard');
+test('show the total of students', function () {
+    get(route('dashboard'))
+        ->assertSeeText("Total Eleves")
+        ->assertSee(Student::count());
+});
 
-        $response->assertOk();
-    }
+test('show the total revenue', function () {
+    $totalRevenues = Course::select(DB::raw('SUM(hours_count * hourly_rate) as total'))->first();
 
-    /** @test */
-    public function can_show_the_total_of_course_hours_given()
-    {
-        $response = $this->get('/dashboard');
+    get(route('dashboard'))
+        ->assertSeeText("Total revenus")
+        ->assertSee($totalRevenues['total']);
+});
 
-        $response->assertSeeText("Total Heures");
-        $response->assertSee(Course::count());
-    }
-
-    /** @test */
-    public function can_show_the_total_of_students()
-    {
-        $response = $this->get('/dashboard');
-
-        $response->assertSeeText("Total Eleves");
-        $response->assertSee(Student::count());
-    }
-
-    /** @test */
-    public function can_show_the_total_revenue()
-    {
-        $response = $this->get('/dashboard');
-        $totalRevenues = Course::select(DB::raw('SUM(hours_count * hourly_rate) as total'))->first();
-
-        $response->assertSeeText("Total revenus");
-        $response->assertSee($totalRevenues['total']);
-    }
-
-    /** @test */
-    public function can_show_the_total_of_courses()
-    {
-        $response = $this->get('/dashboard');
-
-        $response->assertSeeText("Total Cours");
-        $response->assertSee(Course::count());
-    }
-}
+test('show the total of courses', function () {
+    get(route('dashboard'))
+        ->assertSeeText("Total Cours")
+        ->assertSee(Course::count());
+});

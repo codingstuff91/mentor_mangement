@@ -1,111 +1,80 @@
 <?php
 
-namespace Tests\Feature\Controllers;
-
-use App\Models\Customer;
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Course;
-use App\Models\Student;
 use App\Models\Invoice;
-use App\Models\Subject;
-use Database\Seeders\UserSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use function Pest\Laravel\delete;
+use function Pest\Laravel\get;
+use function Pest\Laravel\patch;
+use function Pest\Laravel\post;
 
-class InvoiceControllerTest extends TestCase
-{
-    use RefreshDatabase;
+beforeEach(function () {
+    loginAsUser();
 
-    public function setUp() :void
-    {
-        parent::setUp();
+    $this->customer = createCustomerWithInvoice();
 
-        $this->seed(UserSeeder::class);
-        $user = User::first();
+    $this->student = createStudentWithSubjectAndCustomer($this->customer);
 
-        $this->actingAs($user);
+    $this->course = createCourseWithStudentAndInvoice($this->student, $this->customer->invoice->first());
+});
 
-        $this->invoice = Invoice::factory()
-                                ->for(Customer::factory())
-                                ->create();
+test('render the index invoices view', function () {
+    get(route('invoice.index'))
+    ->assertOk();
+});
 
-        $this->customer = Customer::factory()
-                            ->has(Invoice::factory())
-                            ->create();
+test('render the invoice create view', function () {
+    get(route('invoice.create'))
+    ->assertOk()
+    ->assertSee('Nom du client');
+});
 
-        $this->student = Student::factory()
-                        ->for(Subject::factory())
-                        ->create([
-                            'customer_id' => $this->customer->id,
-                        ]);
+test('store a new invoice', function () {
+    post(route('invoice.store'), [
+        'customer' => $this->customer->id,
+    ]);
 
-        $this->course = Course::factory()->create([
-            'invoice_id' => $this->invoice->id,
-        ]);
-    }
+    $this->assertDatabaseCount('invoices', 2);
+});
 
-    /** @test */
-    public function can_render_the_index_invoices_view()
-    {
-        $response = $this->get(route('invoice.index'));
-        $response->assertOk();
-    }
+test('renders the show invoice view', function () {
+    $invoice = Invoice::first();
 
-    /** @test */
-    public function can_render_the_invoice_create_view()
-    {
-        $response = $this->get(route('invoice.create'));
+    get(route('invoice.show', $invoice->id))
+    ->assertOk();
+});
 
-        $response->assertOk();
-        $response->assertSee('Nom du client');
-    }
+test('display the total price of an invoice', function () {
+    $invoice = Invoice::first();
 
-    /** @test */
-    public function can_store_a_new_invoice()
-    {
-        $customer = Customer::factory()->create();
+    $totalPrice = $invoice->courses->sum(function ($course) {
+        return $course->hours_count * $course->hourly_rate;
+    });
 
-        $this->post(route('invoice.store'), [
-            'customer' => $customer->id,
-        ]);
+    get(route('invoice.show', $invoice))
+    ->assertOk()
+    ->assertSee($totalPrice . " €");
+});
 
-        $this->assertDatabaseCount('invoices', 3);
-    }
+test('display the total hours count of an invoice', function () {
+    $invoice = Invoice::first();
 
-    /** @test */
-    public function can_render_the_show_invoice_view()
-    {
-        $facture = Invoice::first();
+    $invoiceTotalHours = $invoice->courses->where('hours_pack', false)->sum('hours_count');
 
-        $response = $this->get(route('invoice.show', $facture->id));
-        $response->assertOk();
-    }
+    get(route('invoice.show', $invoice))
+    ->assertOk()
+    ->assertSee("Nombre heures : " . $invoiceTotalHours);
+});
 
-    /** @test */
-    public function can_display_the_total_price_of_an_invoice()
-    {
-        $invoice = Invoice::first();
+test('update the status paid to an invoice', function () {
+    patch(route('invoice.update', $this->course->invoice), [
+        'paid' => 1,
+    ]);
 
-        $totalPrice = $invoice->courses->sum(function ($course) {
-            return $course->nombre_heures * $course->taux_horaire;
-        });
+    expect(Invoice::first()->paid)->toBeTrue();
+});
 
-        $response = $this->get(route('invoice.show', $invoice));
+test('Delete an invoice', function () {
+    delete(route('invoice.destroy', $this->course->invoice));
 
-        $response->assertOk();
-        $response->assertSee($totalPrice . " €");
-    }
+    expect(Invoice::count())->toBe(0);
+});
 
-    /** @test */
-    public function can_display_the_total_hours_count_of_an_invoice()
-    {
-        $invoice = Invoice::first();
-        $courses = $invoice->courses;
-        $invoiceTotalHours = $invoice->courses->where('hours_pack', false)->sum('hours_count');
-
-        $response = $this->get(route('invoice.show', $invoice));
-
-        $response->assertOk();
-        $response->assertSee("Nombre heures : " . $invoiceTotalHours);
-    }
-}

@@ -90,4 +90,11 @@ class InvoiceController extends Controller
 
         return redirect()->route('invoice.index');
     }
+
+    public function destroy(Invoice $invoice): RedirectResponse
+    {
+        $invoice->delete();
+
+        return redirect()->route('invoice.index');
+    }
 }
