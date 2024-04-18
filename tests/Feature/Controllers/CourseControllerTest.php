@@ -170,7 +170,7 @@ test('show the 12 latest invoices for the student customer into the select list 
         ->assertDontSeeText($invoices[8]->id);
 });
 
-test('not show the invoices of a another customer into the edit view', function () {
+test('must not show the invoices of a another customer into the edit view', function () {
     $activeStudentCustomerInvoice = Invoice::factory()
         ->for($this->customer)
         ->create();
