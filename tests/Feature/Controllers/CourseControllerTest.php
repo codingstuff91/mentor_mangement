@@ -158,7 +158,7 @@ test('update a course with its invoice', function () {
         ->and($this->course->invoice->id)->toBe($newInvoice->id);
 });
 
-test('show the 12 latest invoices into the select list of edit view', function () {
+test('show the 12 latest invoices for the student customer into the select list of edit view', function () {
     $invoices = Invoice::factory()
         ->for($this->customer)
         ->count(12)
@@ -167,7 +167,22 @@ test('show the 12 latest invoices into the select list of edit view', function (
     get(route('course.edit', $this->course))
         ->assertOk()
         ->assertSeeText($invoices[0]->id)
-        ->assertDontSeeText($invoices[11]->id);
+        ->assertDontSeeText($invoices[8]->id);
+});
+
+test('not show the invoices of a another customer into the edit view', function () {
+    $activeStudentCustomerInvoice = Invoice::factory()
+        ->for($this->customer)
+        ->create();
+
+    $anotherCustomerInvoice = Invoice::factory()
+        ->for(Customer::factory())
+        ->create();
+
+    get(route('course.edit', $this->course))
+        ->assertOk()
+        ->assertSeeText($activeStudentCustomerInvoice->id)
+        ->assertDontSeeText($anotherCustomerInvoice->id);
 });
 
 test('delete a course', function () {

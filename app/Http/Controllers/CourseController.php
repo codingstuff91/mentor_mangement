@@ -80,7 +80,10 @@ class CourseController extends Controller
      */
     public function edit(Course $course): View
     {
-        $latestInvoices = Invoice::limit(12)->orderByDesc('created_at')->get();
+        $latestInvoices = Invoice::limit(12)
+            ->where('customer_id', $course->invoice->customer->id)
+            ->orderByDesc('created_at')
+            ->get();
 
         return view('course.edit')->with([
             'course' => $course,
