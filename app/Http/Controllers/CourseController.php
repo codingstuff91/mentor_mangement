@@ -78,9 +78,17 @@ class CourseController extends Controller
      * @param Course $course
      * @return View
      */
-    public function edit(Course $course)
+    public function edit(Course $course): View
     {
-        return view('course.edit')->with(['course' => $course]);
+        $latestInvoices = Invoice::limit(12)
+            ->where('customer_id', $course->invoice->customer->id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('course.edit')->with([
+            'course' => $course,
+            'latestInvoices' => $latestInvoices,
+        ]);
     }
 
     /**
@@ -100,6 +108,7 @@ class CourseController extends Controller
             'start_hour' => $request->date ." ". $request->start_hour,
             'end_hour' => $request->date ." ". $request->end_hour,
             'learned_notions' => $request->learned_notions,
+            'invoice_id' => $request->invoice,
         ]);
 
         return redirect()->route('course.index');
