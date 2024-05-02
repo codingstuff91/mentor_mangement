@@ -18,17 +18,12 @@
                         @method('patch')
 
                         <label>Date du cours</label>
-                        <input type="date" name="date" value="{{ $course->date->format('Y-m-d') }}" class="rounded-lg mt-2">
+                        <input type="date" name="course_date" value="{{ $course->date->format('Y-m-d') }}" class="rounded-lg mt-2">
 
                         <div class=" mt-4 columns-2 gap-4">
                             <div class="flex flex-col">
                                 <label class="mt-2">Heure début</label>
                                 <input type="time" class="rounded-lg" name="start_hour" value="{{ $course->start_hour->format('H:i') }}">
-                            </div>
-
-                            <div class="flex flex-col">
-                                <label class="mt-2">Heure fin</label>
-                                <input type="time" class="rounded-lg" name="end_hour" value="{{ $course->end_hour->format('H:i') }}">
                             </div>
                         </div>
 

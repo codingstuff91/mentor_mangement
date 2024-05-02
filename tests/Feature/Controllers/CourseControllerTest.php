@@ -35,7 +35,7 @@ test('can render the course creation view', function () {
         ->assertSee('Eleve')
         ->assertSee('Date du cours')
         ->assertSee('Heure début')
-        ->assertSee('Heure fin')
+        ->assertSee('Nombre heures')
         ->assertSee('Notions apprises')
         ->assertSee('Taux horaire')
         ->assertSee('Facture concernée');
@@ -135,7 +135,6 @@ test('render the edit view with course informations', function () {
         ->assertOk()
         ->assertSee($this->course->date->format('Y-m-d'))
         ->assertSee($this->course->start_hour->format('H:i'))
-        ->assertSee($this->course->end_hour->format('H:i'))
         ->assertSee($this->course->paid)
         ->assertSeeText($this->course->learned_notions);
 });
@@ -155,7 +154,7 @@ test('update a course with its invoice', function () {
     expect($this->course->learned_notions)
         ->toBe("Example notions text")
         ->and($this->course->paid)->toBe(1)
-        ->and($this->course->hours_count)->toBe(1)
+        ->and($this->course->hours_count)->toBe('01:00')
         ->and($this->course->invoice->id)->toBe($newInvoice->id);
 });
 

@@ -20,7 +20,8 @@
                     <div class="flex flex-col align-items-center">
                         <label class="my-2">Date du cours</label>
                         <input type="date" name="course_date" class="rounded-lg" value="{{ $currentDay }}">
-                        @error('date')
+
+                        @error('course_date')
                             <div class="text-red-400">{{ $message }}</div>
                         @enderror
                     </div>

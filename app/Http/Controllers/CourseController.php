@@ -54,7 +54,7 @@ class CourseController extends Controller
      * @param CourseService $cours_service
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreCourseRequest $request)
     {
         $isHoursPack = isset($request->hours_pack) ? 1 : 0;
 
@@ -98,14 +98,13 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        $count_hours = $this->courseService->count_lesson_hours($request->end_hour, $request->start_hour);
+//        dd($request->all());
 
         $course->update([
             'paid' => $request->paid,
-            'hours_count' => $count_hours,
-            'date' => $request->date,
-            'start_hour' => $request->date ." ". $request->start_hour,
-            'end_hour' => $request->date ." ". $request->end_hour,
+            'date' => $request->course_date,
+            'start_hour' => $request->start_hour,
+            'end_hour' => CourseService::computeEndHour($request->start_hour, $course->hours_count),
             'learned_notions' => $request->learned_notions,
             'invoice_id' => $request->invoice,
         ]);
