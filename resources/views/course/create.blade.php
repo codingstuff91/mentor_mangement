@@ -19,11 +19,12 @@
                 <div class="my-2 flex flex-row justify-between items-center">
                     <div class="flex flex-col align-items-center">
                         <label class="my-2">Date du cours</label>
-                        <input type="date" name="date" class="rounded-lg" value="{{ $currentDay }}">
+                        <input type="date" name="course_date" class="rounded-lg" value="{{ $currentDay }}">
                         @error('date')
                             <div class="text-red-400">{{ $message }}</div>
                         @enderror
                     </div>
+
                     <div class="flex flex-col justify-center">
                         <label>Pack d'heures</label>
                         <input type="checkbox" class="rounded-lg" name="hours_pack">
@@ -40,9 +41,10 @@
                     </div>
 
                     <div class="flex flex-col align-items-center">
-                        <label class="my-2">Heure fin</label>
-                        <input type="time" name="end_hour" class="rounded-lg">
-                        @error('end_hour')
+                        <label class="my-2">Nombre heures</label>
+                        <input type="time" name="duration" class="rounded-lg" value="01:00">
+
+                        @error('duration')
                             <div class="text-red-400">{{ $message }}</div>
                         @enderror
                     </div>
