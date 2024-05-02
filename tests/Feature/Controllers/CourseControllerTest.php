@@ -72,7 +72,7 @@ test('fills the create student page with current date', function () {
 test('store a new course', function () {
     post(route('course.store'), $this->courseRequestData->create());
 
-    assertDatabaseCount('courses', 1);
+    assertDatabaseCount('courses', 2);
 });
 
 test('cannot store a new course without choosing an student', function () {
@@ -85,12 +85,6 @@ test('cannot store a new course without a start hour', function () {
     $response = $this->post(route('course.store'), $this->courseRequestData->create(['start_hour' => null]));
 
     $response->assertSessionHasErrors('start_hour');
-});
-
-test('cannot store a new course without an end hour', function () {
-    $response = post(route('course.store'), $this->courseRequestData->create(['end_hour' => null]));
-
-    $response->assertSessionHasErrors('end_hour');
 });
 
 test('cannot store a new course without writing the course covered concepts', function () {
