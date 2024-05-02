@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Course;
 use App\Models\Customer;
 use App\Models\Invoice;
 use Tests\Factories\CourseRequestDataFactory;
@@ -71,7 +72,7 @@ test('fills the create student page with current date', function () {
 test('store a new course', function () {
     post(route('course.store'), $this->courseRequestData->create());
 
-    assertDatabaseCount('courses', 2);
+    assertDatabaseCount('courses', 1);
 });
 
 test('cannot store a new course without choosing an student', function () {

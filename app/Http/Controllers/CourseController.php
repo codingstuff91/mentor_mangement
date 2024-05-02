@@ -8,15 +8,16 @@ use App\Models\Invoice;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use App\Services\CoursService;
+use App\Services\CourseService;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
+use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
     protected $courseService;
 
-    public function __construct(CoursService $coursService)
+    public function __construct(CourseService $coursService)
     {
         $this->courseService = $coursService;
     }
@@ -50,22 +51,20 @@ class CourseController extends Controller
 
     /**
      * @param StoreCourseRequest $request
-     * @param CoursService $cours_service
+     * @param CourseService $cours_service
      * @return RedirectResponse
      */
-    public function store(StoreCourseRequest $request)
+    public function store(Request $request)
     {
-        $count_hours = $this->courseService->count_lesson_hours($request->end_hour, $request->start_hour);
-
         $isHoursPack = isset($request->hours_pack) ? 1 : 0;
 
         Course::create([
             'student_id' => $request->student,
             'invoice_id' => $request->invoice,
-            'date' => $request->date ." ". $request->start_hour,
-            'start_hour' => $request->date ." ". $request->start_hour,
-            'end_hour' => $request->date ." ". $request->end_hour,
-            'hours_count' => $count_hours,
+            'date' => $request->course_date,
+            'start_hour' => $request->start_hour,
+            'end_hour' => CourseService::computeEndHour($request->start_hour, $request->duration),
+            'hours_count' => $request->duration,
             'hours_pack' => $isHoursPack,
             'learned_notions' => $request->learned_notions,
             'hourly_rate' => $request->hourly_rate
@@ -94,7 +93,7 @@ class CourseController extends Controller
     /**
      * @param UpdateCourseRequest $request
      * @param Course $course
-     * @param CoursService $cours_service
+     * @param CourseService $cours_service
      * @return RedirectResponse
      */
     public function update(UpdateCourseRequest $request, Course $course)
