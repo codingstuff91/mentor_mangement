@@ -67,7 +67,8 @@ class CourseController extends Controller
             'hours_count' => $request->duration,
             'hours_pack' => $isHoursPack,
             'learned_notions' => $request->learned_notions,
-            'hourly_rate' => $request->hourly_rate
+            'hourly_rate' => $request->hourly_rate,
+            'price' => CourseService::calculate_total_price($request->duration, $request->hourly_rate),
         ]);
 
         return redirect()->route('course.index');
