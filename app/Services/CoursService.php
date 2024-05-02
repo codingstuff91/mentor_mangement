@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class CoursService
 {
-    public static function computeEndHour(string $startHour, string $duration)
+    public static function computeEndHour(string $startHour, string $duration): string
     {
         $hoursToAdd = CoursService::splitHoursOrMinutes($duration, 0);
         $minutesToAdd = CoursService::splitHoursOrMinutes($duration, 1);
