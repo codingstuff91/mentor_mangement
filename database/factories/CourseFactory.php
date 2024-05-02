@@ -17,15 +17,12 @@ class CourseFactory extends Factory
      */
     public function definition()
     {
-        $startHour = Carbon::parse('10:00');
-        $endHour = Carbon::parse('11:00');
-
         return [
             'student_id' => Student::all()->random()->id,
             'invoice_id' => Invoice::all()->random()->id,
             'date' => now()->format('Y-m-d'),
-            'start_hour' => $startHour,
-            'end_hour' => $endHour,
+            'start_hour' => Carbon::parse('10:00'),
+            'end_hour' => Carbon::parse('11:00'),
             'hours_count' => '01:00',
             'hourly_rate' => 10,
             'price' => CourseService::calculate_total_price("01:00", 10),
