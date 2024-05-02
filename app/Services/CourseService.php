@@ -4,12 +4,12 @@ namespace App\Services;
 
 use Carbon\Carbon;
 
-class CoursService
+class CourseService
 {
     public static function computeEndHour(string $startHour, string $duration): string
     {
-        $hoursToAdd = CoursService::splitHoursOrMinutes($duration, 0);
-        $minutesToAdd = CoursService::splitHoursOrMinutes($duration, 1);
+        $hoursToAdd = CourseService::splitHoursOrMinutes($duration, 0);
+        $minutesToAdd = CourseService::splitHoursOrMinutes($duration, 1);
 
         $endHour = Carbon::parse($startHour);
 
