@@ -6,7 +6,7 @@ use App\Models\Course;
 use App\Services\CourseService;
 use Illuminate\Console\Command;
 
-class calculate_courses_prices extends Command
+class calculateCoursesPrice extends Command
 {
     /**
      * The name and signature of the console command.

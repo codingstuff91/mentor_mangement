@@ -7,7 +7,7 @@ use App\Services\CourseService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class reformat_hours_count_into_duration extends Command
+class reformatCoursesHoursCountIntoDuration extends Command
 {
     /**
      * The name and signature of the console command.
