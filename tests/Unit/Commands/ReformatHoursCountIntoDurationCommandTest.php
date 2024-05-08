@@ -14,11 +14,9 @@ it('updates courses with duration based on the hours count old column', function
     $course->hours_count = 1;
     $course->save();
 
-//    dd($course);
-
     // When (launch the command)
     artisan('courses:regul-hours-count');
 
-    // Then (check the price is updated)
+    // Then (check if the duration count is correct)
     expect(Course::first()->duration)->toBe("01:00");
 });
