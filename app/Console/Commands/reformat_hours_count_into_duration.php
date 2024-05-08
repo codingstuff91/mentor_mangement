@@ -39,7 +39,8 @@ class reformat_hours_count_into_duration extends Command
 
             $time->hour = $hoursCount;
 
-            $course->duration = $time;
+            $course->duration = $time->format('H:i');
+            $course->save();
         }
 
         return Command::SUCCESS;
