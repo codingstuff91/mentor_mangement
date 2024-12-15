@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Carbon\Carbon;
 use App\Models\Student;
 use App\Models\Invoice;
-use App\Services\CoursService;
+use App\Services\CourseService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CourseFactory extends Factory
@@ -17,24 +17,15 @@ class CourseFactory extends Factory
      */
     public function definition()
     {
-        $startHour = Carbon::now();
-        $startHour->hour = 18;
-        $startHour->minute = 00;
-
-        $endHour = Carbon::now();
-        $endHour->hour = 19;
-        $endHour->minute = 00;
-
-        $coursService = new CoursService();
-
         return [
             'student_id' => Student::all()->random()->id,
             'invoice_id' => Invoice::all()->random()->id,
-            'date' => now(),
-            'start_hour' => $startHour,
-            'end_hour' => $endHour,
-            'hours_count' => $coursService->count_lesson_hours($endHour->hour,$startHour->hour),
+            'date' => now()->format('Y-m-d'),
+            'start_hour' => Carbon::parse('10:00'),
+            'end_hour' => Carbon::parse('11:00'),
+            'hours_count' => '01:00',
             'hourly_rate' => 10,
+            'price' => CourseService::calculate_total_price("01:00", 10),
             'learned_notions' => $this->faker->sentence(3),
             'paid' => $this->faker->boolean,
         ];

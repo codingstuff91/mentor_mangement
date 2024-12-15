@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Services\InvoiceService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,9 +19,7 @@ class InvoiceController extends Controller
     public function index()
     {
         $invoices = Invoice::with('customer')
-            ->withCount(['courses as total' => function($query){
-                $query->select(DB::raw('SUM(hours_count * hourly_rate)'));
-            }])
+            ->withSum('courses', 'price')
             ->orderByDesc('id')
             ->paginate(10);
 
@@ -59,8 +58,8 @@ class InvoiceController extends Controller
     {
         $invoice->load('courses');
 
-        $total_hours = $invoice->courses->where('hours_pack', false)->sum('hours_count');
-        $total_invoice = $invoice->courses->sum('total_price');
+        $total_hours = InvoiceService::compute_total_hours($invoice);
+        $total_invoice = InvoiceService::compute_total_price($invoice);
 
         return view('invoice.show')->with([
             'invoice' => $invoice,

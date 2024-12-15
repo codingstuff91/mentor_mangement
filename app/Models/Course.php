@@ -22,11 +22,6 @@ class Course extends Model
         'end_hour' => 'datetime',
     ];
 
-    public function getTotalPriceAttribute()
-    {
-        return $this->hourly_rate * $this->hours_count;
-    }
-
     public function invoice()
     {
         return $this->belongsTo('App\Models\Invoice');

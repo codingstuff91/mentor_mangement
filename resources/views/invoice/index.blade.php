@@ -16,7 +16,7 @@
                 </div>
             </div>
             <!-- main table component -->
-            <div class="bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-auto">
+            <div class="bg-gray-100 flex items-center justify-center font-sans overflow-auto">
                 <div class="w-full lg:w-5/6">
                     <div class="bg-white shadow-md rounded my-2">
                         <table class="min-w-max w-full table-auto">
@@ -46,7 +46,7 @@
                                         </td>
                                         <td class="py-3 px-6 text-center whitespace-nowrap">
                                             <span class="py-1 px-3 rounded-lg text-lg">
-                                            {{ $invoice->total ?? 0}} €
+                                            {{ $invoice->courses_sum_price ?? 0}} €
                                             </span>
                                         </td>
                                         <td class="py-3 px-6 text-center whitespace-nowrap">

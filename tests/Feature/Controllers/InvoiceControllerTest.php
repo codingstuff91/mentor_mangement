@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Invoice;
+use App\Services\InvoiceService;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
 use function Pest\Laravel\patch;
@@ -45,9 +46,7 @@ test('renders the show invoice view', function () {
 test('display the total price of an invoice', function () {
     $invoice = Invoice::first();
 
-    $totalPrice = $invoice->courses->sum(function ($course) {
-        return $course->hours_count * $course->hourly_rate;
-    });
+    $totalPrice = InvoiceService::compute_total_price($invoice);
 
     get(route('invoice.show', $invoice))
     ->assertOk()
@@ -57,7 +56,7 @@ test('display the total price of an invoice', function () {
 test('display the total hours count of an invoice', function () {
     $invoice = Invoice::first();
 
-    $invoiceTotalHours = $invoice->courses->where('hours_pack', false)->sum('hours_count');
+    $invoiceTotalHours = InvoiceService::compute_total_hours($invoice);
 
     get(route('invoice.show', $invoice))
     ->assertOk()

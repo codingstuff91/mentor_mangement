@@ -23,7 +23,7 @@
                         <i class="fas fa-user mr-2"></i>
                         {{ $course->student->name }} -- {{ $course->hours_count }}h
                     </p>
-                    <p class="font-bold mr-2">{{ $course->total_price }} €</p>
+                    <p class="font-bold mr-2">{{ $course->price }} €</p>
                 </div>
 
                 <p>
